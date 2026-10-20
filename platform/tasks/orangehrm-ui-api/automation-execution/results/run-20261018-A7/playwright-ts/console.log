@@ -1,0 +1,28 @@
+
+Running 1 test using 1 worker
+
+2026-10-18T12:25:34.342Z [TC-054] Precondition: No authenticated session in the browser (fresh browser context, or logged out).
+2026-10-18T12:25:34.348Z [TC-054]   observed cookies in the fresh browser context = 0
+2026-10-18T12:25:34.348Z [TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001).
+2026-10-18T12:25:37.674Z [TC-054]   observed URL after opening the Directory URL = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+2026-10-18T12:25:39.553Z [TC-054]   observed URL after login = "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory"
+2026-10-18T12:25:39.567Z [TC-054] Tracing started (login step intentionally not traced: secrets).
+2026-10-18T12:25:39.619Z [TC-054]   observed unfiltered results header (for the DATA-012 condition) = "(140) Records Found"
+2026-10-18T12:25:39.772Z [TC-054]   observed DATA-012 pair (from the card of Peter Mac Anderson) = {"jobTitle":"Chief Financial Officer","location":"New York Sales Office"}
+2026-10-18T12:25:39.772Z [TC-054] Step 2: Select the Job Title and the Location of the DATA-012 pair; click Search.
+2026-10-18T12:25:40.087Z [TC-054] Step 3: Wait until result cards are displayed; read the results header and note the filtered record count k ("(k) Records Found", or "(1) Record Found" when k is 1).
+2026-10-18T12:25:40.936Z [TC-054]   observed filtered results header = "(1) Record Found"
+2026-10-18T12:25:40.936Z [TC-054]   observed k = 1
+2026-10-18T12:25:40.936Z [TC-054] Step 4: Click the first result card; then click the panel's arrow icon.
+2026-10-18T12:25:40.988Z [TC-054]   observed detail panel opened for the first card = "Peter Mac Anderson"
+2026-10-18T12:25:41.054Z [TC-054]   observed detail panel after the arrow click = "not displayed"
+2026-10-18T12:25:41.062Z [TC-054] Step 5: Click Reset.
+2026-10-18T12:25:41.115Z [TC-054] Step 6: Wait until employee result cards are displayed, then read the results header.
+2026-10-18T12:25:41.944Z [TC-054]   observed results header changed after Reset within the timeout = true
+2026-10-18T12:25:41.992Z [TC-054]   observed state after Reset = {"header":"(140) Records Found","employeeName":"","jobTitle":"-- Select --","location":"-- Select --"}
+2026-10-18T12:25:41.995Z [TC-054]   observed N = 140
+2026-10-18T12:25:42.158Z [TC-054] Screenshot written: C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation-execution\results\run-20261018-A7\playwright-ts\TC-054\final.png
+2026-10-18T12:25:42.162Z [TC-054] Result: PASSED (status passed)
+  ok 1 [chromium] › tests\TC-054.spec.ts:14:5 › TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset @TC-054 @e2e (8.3s)
+
+  1 passed (12.1s)

@@ -1,0 +1,20 @@
+2026-10-18T10:56:14.188492600Z [TC-054] Precondition: No authenticated session in the browser (fresh browser context, or logged out).
+2026-10-18T10:56:14.219409800Z [TC-054]   observed cookies in the fresh browser = 0
+2026-10-18T10:56:14.219409800Z [TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001).
+2026-10-18T10:56:17.924817200Z [TC-054]   observed URL after opening the Directory URL = https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-10-18T10:56:20.377350Z [TC-054]   observed URL after login = https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory
+2026-10-18T10:56:20.511679700Z [TC-054]   observed unfiltered results header (for the DATA-012 condition) = (107) Records Found
+2026-10-18T10:56:22.109080500Z [TC-054]   observed DATA-012 pair (from the card of Diego Alvarez) = jobTitle="Probation Trainee PLW1462", location="New York Sales Office"
+2026-10-18T10:56:22.109080500Z [TC-054] Step 2: Select the Job Title and the Location of the DATA-012 pair; click Search.
+2026-10-18T10:56:23.247037700Z [TC-054] Step 3: Wait until result cards are displayed; read the results header and note the filtered record count k ("(k) Records Found", or "(1) Record Found" when k is 1).
+2026-10-18T10:56:24.559412400Z [TC-054]   observed filtered results header = (6) Records Found
+2026-10-18T10:56:24.560441400Z [TC-054]   observed k = 6
+2026-10-18T10:56:24.560441400Z [TC-054] Step 4: Click the first result card; then click the panel's arrow icon.
+2026-10-18T10:56:25.063848200Z [TC-054]   observed detail panel opened and closed for the first card = Diego Alvarez
+2026-10-18T10:56:25.091950Z [TC-054] Step 5: Click Reset.
+2026-10-18T10:56:25.296637800Z [TC-054] Step 6: Wait until employee result cards are displayed, then read the results header.
+2026-10-18T10:56:26.428078500Z [TC-054]   observed results header changed after Reset within the timeout = true
+2026-10-18T10:56:26.889812800Z [TC-054]   observed state after Reset = header="(107) Records Found", employeeName="", jobTitle="-- Select --", location="-- Select --"
+2026-10-18T10:56:26.889812800Z [TC-054]   observed N = 107
+2026-10-18T10:56:27.149023100Z [TC-054] Screenshot written: C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation-execution\results\run-20261018-B6\shaft-java\TC-054\final.png
+2026-10-18T10:56:27.149023100Z [TC-054] Result: PASSED

@@ -1,0 +1,15 @@
+2026-10-18T14:11:48.754998Z Opened https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory - redirected to https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+2026-10-18T14:11:49.529336700Z Clicked Login
+2026-10-18T14:11:51.016130900Z Directory loaded: https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory
+2026-10-18T14:11:51.045381700Z Test started: TC054_verifyThatResetRestoresDefaultsAfterCombinedFilterAndEmployeeDetails
+2026-10-18T14:11:51.198972100Z Results header: (114) Records Found
+2026-10-18T14:11:53.308700300Z Selected Job Title 'Chief Financial Officer'
+2026-10-18T14:11:53.884435800Z Selected Location 'New York Sales Office'
+2026-10-18T14:11:54.770387600Z After Search: results header '(1) Record Found' (changed: true)
+2026-10-18T14:11:54.881367200Z Results header: (1) Record Found
+2026-10-18T14:11:55.163669600Z Clicked the first result card: Peter Mac Anderson
+2026-10-18T14:11:55.228758600Z Employee details panel opened
+2026-10-18T14:11:55.500857600Z Employee details panel closed
+2026-10-18T14:11:56.399145200Z After Reset: results header '(113) Records Found' (changed: true)
+2026-10-18T14:11:56.901162700Z Screenshot written: C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation-execution\results\run-20261018-B11\shaft-java\TC-054\final.png
+2026-10-18T14:11:56.902167900Z Result: PASSED
