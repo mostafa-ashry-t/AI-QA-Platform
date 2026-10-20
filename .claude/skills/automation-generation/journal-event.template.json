@@ -1,0 +1,123 @@
+{
+  "_about": "TEMPLATE, not a runtime event. Stage-specific constants of the automation-generation skill for each event type. Values that are null or '<runtime…>' MUST be filled from the actual generation (system clock, real paths, real hashes, the commands actually run and their real output). Never fabricated. Secrets never appear: environment variable NAMES only, values redacted as [REDACTED: <kind>]. Conforms to platform/schemas/journal-event.schema.json (v1.6.0) once filled. revision_request also requires the common runtime fields shown in stage_execution. workflow_run_id is READ from journal/workflow-run.json (active_run_id), never created by the skill. Array examples show one item's shape; runtime arrays contain exactly the real items (possibly none). The stage has no approval gate: a successful attempt is 'completed' with approval_required false.",
+  "stage_execution": {
+    "schema_version": "1.6.0",
+    "event_id": "<runtime: EVT-NNNN, next sequence in execution-log.json>",
+    "event_type": "stage_execution",
+    "step_number": null,
+    "attempt": null,
+    "workflow_run_id": "<runtime: journal/workflow-run.json → active_run_id; never created by the skill>",
+    "task_id": "<runtime>",
+    "timestamp": "<runtime: system clock, UTC>",
+    "stage_id": "automation-generation",
+    "stage_name": "Automation Generation",
+    "skill_name": "automation-generation",
+    "skill_version": "1.1.0",
+    "prompt_id": "automation-generation",
+    "prompt_version": "1.1.0",
+    "prompt_variables": {
+      "task_name": "<runtime>",
+      "task_path": "<runtime>",
+      "workflow_run_id": "<runtime>",
+      "ui_url": "<runtime: TaskContext entry point>",
+      "binding_ids": "<runtime: one or more, e.g. playwright-ts, shaft-java-testng (one stage_execution event per binding)>",
+      "credential_env_vars": "<runtime: names only, e.g. QA_USERNAME, QA_PASSWORD>",
+      "ide": "<runtime: e.g. IntelliJ IDEA Community>"
+    },
+    "trigger": {
+      "reason": "<runtime>",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim, secrets redacted>"
+    },
+    "input_references": [
+      {"path": "<task>/test-design/TestCases.md", "role": "upstream_artifact", "status": "read", "sha256": "<runtime>", "referenced_by": null, "notes": "Approved; Needs Automation = TRUE selection"},
+      {"path": "<task>/test-design/TestCases.csv", "role": "upstream_artifact", "status": "read", "sha256": "<runtime>", "referenced_by": null, "notes": "Flag cross-check"},
+      {"path": "<task>/test-review/TestReview.md", "role": "upstream_artifact", "status": "read", "sha256": "<runtime>", "referenced_by": null, "notes": "Approved review bound to the current TestCases hash"},
+      {"path": "<task>/execution/ExecutionReport.md", "role": "upstream_artifact", "status": "read", "sha256": "<runtime>", "referenced_by": null, "notes": "Approved manual results"},
+      {"path": "<task>/context/ProjectContext.md", "role": "upstream_artifact", "status": "read", "sha256": "<runtime>", "referenced_by": null, "notes": "Framework decision"},
+      {"path": "<task>/exploration/ExplorationReport.md", "role": "upstream_artifact", "status": "read", "sha256": "<runtime>", "referenced_by": null, "notes": "Candidate locators LOC-###"},
+      {"path": "journal:EVT-NNNN", "role": "upstream_approval", "status": "read", "sha256": null, "referenced_by": null, "notes": "MANUAL_EXECUTION_APPROVED / TEST_REVIEW_APPROVED / TEST_DESIGN_APPROVED"},
+      {"path": ".claude/prompts/automation-generation.md", "role": "prompt", "status": "read", "sha256": "<runtime>", "referenced_by": null, "notes": null}
+    ],
+    "source_references": [],
+    "tools_used": [
+      {"tool": "<runtime: e.g. Write / Edit>", "purpose": "Write the automation project and the generation report", "targets": ["<task>/automation/"]},
+      {"tool": "<runtime: e.g. mvn -q test-compile>", "purpose": "Static validation (SV-1, SV-2)", "targets": ["<task>/automation/<project-dir>/"]}
+    ],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [{"server": "playwright", "reason": "<runtime: e.g. all locators traced to LOC-### from the approved ExplorationReport>"}]
+    },
+    "automation_binding": {
+      "framework": "<runtime>",
+      "framework_source": "<runtime: e.g. PC BR-### / platform default>",
+      "binding_id": "<runtime>",
+      "language": "<runtime>",
+      "runner": "<runtime>",
+      "build_tool": "<runtime>",
+      "project_dir": "<task>/automation/<project-dir>",
+      "decision_source": "<runtime>",
+      "library_versions": [{"name": "<runtime>", "version": "<runtime>", "source": "<runtime: registry, date checked>"}],
+      "toolchain": [{"name": "<runtime>", "version": "<runtime>", "minimum_required": "<runtime>"}],
+      "ide": {"name": "<runtime>", "edition": "<runtime>", "run_configuration": "<runtime>", "notes": null},
+      "credential_env_vars": ["QA_USERNAME", "QA_PASSWORD"]
+    },
+    "automated_cases": [
+      {"test_case_id": "TC-NNN", "status": "generated", "warning_code": null, "reason": null, "manual_result": "PASS",
+       "test_file": "<runtime>", "test_method": "<runtime>", "steps_mapped": null,
+       "expected_result": "<runtime: verbatim>", "assertion_summary": "<runtime>", "data_ids": [], "locator_ids": [], "bug_ids": []}
+    ],
+    "locator_decisions": [
+      {"id": "LOC-NNN", "element": "<runtime>", "locator": "<runtime: as in code>", "strategy": "attribute", "source_loc_id": "LOC-NNN", "verification": null, "evidence_ids": [], "notes": null}
+    ],
+    "generated_files": [
+      {"path": "<runtime>", "role": "test", "operation": "created", "sha256": "<runtime>"}
+    ],
+    "static_validation": [
+      {"check_id": "SV-1", "description": "Build / compile", "result": "pass", "command": "<runtime>", "output_excerpt": "<runtime>", "notes": null},
+      {"check_id": "SV-2", "description": "Test discovery lists exactly the selected cases", "result": "pass", "command": "<runtime>", "output_excerpt": "<runtime>", "notes": null},
+      {"check_id": "SV-3", "description": "Forbidden-pattern scan", "result": "pass", "command": null, "output_excerpt": null, "notes": null},
+      {"check_id": "SV-4", "description": "Secret scan", "result": "pass", "command": null, "output_excerpt": null, "notes": null},
+      {"check_id": "SV-5", "description": "Traceability: steps, locators, data", "result": "pass", "command": null, "output_excerpt": null, "notes": null},
+      {"check_id": "SV-6", "description": "Asserted expected result equals the approved expected result", "result": "pass", "command": null, "output_excerpt": null, "notes": null},
+      {"check_id": "SV-7", "description": "Approved upstream artifacts unchanged", "result": "pass", "command": null, "output_excerpt": null, "notes": null}
+    ],
+    "actions": ["<runtime>"],
+    "decisions": [{"decision": "<runtime: e.g. binding chosen>", "rationale": "<runtime>"}],
+    "revision": null,
+    "output_artifacts": [
+      {"path": "<task>/automation/AutomationGeneration.md", "operation": "created", "artifact_status": "completed", "artifact_version": "1.0.0", "sha256": "<runtime>", "summary": "<runtime>"}
+    ],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {"performed": true, "overall": "<runtime: pass | fail>", "checks": [{"check_id": "AG-V01", "description": "Prerequisites verified before any file was written", "result": "<runtime>", "notes": null}]},
+    "status": "completed",
+    "stop_reason": "STOP: automation generated and statically validated; automation-execution starts only when orchestration starts it.",
+    "approval_required": false,
+    "approval_key": null,
+    "approval_outcome": null,
+    "next_stage": {"stage_id": "automation-execution", "unlocked": true, "condition": "Generation completed and statically validated; the workflow defines no gate for automation-generation."},
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": "Generation only: no test was run against the application."
+  },
+  "revision_request": {
+    "schema_version": "1.6.0",
+    "event_type": "revision_request",
+    "stage_id": "automation-generation",
+    "stage_name": "Automation Generation",
+    "skill_name": "automation-generation",
+    "skill_version": "1.1.0",
+    "prompt_id": null,
+    "prompt_version": null,
+    "trigger": {"reason": "<runtime>", "initiated_by": "user", "user_message": "<runtime: verbatim, secrets redacted>"},
+    "mcp_used": {"used": false, "servers": [], "intentionally_not_used": [{"server": "playwright", "reason": "Revision request only."}]},
+    "status": "revision_requested",
+    "approval_required": false,
+    "approval_key": null,
+    "approval_outcome": null
+  }
+}

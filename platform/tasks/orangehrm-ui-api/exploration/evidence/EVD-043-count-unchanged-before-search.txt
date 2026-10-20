@@ -1,0 +1,15 @@
+Source: mcp__playwright__browser_find (text "Records Found"), verbatim tool result excerpt, captured after selecting Location "Texas R&D" and BEFORE clicking Search (2026-10-15, between 09:16:19Z and 09:16:26Z).
+MCP snapshot refs (ref=...) removed: they are session-scoped and meaningless later.
+
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        ...
+        - generic:
+          ...
+          - generic:
+            - button "Reset" [cursor=pointer]
+            - button "Search" [cursor=pointer]
+      - generic:
+        - generic: (130) Records Found

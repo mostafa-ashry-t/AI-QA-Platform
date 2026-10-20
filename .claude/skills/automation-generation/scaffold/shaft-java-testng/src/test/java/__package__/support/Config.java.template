@@ -1,0 +1,79 @@
+// TEMPLATE (automation-generation scaffold, binding shaft-java-testng)
+package {{base_package}}.support;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+
+/**
+ * Central configuration. Every value comes from an environment variable; only
+ * non-secret values have defaults. Credentials have no default.
+ */
+public final class Config {
+
+    private static final String RUN_ID = optional("QA_RUN_ID",
+            "local-" + LocalDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss")) + "Z");
+
+    private Config() {
+    }
+
+    public static String baseUrl() {
+        return optional("QA_BASE_URL", "{{base_url}}");
+    }
+
+    /** SHAFT browser name: chromium/chrome -> chrome; firefox; edge. */
+    public static String browser() {
+        String b = optional("QA_BROWSER", "chromium").toLowerCase();
+        return b.equals("chromium") ? "chrome" : b;
+    }
+
+    public static boolean headless() {
+        return !optional("QA_HEADLESS", "true").equalsIgnoreCase("false");
+    }
+
+    public static int timeoutMs() {
+        return Integer.parseInt(optional("QA_TIMEOUT_MS", "{{default_timeout_ms}}"));
+    }
+
+    public static String runId() {
+        return RUN_ID;
+    }
+
+    /** Evidence root for this framework and run: <artifacts>/<run-id>/{{binding_dir}} */
+    public static Path runDir() {
+        return Paths.get(optional("QA_ARTIFACTS_DIR", "{{default_artifacts_dir}}"), RUN_ID, "{{binding_dir}}");
+    }
+
+    /** Login user name (never logged). */
+    public static String username() {
+        return required("{{username_env_var}}");
+    }
+
+    /** Login password (never logged; type it with typeSecure). */
+    public static String password() {
+        return required("{{password_env_var}}");
+    }
+
+    static String required(String name) {
+        String value = System.getenv(name);
+        if (value == null || value.isEmpty()) {
+            throw new MissingConfigurationException(name);
+        }
+        return value;
+    }
+
+    static String optional(String name, String fallback) {
+        String value = System.getenv(name);
+        return value == null || value.trim().isEmpty() ? fallback : value.trim();
+    }
+
+    /** Missing configuration, distinguishable from an assertion failure. */
+    public static final class MissingConfigurationException extends IllegalStateException {
+        public MissingConfigurationException(String name) {
+            super("[CONFIGURATION] Missing required environment variable: " + name
+                    + ". Set it in the shell or the IDE run configuration; it is never stored in the project.");
+        }
+    }
+}

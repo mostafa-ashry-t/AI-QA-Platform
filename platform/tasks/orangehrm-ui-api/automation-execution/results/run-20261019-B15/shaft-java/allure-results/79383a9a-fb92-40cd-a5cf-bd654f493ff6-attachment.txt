@@ -1,0 +1,24 @@
+
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                        Starting Execution: '1 out of 1' test cases in the current suite                                        
+         Test Method: 'OrangeHRMPages.Directory.Directory_TC.TC054_verifyThatResetRestoresDefaultsAfterCombinedFilterAndEmployeeDetails'         
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m
+[ReportManager] Get  text "By.xpath: //span[contains(@class,'oxd-text--span')][contains(normalize-space(),'Found')]" @19-10-2026 09:57:41.0199 AM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @19-10-2026 09:57:42.0858 AM
+[ReportManager] Click "HR Manager" @19-10-2026 09:57:43.0627 AM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @19-10-2026 09:57:44.0378 AM
+[ReportManager] Click "Texas R&D" @19-10-2026 09:57:45.0266 AM
+[ReportManager] Get  text "By.xpath: //span[contains(@class,'oxd-text--span')][contains(normalize-space(),'Found')]" @19-10-2026 09:57:45.0944 AM
+[ReportManager] Click "Search" @19-10-2026 09:57:46.0708 AM
+[ReportManager] Get  text "By.xpath: //span[contains(@class,'oxd-text--span')][contains(normalize-space(),'Found')]" @19-10-2026 09:57:47.0998 AM
+[ReportManager] Click "By.xpath: (//div[contains(@class,'orangehrm-container')]//div[contains(concat(' ',normalize-space(@class),' '),' orangehrm-directory-card ')])[1]" @19-10-2026 09:57:48.0900 AM
+[ReportManager] Click "By.xpath: //div[contains(@class,'orangehrm-corporate-directory-sidebar')]//i[contains(@class,'bi-arrow-right')]" @19-10-2026 09:57:49.0649 AM
+[ReportManager] Get  text "By.xpath: //span[contains(@class,'oxd-text--span')][contains(normalize-space(),'Found')]" @19-10-2026 09:57:50.0546 AM
+[ReportManager] Click "Reset" @19-10-2026 09:57:51.0404 AM
+[ReportManager] Get  text "By.xpath: //span[contains(@class,'oxd-text--span')][contains(normalize-space(),'Found')]" @19-10-2026 09:57:53.0520 AM
+[ReportManager] Get  dom  property "Type for hints..." @19-10-2026 09:57:54.0154 AM
+[ReportManager] Get  text "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @19-10-2026 09:57:54.0763 AM
+[ReportManager] Get  text "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @19-10-2026 09:57:55.0424 AM
+[ReportManager] Get  text "By.xpath: //span[contains(@class,'oxd-text--span')][contains(normalize-space(),'Found')]" @19-10-2026 09:57:57.0198 AM
+[ReportManager] Get  text "By.xpath: //span[contains(@class,'oxd-text--span')][contains(normalize-space(),'Found')]" @19-10-2026 09:57:57.0837 AM

@@ -1,0 +1,39 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="8.755575">
+<testsuite name="TC-054.spec.ts" timestamp="2026-10-18T10:55:49.292Z" hostname="chromium" tests="1" failures="0" skipped="0" time="7.647" errors="0">
+<testcase name="TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset" classname="TC-054.spec.ts" time="7.647">
+<properties>
+<property name="case" value="TC-054">
+</property>
+</properties>
+<system-out>
+<![CDATA[2026-10-18T10:55:50.227Z [TC-054] Precondition: No authenticated session in the browser (fresh browser context, or logged out).
+2026-10-18T10:55:50.230Z [TC-054]   observed cookies in the fresh browser context = 0
+2026-10-18T10:55:50.230Z [TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001).
+2026-10-18T10:55:54.122Z [TC-054]   observed URL after opening the Directory URL = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+2026-10-18T10:55:55.273Z [TC-054]   observed URL after login = "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory"
+2026-10-18T10:55:55.288Z [TC-054] Tracing started (login step intentionally not traced: secrets).
+2026-10-18T10:55:55.649Z [TC-054]   observed unfiltered results header (for the DATA-012 condition) = "(106) Records Found"
+2026-10-18T10:55:55.825Z [TC-054]   observed DATA-012 pair (from the card of Diego Alvarez) = {"jobTitle":"Probation Trainee PLW1462","location":"New York Sales Office"}
+2026-10-18T10:55:55.825Z [TC-054] Step 2: Select the Job Title and the Location of the DATA-012 pair; click Search.
+2026-10-18T10:55:56.077Z [TC-054] Step 3: Wait until result cards are displayed; read the results header and note the filtered record count k ("(k) Records Found", or "(1) Record Found" when k is 1).
+2026-10-18T10:55:56.920Z [TC-054]   observed filtered results header = "(6) Records Found"
+2026-10-18T10:55:56.920Z [TC-054]   observed k = 6
+2026-10-18T10:55:56.920Z [TC-054] Step 4: Click the first result card; then click the panel's arrow icon.
+2026-10-18T10:55:56.993Z [TC-054]   observed detail panel opened for the first card = "Diego Alvarez"
+2026-10-18T10:55:57.057Z [TC-054]   observed detail panel after the arrow click = "not displayed"
+2026-10-18T10:55:57.066Z [TC-054] Step 5: Click Reset.
+2026-10-18T10:55:57.115Z [TC-054] Step 6: Wait until employee result cards are displayed, then read the results header.
+2026-10-18T10:55:57.434Z [TC-054]   observed results header changed after Reset within the timeout = true
+2026-10-18T10:55:57.481Z [TC-054]   observed state after Reset = {"header":"(106) Records Found","employeeName":"","jobTitle":"-- Select --","location":"-- Select --"}
+2026-10-18T10:55:57.484Z [TC-054]   observed N = 106
+2026-10-18T10:55:57.618Z [TC-054] Screenshot written: C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation-execution\results\run-20261018-A6\playwright-ts\TC-054\final.png
+2026-10-18T10:55:57.621Z [TC-054] Result: PASSED (status passed)
+
+[[ATTACHMENT|test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\attachments\final-png-f9cd8f0ccad1bd0fb63adfd54216a5dc5c12efbb.png]]
+
+[[ATTACHMENT|test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\attachments\steps-log-7c9da536a12f627c79efca0f7dd1cac5483ac6b2.log]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

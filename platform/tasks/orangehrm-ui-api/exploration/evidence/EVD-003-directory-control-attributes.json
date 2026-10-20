@@ -1,0 +1,115 @@
+{
+  "url": "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory",
+  "title": "OrangeHRM",
+  "formAttrs": {
+    "tag": "form",
+    "data-v-d5bfe35b": "",
+    "data-v-2ed6953e": "",
+    "class": "oxd-form",
+    "novalidate": "",
+    "text": "Employee Name\nJob Title\n-- Select --\nLocation\n-- Select --\nReset\nSearch"
+  },
+  "labels": [
+    {
+      "tag": "label",
+      "data-v-30ff22b1": "",
+      "data-v-957b4417": "",
+      "class": "oxd-label",
+      "text": "Employee Name"
+    },
+    {
+      "tag": "label",
+      "data-v-30ff22b1": "",
+      "data-v-957b4417": "",
+      "class": "oxd-label",
+      "text": "Job Title"
+    },
+    {
+      "tag": "label",
+      "data-v-30ff22b1": "",
+      "data-v-957b4417": "",
+      "class": "oxd-label",
+      "text": "Location"
+    }
+  ],
+  "inputs": [
+    {
+      "tag": "input",
+      "data-v-75e744cd": "",
+      "placeholder": "Type for hints...",
+      "style": "",
+      "text": ""
+    }
+  ],
+  "selectDivs": [
+    {
+      "tag": "div",
+      "data-v-67d2aedf": "",
+      "class": "oxd-select-text-input",
+      "tabindex": "0",
+      "text": "-- Select --"
+    },
+    {
+      "tag": "div",
+      "data-v-67d2aedf": "",
+      "class": "oxd-select-text-input",
+      "tabindex": "0",
+      "text": "-- Select --"
+    }
+  ],
+  "buttons": [
+    {
+      "tag": "button",
+      "data-v-10d463b7": "",
+      "data-v-2ed6953e": "",
+      "type": "reset",
+      "class": "oxd-button oxd-button--medium oxd-button--ghost",
+      "text": "Reset"
+    },
+    {
+      "tag": "button",
+      "data-v-10d463b7": "",
+      "data-v-2ed6953e": "",
+      "type": "submit",
+      "class": "oxd-button oxd-button--medium oxd-button--secondary orangehrm-left-space",
+      "text": "Search"
+    }
+  ],
+  "toggle": [
+    {
+      "tag": "button",
+      "data-v-f5c763eb": "",
+      "data-v-b4b62742": "",
+      "class": "oxd-icon-button",
+      "type": "button",
+      "text": ""
+    }
+  ],
+  "recordsText": [
+    {
+      "tag": "span",
+      "data-v-7b563373": "",
+      "data-v-5a621acd": "",
+      "class": "oxd-text oxd-text--span",
+      "text": "(130) Records Found"
+    }
+  ],
+  "cardCount": 14,
+  "cardSample": [
+    {
+      "outer": "<div data-v-8a31f039=\"\" data-v-29a325b3=\"\" data-v-2ed6953e=\"\" class=\"oxd-sheet oxd-sheet--rounded oxd-sheet--white orangehrm-directory-card\"><div data-v-29a325b3=\"\" class=\"orangehrm-directory-card-top\" style=\"display: none;\"><i data-v-bddebfba=\"\" data-v-29a325b3=\"\" class=\"oxd-icon bi-arrow-right\"></i></div><p data-v-7b563373=\"\" data-v-29a325b3=\"\" class=\"oxd-text oxd-text--p orangehrm-directory-card-header --break-words\">yedghjb1 ru84 90jsnd </p><div data-v-4febd1f8=\"\" data-v-29a325b3=\"\" class=\"orangehrm-profile-picture\"><img data-v-4febd1f8=\"\" src=\"/web/index.php/pim/viewPhoto/empNumber/136\" alt=\"Profile Picture\" class=\"orangehrm-profile-picture-img\"></div><p data-v-7b563373=\"\" data-v-29a325b3=\"\" class=\"oxd-text oxd-text--p orangehrm-directory-card-subtitle --break-words\" style=\"display: none;\"></p><div data-v-29a325b3=\"\" class=\"orangehrm-directory-card-body\" style=\"display: none;\"><i data-v-bddebfba=\"\" data-v-29a325b3=\"\" class=\"oxd-icon bi-geo-alt-fill orangehrm-directory-card-icon\"></i><div data-v-29a325b3=\"\"><p data-v-7b563373=\"\" data-v-29a325b3=\"\" class=\"oxd-text oxd-text--p orangehrm-directory-card-description --break-words\" style=\"display: none;\"></p><p data-v-7b563373=\"\" data-v-29a325b3=\"\" class=\"oxd-text oxd-text--p orangehrm-directory-card-description --break-words\" style=\"display: none;\"></p></div></div></div>"
+    }
+  ],
+  "scrollContainer": [
+    {
+      "cls": "orangehrm-corporate-directory",
+      "scrollH": 650,
+      "clientH": 650
+    },
+    {
+      "cls": "orangehrm-container",
+      "scrollH": 600,
+      "clientH": 528
+    }
+  ]
+}

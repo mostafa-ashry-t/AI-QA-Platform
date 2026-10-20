@@ -1,0 +1,9 @@
+{
+  "enabledMcpjsonServers": ["playwright"],
+  "permissions": {
+    "deny": [
+      "Edit(platform/templates/**)",
+      "Write(platform/templates/**)"
+    ]
+  }
+}

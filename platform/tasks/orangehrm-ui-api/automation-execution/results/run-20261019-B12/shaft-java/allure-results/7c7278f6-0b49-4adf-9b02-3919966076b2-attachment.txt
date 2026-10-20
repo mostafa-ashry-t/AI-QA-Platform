@@ -1,0 +1,11 @@
+
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                        Starting Execution: '1 out of 1' test cases in the current suite                                        
+         Test Method: 'OrangeHRMPages.Directory.Directory_TC.TC054_verifyThatResetRestoresDefaultsAfterCombinedFilterAndEmployeeDetails'         
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m
+[ReportManager] Get  text "By.xpath: //span[contains(@class,'oxd-text--span')][contains(normalize-space(),'Found')]" @19-10-2026 09:22:29.0235 AM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @19-10-2026 09:22:30.0636 AM
+[ReportManager] Click "HR Manager" @19-10-2026 09:22:31.0381 AM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @19-10-2026 09:22:32.0156 AM
+[ReportManager] Click "Texas R&D" @19-10-2026 09:23:02.0202 AM

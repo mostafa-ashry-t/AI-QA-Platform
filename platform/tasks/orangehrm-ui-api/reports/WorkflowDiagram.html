@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>AI QA Platform — Workflow &amp; Sequence Diagram</title>
+<style>
+:root{--bg:#f7f8fa;--surface:#ffffff;--text:#1d2330;--muted:#5b6475;--border:#d6dbe3;--ok:#1f7a4d;--ok-bg:#e8f5ee;--run:#2a5db0;--run-bg:#eaf1fc;
+--cond:#a15c00;--cond-bg:#fff4e2;--fail:#b42318;--fail-bg:#fdecea;--fix:#a15c00;--pass:#1f7a4d;--line:#7a8496;--phase:#eef1f5;--code-bg:#f0f2f5;--pend:#6b4fa0}
+@media (prefers-color-scheme: dark){:root{--bg:#14171c;--surface:#1c2027;--text:#e6e9ee;--muted:#a3abb8;--border:#343a45;--ok:#5fcf95;--ok-bg:#16301f;--run:#7fa8ec;--run-bg:#1a2639;
+--cond:#f0b45a;--cond-bg:#33280f;--fail:#ff8a7d;--fail-bg:#3a1a17;--fix:#f0b45a;--pass:#5fcf95;--line:#8a93a3;--phase:#232831;--code-bg:#262b33;--pend:#b9a2ea}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+main{max-width:1280px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:1.65rem;line-height:1.25;margin:0 0 6px}h2{font-size:1.25rem;margin:36px 0 8px}h3{font-size:1rem;margin:18px 0 6px}
+p,li{margin:6px 0 10px;overflow-wrap:anywhere}.sub{color:var(--muted);margin:0 0 18px}
+code{font-family:Consolas,"Cascadia Mono",Menlo,monospace;font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+a{color:var(--run)}nav.toc{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.9rem;margin:0 0 8px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin:12px 0}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 18px;margin:0}.meta div{min-width:0}
+.meta dt{font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}.meta dd{margin:0;overflow-wrap:anywhere}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:8px}
+.scroll svg{display:block}.hint{font-size:.8rem;color:var(--muted);margin:4px 2px 0}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:10px 0 4px;padding:0;list-style:none;font-size:.85rem}.legend li{display:flex;align-items:center;gap:6px;margin:0}
+.sw{display:inline-block;width:26px;height:14px;border-radius:4px;border:2px solid}.sw.ok{background:var(--ok-bg);border-color:var(--ok)}
+.sw.run{background:var(--run-bg);border-color:var(--run)}.sw.cond{background:var(--cond-bg);border-color:var(--cond);border-style:dashed}
+.ln{display:inline-block;width:30px;height:0;border-top:2px solid var(--line)}.ln.ret{border-top-style:dashed}
+.ln.fail{border-color:var(--fail)}.ln.fix{border-color:var(--fix)}.ln.pass{border-color:var(--pass)}.ln.pend{border-color:var(--pend);border-top-style:dotted}
+.ln.alt{border-top:2px dashed var(--run)}
+.callout{border-left:4px solid var(--run);background:var(--run-bg);padding:10px 12px;border-radius:6px}
+.callout.warn{border-color:var(--cond);background:var(--cond-bg)}.callout.ok{border-color:var(--ok);background:var(--ok-bg)}
+.tbl{overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:var(--surface);margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.88rem}th,td{padding:7px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{background:var(--phase);white-space:nowrap}tr:last-child td{border-bottom:0}
+.pill{display:inline-block;padding:1px 8px;border-radius:999px;font-size:.8rem;font-weight:600;white-space:nowrap}
+.pill.ok{color:var(--ok);background:var(--ok-bg)}.pill.fail{color:var(--fail);background:var(--fail-bg)}.pill.warn{color:var(--cond);background:var(--cond-bg)}
+ol.flow{padding-left:22px}footer{margin-top:36px;color:var(--muted);font-size:.82rem}
+.diag text{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;fill:var(--text)}
+.panel{fill:none;stroke:var(--border);stroke-width:1.5;stroke-dasharray:4 4}
+.box-ok{fill:var(--ok-bg);stroke:var(--ok);stroke-width:2}.box-run{fill:var(--run-bg);stroke:var(--run);stroke-width:2}
+.box-cond{fill:var(--cond-bg);stroke:var(--cond);stroke-width:2;stroke-dasharray:7 5}.box-plain{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.pill-ok{fill:var(--ok)}.pill-run{fill:var(--run)}.pill-cond{fill:var(--cond)}
+.diag .pillt{fill:var(--surface);font-size:11px;font-weight:700;font-family:Consolas,"Cascadia Mono",Menlo,monospace}.diag .pillt2{fill:var(--surface);font-size:11px}
+.num{fill:var(--surface);stroke:var(--line);stroke-width:1.5}.diag .numt{font-size:12px;font-weight:700}
+.diag .st-title{font-size:14px;font-weight:700}.diag .st-skill{font-size:10.5px;fill:var(--muted)}.diag .st-lbl{font-size:9.5px;letter-spacing:.06em;fill:var(--muted)}
+.diag .st-art{font-size:11px}.diag .st-path{font-size:12px;font-weight:700;font-family:Consolas,"Cascadia Mono",Menlo,monospace}
+.diag .st-stat{font-size:11px}.diag .st-stat.b{font-weight:700}.sep{stroke:var(--border);stroke-width:1}
+.flow{stroke:var(--line);stroke-width:2}.flow-alt{stroke:var(--run);stroke-width:1.6;stroke-dasharray:6 4}.flow-faint{stroke:var(--line);stroke-width:1.2;stroke-dasharray:2 4}
+.ahead{fill:var(--line)}.ahead-alt{fill:var(--run)}
+.diag .rowlbl{font-size:12px;font-weight:700;fill:var(--muted);letter-spacing:.03em}.diag .note{font-size:11px;fill:var(--muted);font-style:italic}
+.actor{fill:var(--surface);stroke:var(--line);stroke-width:1.5}.diag .actort{font-size:12.5px;font-weight:700}
+.diag .actors{font-size:10px;fill:var(--muted);font-family:Consolas,"Cascadia Mono",Menlo,monospace}
+.life{stroke:var(--line);stroke-width:1;stroke-dasharray:4 4;opacity:.7}.phase{fill:var(--phase)}.diag .phaset{font-size:11.5px;font-weight:700;fill:var(--muted)}
+.m-call{stroke:var(--line);stroke-width:1.6}.m-call-h{fill:var(--line)}.m-ret{stroke:var(--line);stroke-width:1.4;stroke-dasharray:5 4}.m-ret-h{fill:var(--line)}
+.m-fail{stroke:var(--fail);stroke-width:2;stroke-dasharray:5 4}.m-fail-h{fill:var(--fail)}.m-fix{stroke:var(--fix);stroke-width:2}.m-fix-h{fill:var(--fix)}
+.m-pass{stroke:var(--pass);stroke-width:2;stroke-dasharray:5 4}.m-pass-h{fill:var(--pass)}.m-pend{stroke:var(--pend);stroke-width:2;stroke-dasharray:2 4}.m-pend-h{fill:var(--pend)}
+.diag .mt{font-size:11.5px}.diag .mt-fail{fill:var(--fail);font-weight:700}.diag .mt-fix{fill:var(--fix);font-weight:700}.diag .mt-pass{fill:var(--pass);font-weight:700}
+.diag .mt-pend{fill:var(--pend);font-weight:700}
+@media (max-width:600px){h1{font-size:1.35rem}main{padding:16px 16px 40px}}
+</style>
+</head>
+<body>
+<main>
+<h1>AI QA Platform — Workflow &amp; Sequence Diagram</h1>
+<p class="sub">Reusable AI-assisted QA platform · first validation task <code>orangehrm-ui-api</code> · workflow run RUN-001</p>
+<nav class="toc" aria-label="Contents"><a href="#arch">0. Reusable architecture</a><a href="#workflow">1. Workflow</a><a href="#milestone">2. Automation sequence</a><a href="#runs">Runs and fixes</a><a href="#tc054">3. TC-054 sequence</a></nav>
+
+<div class="card"><dl class="meta">
+<div><dt>Workflow</dt><dd><code>default-qa-workflow</code> v0.11.0 (10 stages)</dd></div>
+<div><dt>Skills (registry)</dt><dd>9 implemented · reporting planned</dd></div>
+<div><dt>Test cases</dt><dd>58 (TestCases.md v1.4.0, approved EVT-0037)</dd></div>
+<div><dt>Manual execution</dt><dd>40 PASS · 0 FAIL · 0 BLOCKED · 18 Exploratory observed</dd></div>
+<div><dt>Automation (TC-054)</dt><dd>22 runs · Playwright 5/7 passed (latest A7) · SHAFT 11/15 passed (latest B15)</dd></div>
+<div><dt>Fixes</dt><dd>6 (E-001, H-001 – H-005) · 0 assertions changed · 0 application defects</dd></div>
+<div><dt>SHAFT code</dt><dd>AutomationGeneration.md v1.3.0 (+ H-004, H-005)</dd></div>
+<div><dt>Journal</dt><dd>62 events, EVT-0001 – EVT-0062</dd></div>
+<div><dt>IntelliJ execution</dt><dd>Pending — not verified (no IDE result provided)</dd></div>
+</dl></div>
+
+<h2 id="arch">0. Reusable architecture — what is shared and what belongs to one task</h2>
+<p>The platform is not a test project for one application. Everything on the left is project-agnostic and reused by every task; everything specific to OrangeHRM lives in the task folder on the right, starting from <code>context/TaskContext.md</code>. A new project is started by copying the template into <code>platform/tasks/&lt;task-name&gt;/</code> and filling TaskContext.md — no skill, prompt, workflow or schema changes.</p>
+<div class="scroll" tabindex="0" aria-label="Architecture diagram, scrollable"><svg class="diag" viewBox="0 0 1180 600" width="1180" height="600" role="img" aria-labelledby="ar-t ar-d">
+<title id="ar-t">Reusable architecture of the AI QA Platform</title>
+<desc id="ar-d">Project-agnostic platform assets on the left are copied or read by every task; the task instance on the right holds everything project-specific.</desc>
+<defs><marker id="arh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ahead"/></marker></defs>
+<rect x="12" y="22" width="516" height="508" rx="12" class="panel"/>
+<text x="20" y="48" class="rowlbl">PLATFORM — reusable, project-agnostic</text>
+<rect x="692" y="22" width="476" height="508" rx="12" class="panel"/>
+<text x="700" y="48" class="rowlbl">TASK INSTANCE — platform/tasks/orangehrm-ui-api/</text>
+<rect x="20" y="70" width="500" height="46" rx="8" class="box-run"/>
+<text x="32" y="89" class="st-path">CLAUDE.md</text><text x="32" y="106" class="st-art">14 platform principles, stage gates, secrets and tooling rules</text>
+<rect x="20" y="126" width="500" height="46" rx="8" class="box-run"/>
+<text x="32" y="145" class="st-path">platform/templates/task-template/</text><text x="32" y="162" class="st-art">immutable task skeleton (12 folders, placeholder artifacts)</text>
+<rect x="20" y="182" width="500" height="46" rx="8" class="box-run"/>
+<text x="32" y="201" class="st-path">platform/workflows/default-qa-workflow.yaml</text><text x="32" y="218" class="st-art">v0.11.0: 10 stages, dependencies, gates, approval policy</text>
+<rect x="20" y="238" width="500" height="46" rx="8" class="box-run"/>
+<text x="32" y="257" class="st-path">platform/registry/skills.yaml</text><text x="32" y="274" class="st-art">skill catalog: 9 implemented, 1 planned (reporting)</text>
+<rect x="20" y="294" width="500" height="46" rx="8" class="box-run"/>
+<text x="32" y="313" class="st-path">.claude/skills/&lt;skill&gt;/SKILL.md</text><text x="32" y="330" class="st-art">9 skills: rules, artifact template, journal-event template</text>
+<rect x="20" y="350" width="500" height="46" rx="8" class="box-run"/>
+<text x="32" y="369" class="st-path">.claude/prompts/&lt;skill&gt;.md</text><text x="32" y="386" class="st-art">9 versioned prompts, snapshotted in journal/prompts.json</text>
+<rect x="20" y="406" width="500" height="46" rx="8" class="box-run"/>
+<text x="32" y="425" class="st-path">platform/schemas/</text><text x="32" y="442" class="st-art">4 JSON schemas: journal event, prompt record, workflow run, metrics</text>
+<rect x="20" y="462" width="500" height="46" rx="8" class="box-run"/>
+<text x="32" y="481" class="st-path">platform/knowledge-base/</text><text x="32" y="498" class="st-art">reusable QA knowledge (currently empty)</text>
+<rect x="700" y="70" width="460" height="46" rx="8" class="box-ok"/>
+<text x="712" y="89" class="st-path">context/TaskContext.md</text><text x="712" y="106" class="st-art">identity + verbatim intake — the only project-specific input</text>
+<rect x="700" y="126" width="460" height="46" rx="8" class="box-plain"/>
+<text x="712" y="145" class="st-path">journal/workflow-run.json</text><text x="712" y="162" class="st-art">RUN-001, owned by orchestration; skills only read it</text>
+<rect x="700" y="182" width="460" height="46" rx="8" class="box-plain"/>
+<text x="712" y="201" class="st-path">prd/ · context/ProjectContext.md</text><text x="712" y="218" class="st-art">stages 1–2 (documentation only)</text>
+<rect x="700" y="238" width="460" height="46" rx="8" class="box-plain"/>
+<text x="712" y="257" class="st-path">exploration/ · test-design/ · test-review/</text><text x="712" y="274" class="st-art">stages 3–5 (Playwright MCP only in exploration)</text>
+<rect x="700" y="294" width="460" height="46" rx="8" class="box-plain"/>
+<text x="712" y="313" class="st-path">execution/ · bugs/</text><text x="712" y="330" class="st-art">stage 6: manual execution, Suspected bug reports</text>
+<rect x="700" y="350" width="460" height="46" rx="8" class="box-plain"/>
+<text x="712" y="369" class="st-path">automation/ · automation-execution/ · self-healing/</text><text x="712" y="386" class="st-art">stages 7–9: two framework bindings, runs, fixes</text>
+<rect x="700" y="406" width="460" height="46" rx="8" class="box-plain"/>
+<text x="712" y="425" class="st-path">reports/</text><text x="712" y="442" class="st-art">stage 10: reporting (skill planned)</text>
+<rect x="700" y="462" width="460" height="46" rx="8" class="box-cond"/>
+<text x="712" y="481" class="st-path">journal/execution-log.json · prompts.json</text><text x="712" y="498" class="st-art">62 events (EVT-0001 – EVT-0062), append-only</text>
+<path d="M520,149 C590,149 630,93 698,93" class="flow" fill="none" marker-end="url(#arh)"/>
+<circle cx="610.0" cy="121.0" r="10" class="num"/><text x="610.0" y="125.0" text-anchor="middle" class="numt">1</text>
+<path d="M520,317 C590,317 630,261 698,261" class="flow" fill="none" marker-end="url(#arh)"/>
+<circle cx="610.0" cy="289.0" r="10" class="num"/><text x="610.0" y="293.0" text-anchor="middle" class="numt">2</text>
+<path d="M520,205 C590,205 630,205 698,205" class="flow" fill="none" marker-end="url(#arh)"/>
+<circle cx="610.0" cy="205.0" r="10" class="num"/><text x="610.0" y="209.0" text-anchor="middle" class="numt">3</text>
+<path d="M520,373 C590,373 630,485 698,485" class="flow" fill="none" marker-end="url(#arh)"/>
+<circle cx="610.0" cy="429.0" r="10" class="num"/><text x="610.0" y="433.0" text-anchor="middle" class="numt">4</text>
+<path d="M520,429 C590,429 630,485 698,485" class="flow" fill="none" marker-end="url(#arh)"/>
+<circle cx="610.0" cy="457.0" r="10" class="num"/><text x="610.0" y="461.0" text-anchor="middle" class="numt">5</text>
+<text x="20" y="548" class="note">① copy the template at task creation (orchestration) · ② each skill reads approved inputs and writes only its own stage folder · ③ the workflow orders the stages; gates need the exact approval key, bound to the artifact hash</text>
+<text x="20" y="564" class="note">④ prompts are versioned and snapshotted into prompts.json · ⑤ every significant action is appended to the journal, validated against the schemas; CLAUDE.md rules apply to every stage</text>
+</svg></div>
+<p class="hint">On narrow screens, scroll the diagram sideways.</p>
+<h3>How one stage runs (common to every skill)</h3>
+<ol class="flow">
+<li><strong>Prerequisites:</strong> the skill checks that every upstream approval it depends on exists in the journal and is still current (artifact SHA-256 unchanged, no later re-run). If not, it journals a <code>blocked</code> event and stops.</li>
+<li><strong>Inputs:</strong> only approved artifacts of this task, TaskContext.md identity, and the active <code>workflow_run_id</code> (read only).</li>
+<li><strong>Output:</strong> exactly its own artifact(s) in its own stage folder, from the skill's template; revisions update the same file in place.</li>
+<li><strong>Self-validation</strong> against the skill's rules, then a journal event (schema-validated) and the prompt snapshot in <code>prompts.json</code>.</li>
+<li><strong>Gate:</strong> gated stages stop. Only the exact standalone key (e.g. <code>TEST_REVIEW_APPROVED</code>) unlocks the next stage; it is journaled as an <code>approval_decision</code> bound to the artifact's hash, and any later edit makes it stale.</li>
+</ol>
+<div class="tbl"><table><thead><tr><th>Platform asset</th><th>Role</th></tr></thead><tbody><tr><td><code>CLAUDE.md</code></td><td>14 platform principles, stage gates, secrets and tooling rules</td></tr><tr><td><code>platform/templates/task-template/</code></td><td>immutable task skeleton (12 folders, placeholder artifacts)</td></tr><tr><td><code>platform/workflows/default-qa-workflow.yaml</code></td><td>v0.11.0: 10 stages, dependencies, gates, approval policy</td></tr><tr><td><code>platform/registry/skills.yaml</code></td><td>skill catalog: 9 implemented, 1 planned (reporting)</td></tr><tr><td><code>.claude/skills/&lt;skill&gt;/SKILL.md</code></td><td>9 skills: rules, artifact template, journal-event template</td></tr><tr><td><code>.claude/prompts/&lt;skill&gt;.md</code></td><td>9 versioned prompts, snapshotted in journal/prompts.json</td></tr><tr><td><code>platform/schemas/</code></td><td>4 JSON schemas: journal event, prompt record, workflow run, metrics</td></tr><tr><td><code>platform/knowledge-base/</code></td><td>reusable QA knowledge (currently empty)</td></tr></tbody></table></div>
+<div class="tbl"><table><thead><tr><th>Task-instance path</th><th>Role</th></tr></thead><tbody><tr><td><code>context/TaskContext.md</code></td><td>identity + verbatim intake — the only project-specific input</td></tr><tr><td><code>journal/workflow-run.json</code></td><td>RUN-001, owned by orchestration; skills only read it</td></tr><tr><td><code>prd/ · context/ProjectContext.md</code></td><td>stages 1–2 (documentation only)</td></tr><tr><td><code>exploration/ · test-design/ · test-review/</code></td><td>stages 3–5 (Playwright MCP only in exploration)</td></tr><tr><td><code>execution/ · bugs/</code></td><td>stage 6: manual execution, Suspected bug reports</td></tr><tr><td><code>automation/ · automation-execution/ · self-healing/</code></td><td>stages 7–9: two framework bindings, runs, fixes</td></tr><tr><td><code>reports/</code></td><td>stage 10: reporting (skill planned)</td></tr><tr><td><code>journal/execution-log.json · prompts.json</code></td><td>62 events (EVT-0001 – EVT-0062), append-only</td></tr></tbody></table></div>
+<p class="callout warn">Status notes: the <code>reporting</code> stage has no skill yet (registry: planned); its outputs for this task were produced by scripted generators and journaled as <code>reporting</code> events. <code>platform/knowledge-base/</code> is empty. The "Current Status" paragraph in <code>CLAUDE.md</code> still lists six implemented skills; the registry and the workflow file list 9 (automation-generation, automation-execution and self-healing were added later).</p>
+
+<h2 id="workflow">1. Workflow — stages, gates and status</h2>
+<p>Stage order and gates come from <a href="../../../workflows/default-qa-workflow.yaml"><code>platform/workflows/default-qa-workflow.yaml</code></a>; approval keys from <a href="../../../../CLAUDE.md"><code>CLAUDE.md</code></a> (Stage Gates); skill versions and status from <a href="../../../registry/skills.yaml"><code>platform/registry/skills.yaml</code></a>; event IDs for this task from <a href="../journal/execution-log.json"><code>journal/execution-log.json</code></a>. A gate opens only on the exact standalone key; general approval does not count.</p>
+<ul class="legend" aria-label="Workflow legend"><li><span class="sw ok"></span>Gated stage, approved for this task (pill = exact approval key · accepting journal event)</li>
+<li><span class="sw run"></span>Stage without an approval key, performed for this task (pill = journal events)</li><li><span class="sw cond"></span>Conditional stage, triggered for this task</li>
+<li><span class="ln"></span>Stage order</li><li><span class="ln alt"></span>Additional dependency / loop-back</li></ul>
+<div class="scroll" tabindex="0" aria-label="Workflow diagram, scrollable"><svg class="diag" viewBox="0 0 1254 694" width="1254" height="694" role="img" aria-labelledby="wf-t wf-d">
+<title id="wf-t">Workflow of the AI QA Platform stages</title>
+<desc id="wf-d">Ten stages from prd-generation to reporting, with approval gates, artifacts and the status of task orangehrm-ui-api.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ahead"/></marker><marker id="ahd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="ahead-alt"/></marker></defs>
+<text x="20" y="30" class="rowlbl">Documentation and design stages (1–5)</text>
+<text x="20" y="350" class="rowlbl">Execution, automation and reporting stages (6–10)</text>
+<g class="stage"><rect x="20" y="56" width="224" height="168" rx="10" class="box-ok"/>
+<circle cx="40" cy="76" r="11" class="num"/><text x="40" y="80" class="numt" text-anchor="middle">1</text>
+<text x="58" y="81" class="st-title">prd-generation</text><text x="32" y="104" class="st-skill">skill v1.0.1 · registry: implemented</text>
+<text x="32" y="124" class="st-lbl">ARTIFACT</text>
+<text x="32" y="140" class="st-art">prd/PRD.md</text>
+<line x1="32" y1="174" x2="232" y2="174" class="sep"/>
+<text x="32" y="190" class="st-stat b">Approved · PRD.md v1.2.0</text>
+<text x="32" y="204" class="st-stat">1 reply not accepted (EVT-0006)</text>
+<rect x="20" y="232" width="224" height="38" rx="10" class="pill-ok"/>
+<text x="132.0" y="248" text-anchor="middle" class="pillt">PRD_APPROVED</text><text x="132.0" y="263" text-anchor="middle" class="pillt2">EVT-0007</text></g>
+<line x1="244" y1="140.0" x2="258" y2="140.0" class="flow" marker-end="url(#ah)"/>
+<g class="stage"><rect x="260" y="56" width="224" height="168" rx="10" class="box-ok"/>
+<circle cx="280" cy="76" r="11" class="num"/><text x="280" y="80" class="numt" text-anchor="middle">2</text>
+<text x="298" y="81" class="st-title">project-context</text><text x="272" y="104" class="st-skill">skill v1.1.1 · registry: implemented</text>
+<text x="272" y="124" class="st-lbl">ARTIFACT</text>
+<text x="272" y="140" class="st-art">context/ProjectContext.md</text>
+<line x1="272" y1="174" x2="472" y2="174" class="sep"/>
+<text x="272" y="190" class="st-stat b">Approved · revision 1</text>
+<rect x="260" y="232" width="224" height="38" rx="10" class="pill-ok"/>
+<text x="372.0" y="248" text-anchor="middle" class="pillt">PROJECT_CONTEXT_APPROVED</text><text x="372.0" y="263" text-anchor="middle" class="pillt2">EVT-0009</text></g>
+<line x1="484" y1="140.0" x2="498" y2="140.0" class="flow" marker-end="url(#ah)"/>
+<g class="stage"><rect x="500" y="56" width="224" height="168" rx="10" class="box-ok"/>
+<circle cx="520" cy="76" r="11" class="num"/><text x="520" y="80" class="numt" text-anchor="middle">3</text>
+<text x="538" y="81" class="st-title">exploration</text><text x="512" y="104" class="st-skill">skill v1.0.0 · registry: implemented</text>
+<text x="512" y="124" class="st-lbl">ARTIFACT</text>
+<text x="512" y="140" class="st-art">exploration/ExplorationReport.md</text>
+<text x="512" y="155" class="st-art">exploration/evidence/</text>
+<line x1="512" y1="174" x2="712" y2="174" class="sep"/>
+<text x="512" y="190" class="st-stat b">Approved · v1.1.0</text>
+<text x="512" y="204" class="st-stat">after 2 failed runs (EVT-0010/11)</text>
+<rect x="500" y="232" width="224" height="38" rx="10" class="pill-ok"/>
+<text x="612.0" y="248" text-anchor="middle" class="pillt">EXPLORATION_APPROVED</text><text x="612.0" y="263" text-anchor="middle" class="pillt2">EVT-0015</text></g>
+<line x1="724" y1="140.0" x2="738" y2="140.0" class="flow" marker-end="url(#ah)"/>
+<g class="stage"><rect x="740" y="56" width="224" height="168" rx="10" class="box-ok"/>
+<circle cx="760" cy="76" r="11" class="num"/><text x="760" y="80" class="numt" text-anchor="middle">4</text>
+<text x="778" y="81" class="st-title">test-design</text><text x="752" y="104" class="st-skill">skill v1.0.1 · registry: implemented</text>
+<text x="752" y="124" class="st-lbl">ARTIFACT</text>
+<text x="752" y="140" class="st-art">test-design/TestCases.md (+ .csv)</text>
+<line x1="752" y1="174" x2="952" y2="174" class="sep"/>
+<text x="752" y="190" class="st-stat b">Approved · v1.4.0 · 58 cases</text>
+<text x="752" y="204" class="st-stat">Earlier approvals: EVT-0019/23/29</text>
+<rect x="740" y="232" width="224" height="38" rx="10" class="pill-ok"/>
+<text x="852.0" y="248" text-anchor="middle" class="pillt">TEST_DESIGN_APPROVED</text><text x="852.0" y="263" text-anchor="middle" class="pillt2">EVT-0037</text></g>
+<line x1="964" y1="140.0" x2="978" y2="140.0" class="flow" marker-end="url(#ah)"/>
+<g class="stage"><rect x="980" y="56" width="224" height="168" rx="10" class="box-ok"/>
+<circle cx="1000" cy="76" r="11" class="num"/><text x="1000" y="80" class="numt" text-anchor="middle">5</text>
+<text x="1018" y="81" class="st-title">test-review</text><text x="992" y="104" class="st-skill">skill v1.0.0 · registry: implemented · ADR-001</text>
+<text x="992" y="124" class="st-lbl">ARTIFACT</text>
+<text x="992" y="140" class="st-art">test-review/TestReview.md</text>
+<line x1="992" y1="174" x2="1192" y2="174" class="sep"/>
+<text x="992" y="190" class="st-stat b">Approved · v1.3.0</text>
+<text x="992" y="204" class="st-stat">Bound to TestCases v1.4.0 hash</text>
+<rect x="980" y="232" width="224" height="38" rx="10" class="pill-ok"/>
+<text x="1092.0" y="248" text-anchor="middle" class="pillt">TEST_REVIEW_APPROVED</text><text x="1092.0" y="263" text-anchor="middle" class="pillt2">EVT-0039</text></g>
+<g class="stage"><rect x="20" y="372" width="224" height="168" rx="10" class="box-ok"/>
+<circle cx="40" cy="392" r="11" class="num"/><text x="40" y="396" class="numt" text-anchor="middle">6</text>
+<text x="58" y="397" class="st-title">manual-execution</text><text x="32" y="420" class="st-skill">skill v1.1.0 · registry: implemented</text>
+<text x="32" y="440" class="st-lbl">ARTIFACT</text>
+<text x="32" y="456" class="st-art">execution/ExecutionReport.md + .html</text>
+<text x="32" y="471" class="st-art">bugs/BugReports.md</text>
+<line x1="32" y1="490" x2="232" y2="490" class="sep"/>
+<text x="32" y="506" class="st-stat b">Approved · v1.2.0</text>
+<text x="32" y="520" class="st-stat">40 PASS · 0 FAIL · 0 BLOCKED</text>
+<text x="32" y="534" class="st-stat">18 Exploratory · 5 Suspected bugs</text>
+<rect x="20" y="548" width="224" height="38" rx="10" class="pill-ok"/>
+<text x="132.0" y="564" text-anchor="middle" class="pillt">MANUAL_EXECUTION_APPROVED</text><text x="132.0" y="579" text-anchor="middle" class="pillt2">EVT-0043</text></g>
+<line x1="244" y1="456.0" x2="258" y2="456.0" class="flow" marker-end="url(#ah)"/>
+<g class="stage"><rect x="260" y="372" width="224" height="168" rx="10" class="box-run"/>
+<circle cx="280" cy="392" r="11" class="num"/><text x="280" y="396" class="numt" text-anchor="middle">7</text>
+<text x="298" y="397" class="st-title">automation-generation</text><text x="272" y="420" class="st-skill">skill v1.1.0 · registry: implemented</text>
+<text x="272" y="440" class="st-lbl">ARTIFACT</text>
+<text x="272" y="456" class="st-art">automation/AutomationGeneration.md</text>
+<text x="272" y="471" class="st-art">+ playwright-ts/ and shaft-java/</text>
+<line x1="272" y1="490" x2="472" y2="490" class="sep"/>
+<text x="272" y="506" class="st-stat b">Report v1.3.0 · TC-054 only</text>
+<text x="272" y="520" class="st-stat">SHAFT revised 1.1.0 → 1.3.0</text>
+<rect x="260" y="548" width="224" height="38" rx="10" class="pill-run"/>
+<text x="372.0" y="564" text-anchor="middle" class="pillt">No approval key</text><text x="372.0" y="579" text-anchor="middle" class="pillt2">EVT 0044, 0045, 0052, 0054, 0056</text></g>
+<line x1="484" y1="456.0" x2="498" y2="456.0" class="flow" marker-end="url(#ah)"/>
+<g class="stage"><rect x="500" y="372" width="224" height="168" rx="10" class="box-run"/>
+<circle cx="520" cy="392" r="11" class="num"/><text x="520" y="396" class="numt" text-anchor="middle">8</text>
+<text x="538" y="397" class="st-title">automation-execution</text><text x="512" y="420" class="st-skill">skill v1.0.0 · registry: implemented</text>
+<text x="512" y="440" class="st-lbl">ARTIFACT</text>
+<text x="512" y="456" class="st-art">automation-execution/results/</text>
+<text x="512" y="471" class="st-art">&lt;fw&gt;/automation-report.html</text>
+<line x1="512" y1="490" x2="712" y2="490" class="sep"/>
+<text x="512" y="506" class="st-stat b">22 runs (A1–A7, B1–B15)</text>
+<text x="512" y="520" class="st-stat">latest A7 and B15: passed</text>
+<rect x="500" y="548" width="224" height="38" rx="10" class="pill-run"/>
+<text x="612.0" y="564" text-anchor="middle" class="pillt">No gate</text><text x="612.0" y="579" text-anchor="middle" class="pillt2">EVT 0046, 0047, 0050, 0051, 0053, …</text></g>
+<line x1="724" y1="456.0" x2="738" y2="456.0" class="flow" marker-end="url(#ah)"/>
+<g class="stage"><rect x="740" y="372" width="224" height="168" rx="10" class="box-cond"/>
+<circle cx="760" cy="392" r="11" class="num"/><text x="760" y="396" class="numt" text-anchor="middle">9</text>
+<text x="778" y="397" class="st-title">self-healing</text><text x="752" y="420" class="st-skill">skill v1.0.0 · registry: implemented · conditional</text>
+<text x="752" y="440" class="st-lbl">ARTIFACT</text>
+<text x="752" y="456" class="st-art">self-healing/healing-log.md</text>
+<line x1="752" y1="490" x2="952" y2="490" class="sep"/>
+<text x="752" y="506" class="st-stat b">Triggered: E-001, H-001–H-005 (6)</text>
+<text x="752" y="520" class="st-stat">0 assertions changed</text>
+<rect x="740" y="548" width="224" height="38" rx="10" class="pill-cond"/>
+<text x="852.0" y="564" text-anchor="middle" class="pillt">Conditional</text><text x="852.0" y="579" text-anchor="middle" class="pillt2">EVT 0048, 0058, 0060</text></g>
+<line x1="964" y1="456.0" x2="978" y2="456.0" class="flow" marker-end="url(#ah)"/>
+<g class="stage"><rect x="980" y="372" width="224" height="168" rx="10" class="box-run"/>
+<circle cx="1000" cy="392" r="11" class="num"/><text x="1000" y="396" class="numt" text-anchor="middle">10</text>
+<text x="1018" y="397" class="st-title">reporting</text><text x="992" y="420" class="st-skill">no skill (planned) · registry: planned</text>
+<text x="992" y="440" class="st-lbl">ARTIFACT</text>
+<text x="992" y="456" class="st-art">reports/ + execution/*.html</text>
+<text x="992" y="471" class="st-art">+ automation reports</text>
+<line x1="992" y1="490" x2="1192" y2="490" class="sep"/>
+<text x="992" y="506" class="st-stat b">Performed without a skill</text>
+<text x="992" y="520" class="st-stat">(scripted generators)</text>
+<rect x="980" y="548" width="224" height="38" rx="10" class="pill-run"/>
+<text x="1092.0" y="564" text-anchor="middle" class="pillt">No gate</text><text x="1092.0" y="579" text-anchor="middle" class="pillt2">EVT 0049, 0061, 0062</text></g>
+<path d="M1204,140.0 H1222 V286 H132.0 V370" class="flow" fill="none" marker-end="url(#ah)"/>
+<text x="140.0" y="300" class="note">TEST_REVIEW_APPROVED unlocks manual-execution …</text>
+<path d="M1092.0,270 V320 H412.0 V370" class="flow-alt" fill="none" marker-end="url(#ahd)"/>
+<text x="420.0" y="334" class="note">… and automation-generation, which also needs MANUAL_EXECUTION_APPROVED (same review approval, ADR-001)</text>
+<path d="M852.0,586 V620 H612.0 V588" class="flow-alt" fill="none" marker-end="url(#ahd)"/>
+<text x="732.0" y="636" text-anchor="middle" class="note">loops back: each fix verified by a new run</text>
+<path d="M132.0,586 V656 H1092.0 V588" class="flow-faint" fill="none" marker-end="url(#ahd)"/>
+<text x="140.0" y="672" class="note">reporting depends on manual-execution and automation-execution (self-healing optional)</text>
+</svg></div>
+<p class="hint">On narrow screens, scroll the diagram sideways.</p>
+<div class="tbl"><table><thead><tr><th>Stage</th><th>Journal events (stage_id)</th></tr></thead><tbody>
+<tr><td>prd-generation</td><td>EVT-0001, EVT-0002, EVT-0003, EVT-0004, EVT-0005, EVT-0006, EVT-0007</td></tr><tr><td>project-context</td><td>EVT-0008, EVT-0009</td></tr><tr><td>exploration</td><td>EVT-0010, EVT-0011, EVT-0012, EVT-0013, EVT-0014, EVT-0015</td></tr><tr><td>test-design</td><td>EVT-0016, EVT-0017, EVT-0018, EVT-0019, EVT-0021, EVT-0022, EVT-0023, EVT-0025, EVT-0026, EVT-0028, EVT-0029, EVT-0033, EVT-0034, EVT-0037</td></tr><tr><td>test-review</td><td>EVT-0020, EVT-0024, EVT-0030, EVT-0031, EVT-0038, EVT-0039</td></tr><tr><td>manual-execution</td><td>EVT-0027, EVT-0032, EVT-0035, EVT-0036, EVT-0040, EVT-0041, EVT-0042, EVT-0043</td></tr><tr><td>automation-generation</td><td>EVT-0044, EVT-0045, EVT-0052, EVT-0054, EVT-0056</td></tr><tr><td>automation-execution</td><td>EVT-0046, EVT-0047, EVT-0050, EVT-0051, EVT-0053, EVT-0055, EVT-0057, EVT-0059</td></tr><tr><td>self-healing</td><td>EVT-0048, EVT-0058, EVT-0060</td></tr><tr><td>reporting</td><td>EVT-0049, EVT-0061, EVT-0062</td></tr>
+</tbody></table></div>
+<p>Notes: test-design was approved four times (EVT-0019, EVT-0023, EVT-0029, EVT-0037) because each revision voids the earlier approval; the current approval is EVT-0037 for v1.4.0, followed by the re-review approval EVT-0039. Stages 7–10 have no approval key.</p>
+
+<h2 id="milestone">2. Sequence — TC-054 automation milestone</h2>
+<p>Sources: <a href="../automation/AutomationGeneration.md"><code>automation/AutomationGeneration.md</code></a>, <a href="../automation-execution/execution-metrics.json"><code>automation-execution/execution-metrics.json</code></a>, <a href="../self-healing/healing-log.md"><code>self-healing/healing-log.md</code></a>, <a href="../journal/execution-log.json"><code>journal/execution-log.json</code></a>. Runs of the two frameworks alternated on one machine; they are grouped by framework below for readability.</p>
+<ul class="legend" aria-label="Sequence legend"><li><span class="ln"></span>Request / action</li><li><span class="ln ret"></span>Response / result</li>
+<li><span class="ln fail ret"></span>Failure</li><li><span class="ln fix"></span>Fix (healing log ID)</li><li><span class="ln pass ret"></span>Passing result</li><li><span class="ln pend"></span>Pending / not verified</li></ul>
+<div class="scroll" tabindex="0" aria-label="Milestone sequence diagram, scrollable"><svg class="diag" viewBox="0 0 1208 1908" width="1208" height="1908" role="img" aria-labelledby="sq-t sq-d">
+<title id="sq-t">Sequence of the TC-054 automation milestone</title><desc id="sq-d">Human, Claude Code, the automation skills, the two automation projects, the OrangeHRM demo app and the journal, from generation through failing and passing runs and code revisions to the journal events.</desc>
+<defs><marker id="sq-call" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-call-h"/></marker><marker id="sq-ret" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-ret-h"/></marker><marker id="sq-fail" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-fail-h"/></marker><marker id="sq-fix" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-fix-h"/></marker><marker id="sq-pass" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-pass-h"/></marker><marker id="sq-self" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-call-h"/></marker><marker id="sq-pend" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-pend-h"/></marker></defs>
+<rect x="8" y="90" width="1192" height="24" rx="6" class="phase"/><text x="18" y="107" class="phaset">1 · Generation (after TEST_REVIEW_APPROVED EVT-0039 and MANUAL_EXECUTION_APPROVED EVT-0043)</text>
+<rect x="8" y="300" width="1192" height="24" rx="6" class="phase"/><text x="18" y="317" class="phaset">2 · Framework A — Playwright TS (runs alternated with B on one machine; grouped here for readability)</text>
+<rect x="8" y="782" width="1192" height="24" rx="6" class="phase"/><text x="18" y="799" class="phaset">3 · Framework B — SHAFT Java (Maven + TestNG), code v1.0.0</text>
+<rect x="8" y="1162" width="1192" height="24" rx="6" class="phase"/><text x="18" y="1179" class="phaset">4 · SHAFT code revisions requested by the human (steps, data and checks unchanged)</text>
+<rect x="8" y="1542" width="1192" height="24" rx="6" class="phase"/><text x="18" y="1559" class="phaset">5 · IDE verification</text>
+<rect x="8" y="1650" width="1192" height="24" rx="6" class="phase"/><text x="18" y="1667" class="phaset">6 · Reports and journal</text>
+<line x1="100" y1="70" x2="100" y2="1896" class="life"/>
+<rect x="22" y="8" width="156" height="56" rx="8" class="actor"/>
+<text x="100" y="32" text-anchor="middle" class="actort">Human</text><text x="100" y="50" text-anchor="middle" class="actors">operator</text>
+<line x1="268" y1="70" x2="268" y2="1896" class="life"/>
+<rect x="190" y="8" width="156" height="56" rx="8" class="actor"/>
+<text x="268" y="32" text-anchor="middle" class="actort">Claude Code</text><text x="268" y="50" text-anchor="middle" class="actors">orchestrator</text>
+<line x1="436" y1="70" x2="436" y2="1896" class="life"/>
+<rect x="358" y="8" width="156" height="56" rx="8" class="actor"/>
+<text x="436" y="32" text-anchor="middle" class="actort">automation skills</text><text x="436" y="50" text-anchor="middle" class="actors">generation/execution/healing</text>
+<line x1="604" y1="70" x2="604" y2="1896" class="life"/>
+<rect x="526" y="8" width="156" height="56" rx="8" class="actor"/>
+<text x="604" y="32" text-anchor="middle" class="actort">Playwright TS project</text><text x="604" y="50" text-anchor="middle" class="actors">automation/playwright-ts</text>
+<line x1="772" y1="70" x2="772" y2="1896" class="life"/>
+<rect x="694" y="8" width="156" height="56" rx="8" class="actor"/>
+<text x="772" y="32" text-anchor="middle" class="actort">SHAFT Java project</text><text x="772" y="50" text-anchor="middle" class="actors">automation/shaft-java</text>
+<line x1="940" y1="70" x2="940" y2="1896" class="life"/>
+<rect x="862" y="8" width="156" height="56" rx="8" class="actor"/>
+<text x="940" y="32" text-anchor="middle" class="actort">OrangeHRM demo app</text><text x="940" y="50" text-anchor="middle" class="actors">opensource-demo site</text>
+<line x1="1108" y1="70" x2="1108" y2="1896" class="life"/>
+<rect x="1030" y="8" width="156" height="56" rx="8" class="actor"/>
+<text x="1108" y="32" text-anchor="middle" class="actort">Journal</text><text x="1108" y="50" text-anchor="middle" class="actors">journal/execution-log.json</text>
+<line x1="100" y1="134" x2="266" y2="134" class="m-call" marker-end="url(#sq-call)"/>
+<text x="108" y="128" class="mt mt-call">Automate TC-054 in two frameworks and compare (human decision)</text>
+<line x1="268" y1="168" x2="434" y2="168" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="162" class="mt mt-call">automation-generation: Needs Automation = TRUE → TC-054 only</text>
+<line x1="436" y1="202" x2="602" y2="202" class="m-call" marker-end="url(#sq-call)"/>
+<text x="444" y="196" class="mt mt-call">Generate project + static validation (EVT-0044)</text>
+<line x1="436" y1="236" x2="770" y2="236" class="m-call" marker-end="url(#sq-call)"/>
+<text x="444" y="230" class="mt mt-call">Generate project + static validation (EVT-0045)</text>
+<line x1="100" y1="270" x2="266" y2="270" class="m-call" marker-end="url(#sq-call)"/>
+<text x="108" y="264" class="mt mt-call">Supply credentials as env vars QA_USERNAME / QA_PASSWORD (values never stored)</text>
+<line x1="268" y1="344" x2="602" y2="344" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="338" class="mt mt-call">Run A1 (npx playwright test)</text>
+<line x1="604" y1="378" x2="270" y2="378" class="m-fail" marker-end="url(#sq-fail)"/>
+<text x="276" y="372" class="mt mt-fail">A1 FAIL — environment: Chromium build 1248 missing</text>
+<line x1="268" y1="412" x2="602" y2="412" class="m-fix" marker-end="url(#sq-fix)"/>
+<text x="276" y="406" class="mt mt-fix">E-001: npx playwright install chromium (no code change)</text>
+<line x1="268" y1="446" x2="602" y2="446" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="440" class="mt mt-call">Run A2</text>
+<line x1="604" y1="480" x2="270" y2="480" class="m-fail" marker-end="url(#sq-fail)"/>
+<text x="276" y="474" class="mt mt-fail">A2 FAIL — script: wait regex rejects the header&#x27;s leading space (30 s timeout)</text>
+<line x1="268" y1="514" x2="602" y2="514" class="m-fix" marker-end="url(#sq-fix)"/>
+<text x="276" y="508" class="mt mt-fix">H-001: wait regex allows surrounding whitespace (assertions unchanged)</text>
+<line x1="268" y1="548" x2="602" y2="548" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="542" class="mt mt-call">Run A3, A4, A5, A6 (headless)</text>
+<line x1="604" y1="582" x2="938" y2="582" class="m-call" marker-end="url(#sq-call)"/>
+<text x="612" y="576" class="mt mt-call">TC-054 steps 1–6</text>
+<line x1="940" y1="616" x2="606" y2="616" class="m-ret" marker-end="url(#sq-ret)"/>
+<text x="612" y="610" class="mt mt-ret">k = 6 · N = 111 / 107 / 105 / 106</text>
+<line x1="604" y1="650" x2="270" y2="650" class="m-pass" marker-end="url(#sq-pass)"/>
+<text x="276" y="644" class="mt mt-pass">A3–A6 PASS (4/4)</text>
+<line x1="268" y1="684" x2="602" y2="684" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="678" class="mt mt-call">Run A7 headed (QA_HEADLESS=false) — walkthrough, EVT-0050</text>
+<line x1="940" y1="718" x2="606" y2="718" class="m-ret" marker-end="url(#sq-ret)"/>
+<text x="612" y="712" class="mt mt-ret">k = 1 · N = 140</text>
+<line x1="604" y1="752" x2="270" y2="752" class="m-pass" marker-end="url(#sq-pass)"/>
+<text x="276" y="746" class="mt mt-pass">A7 PASS</text>
+<line x1="268" y1="826" x2="770" y2="826" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="820" class="mt mt-call">Run B1 (mvn test)</text>
+<line x1="772" y1="860" x2="270" y2="860" class="m-fail" marker-end="url(#sq-fail)"/>
+<text x="276" y="854" class="mt mt-fail">B1 FAIL — listener NPE on rp.enable · Tests run: 0 · BUILD FAILURE</text>
+<line x1="268" y1="894" x2="770" y2="894" class="m-fix" marker-end="url(#sq-fix)"/>
+<text x="276" y="888" class="mt mt-fix">H-002: Surefire system property rp.enable=false</text>
+<line x1="268" y1="928" x2="770" y2="928" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="922" class="mt mt-call">Run B2</text>
+<line x1="772" y1="962" x2="270" y2="962" class="m-fail" marker-end="url(#sq-fail)"/>
+<text x="276" y="956" class="mt mt-fail">B2: test passed, build FAILED — Allure CLI path with a space</text>
+<line x1="268" y1="996" x2="770" y2="996" class="m-fix" marker-end="url(#sq-fix)"/>
+<text x="276" y="990" class="mt mt-fix">H-003: shaft.extraArgLine → -Duser.home=&lt;8.3 short path&gt;</text>
+<line x1="268" y1="1030" x2="770" y2="1030" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="1024" class="mt mt-call">Run B3, B4, B5, B6 (headless) and B7 (headed walkthrough)</text>
+<line x1="772" y1="1064" x2="938" y2="1064" class="m-call" marker-end="url(#sq-call)"/>
+<text x="780" y="1058" class="mt mt-call">TC-054 steps 1–6</text>
+<line x1="940" y1="1098" x2="774" y2="1098" class="m-ret" marker-end="url(#sq-ret)"/>
+<text x="780" y="1092" class="mt mt-ret">k = 6 · N = 110 / 106 / 105 / 107 / 140</text>
+<line x1="772" y1="1132" x2="270" y2="1132" class="m-pass" marker-end="url(#sq-pass)"/>
+<text x="276" y="1126" class="mt mt-pass">B3–B7 PASS · BUILD SUCCESS</text>
+<line x1="100" y1="1206" x2="266" y2="1206" class="m-call" marker-end="url(#sq-call)"/>
+<text x="108" y="1200" class="mt mt-call">Restructure to the My Bookings framework conventions</text>
+<line x1="436" y1="1240" x2="770" y2="1240" class="m-pass" marker-end="url(#sq-pass)"/>
+<text x="444" y="1234" class="mt mt-pass">v1.1.0 (EVT-0052) → B8 headed, B9 headless: PASS</text>
+<line x1="436" y1="1274" x2="770" y2="1274" class="m-pass" marker-end="url(#sq-pass)"/>
+<text x="444" y="1268" class="mt mt-pass">v1.2.0 (EVT-0054) → B10 headless, B11 headed: PASS</text>
+<line x1="100" y1="1308" x2="266" y2="1308" class="m-call" marker-end="url(#sq-call)"/>
+<text x="108" y="1302" class="mt mt-call">Simplify to basic, readable Java</text>
+<line x1="436" y1="1342" x2="770" y2="1342" class="m-call" marker-end="url(#sq-call)"/>
+<text x="444" y="1336" class="mt mt-call">v1.3.0 (EVT-0056)</text>
+<line x1="772" y1="1376" x2="270" y2="1376" class="m-fail" marker-end="url(#sq-fail)"/>
+<text x="276" y="1370" class="mt mt-fail">B12 FAIL — option clicked before the list was visible</text>
+<line x1="268" y1="1410" x2="770" y2="1410" class="m-fix" marker-end="url(#sq-fix)"/>
+<text x="276" y="1404" class="mt mt-fix">H-004: wait for the option to be visible (Directory_Page.selectOption)</text>
+<line x1="772" y1="1444" x2="270" y2="1444" class="m-fail" marker-end="url(#sq-fail)"/>
+<text x="276" y="1438" class="mt mt-fail">B13 FAIL — element highlighting broke the close-arrow click (30 s)</text>
+<line x1="268" y1="1478" x2="770" y2="1478" class="m-fix" marker-end="url(#sq-fix)"/>
+<text x="276" y="1472" class="mt mt-fix">H-005: screenshotParams_highlightElements=false</text>
+<line x1="772" y1="1512" x2="270" y2="1512" class="m-pass" marker-end="url(#sq-pass)"/>
+<text x="276" y="1506" class="mt mt-pass">B14 PASS (headless; demo site slow) · B15 PASS (headed) · k = 1 · N = 178</text>
+<line x1="100" y1="1586" x2="770" y2="1586" class="m-pend" marker-end="url(#sq-pend)"/>
+<text x="108" y="1580" class="mt mt-pend">IntelliJ TestNG run configuration .run/TC-054 SHAFT.run.xml prepared</text>
+<line x1="772" y1="1620" x2="102" y2="1620" class="m-pend" marker-end="url(#sq-pend)"/>
+<text x="108" y="1614" class="mt mt-pend">IntelliJ result not yet provided — pending, not verified (no run recorded)</text>
+<path d="M268,1688 H302 V1706 H272" fill="none" class="m-call" marker-end="url(#sq-self)"/><text x="310" y="1700" class="mt">healing-log.md · execution-metrics.json · HTML reports · FrameworkComparison.md · MilestoneSummary.xlsx</text>
+<line x1="268" y1="1742" x2="1106" y2="1742" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="1736" class="mt mt-call">automation-generation: EVT-0044, 0045, 0052, 0054, 0056</text>
+<line x1="268" y1="1776" x2="1106" y2="1776" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="1770" class="mt mt-call">automation-execution: EVT-0046, 0047, 0050, 0051, 0053, 0055, 0057, 0059</text>
+<line x1="268" y1="1810" x2="1106" y2="1810" class="m-call" marker-end="url(#sq-call)"/>
+<text x="276" y="1804" class="mt mt-call">self-healing: EVT-0048, 0058, 0060 · reporting: EVT-0049, 0061, 0062</text>
+<line x1="268" y1="1844" x2="102" y2="1844" class="m-ret" marker-end="url(#sq-ret)"/>
+<text x="108" y="1838" class="mt mt-ret">0 application defects from automation · 0 assertions changed · BUG-001 – BUG-005 still Suspected</text>
+</svg></div>
+<p class="hint">On narrow screens, scroll the diagram sideways.</p>
+
+<h3 id="runs">Run outcomes [M]</h3>
+<div class="tbl"><table><thead><tr><th>Run</th><th>Framework</th><th>Code version</th><th>Mode</th><th>Outcome</th><th>k</th><th>N</th><th>Fix triggered</th></tr></thead>
+<tbody><tr><td><strong>A1</strong></td><td>Playwright</td><td>1.0.0</td><td>headless</td><td><span class="pill fail">failed</span></td><td>—</td><td>—</td><td>E-001</td></tr><tr><td><strong>A2</strong></td><td>Playwright</td><td>1.0.0</td><td>headless</td><td><span class="pill fail">failed</span></td><td>—</td><td>—</td><td>H-001</td></tr><tr><td><strong>A3</strong></td><td>Playwright</td><td>1.0.0 + H-001</td><td>headless</td><td><span class="pill ok">passed</span></td><td>6</td><td>111</td><td>—</td></tr><tr><td><strong>A4</strong></td><td>Playwright</td><td>1.0.0 + H-001</td><td>headless</td><td><span class="pill ok">passed</span></td><td>6</td><td>107</td><td>—</td></tr><tr><td><strong>A5</strong></td><td>Playwright</td><td>1.0.0 + H-001</td><td>headless</td><td><span class="pill ok">passed</span></td><td>6</td><td>105</td><td>—</td></tr><tr><td><strong>A6</strong></td><td>Playwright</td><td>1.0.0 + H-001</td><td>headless</td><td><span class="pill ok">passed</span></td><td>6</td><td>106</td><td>—</td></tr><tr><td><strong>A7</strong></td><td>Playwright</td><td>1.0.0 + H-001</td><td>headed</td><td><span class="pill ok">passed</span></td><td>1</td><td>140</td><td>—</td></tr><tr><td><strong>B1</strong></td><td>SHAFT</td><td>1.0.0</td><td>headless</td><td><span class="pill fail">not run (build failure)</span></td><td>—</td><td>—</td><td>H-002</td></tr><tr><td><strong>B2</strong></td><td>SHAFT</td><td>1.0.0</td><td>headless</td><td><span class="pill warn">test passed, build failed</span></td><td>6</td><td>111</td><td>H-003</td></tr><tr><td><strong>B3</strong></td><td>SHAFT</td><td>1.0.0</td><td>headless</td><td><span class="pill ok">passed</span></td><td>6</td><td>110</td><td>—</td></tr><tr><td><strong>B4</strong></td><td>SHAFT</td><td>1.0.0</td><td>headless</td><td><span class="pill ok">passed</span></td><td>6</td><td>106</td><td>—</td></tr><tr><td><strong>B5</strong></td><td>SHAFT</td><td>1.0.0</td><td>headless</td><td><span class="pill ok">passed</span></td><td>6</td><td>105</td><td>—</td></tr><tr><td><strong>B6</strong></td><td>SHAFT</td><td>1.0.0</td><td>headless</td><td><span class="pill ok">passed</span></td><td>6</td><td>107</td><td>—</td></tr><tr><td><strong>B7</strong></td><td>SHAFT</td><td>1.0.0</td><td>headed</td><td><span class="pill ok">passed</span></td><td>1</td><td>140</td><td>—</td></tr><tr><td><strong>B8</strong></td><td>SHAFT</td><td>1.1.0</td><td>headed</td><td><span class="pill ok">passed</span></td><td>1</td><td>161</td><td>—</td></tr><tr><td><strong>B9</strong></td><td>SHAFT</td><td>1.1.0</td><td>headless</td><td><span class="pill ok">passed</span></td><td>1</td><td>8</td><td>—</td></tr><tr><td><strong>B10</strong></td><td>SHAFT</td><td>1.2.0</td><td>headless</td><td><span class="pill ok">passed</span></td><td>1</td><td>112</td><td>—</td></tr><tr><td><strong>B11</strong></td><td>SHAFT</td><td>1.2.0</td><td>headed</td><td><span class="pill ok">passed</span></td><td>1</td><td>113</td><td>—</td></tr><tr><td><strong>B12</strong></td><td>SHAFT</td><td>1.3.0</td><td>headless</td><td><span class="pill fail">failed</span></td><td>—</td><td>—</td><td>H-004</td></tr><tr><td><strong>B13</strong></td><td>SHAFT</td><td>1.3.0 + H-004</td><td>headless</td><td><span class="pill fail">failed</span></td><td>1</td><td>—</td><td>H-005</td></tr><tr><td><strong>B14</strong></td><td>SHAFT</td><td>1.3.0 + H-004 + H-005</td><td>headless</td><td><span class="pill ok">passed</span></td><td>1</td><td>140</td><td>—</td></tr><tr><td><strong>B15</strong></td><td>SHAFT</td><td>1.3.0 + H-004 + H-005</td><td>headed</td><td><span class="pill ok">passed</span></td><td>1</td><td>178</td><td>—</td></tr></tbody></table></div>
+<p class="hint">From <code>execution-metrics.json</code>; code version = AutomationGeneration.md revision under test; mode as recorded in the journal (A1–A6 and B1–B6: headless, per the FrameworkComparison environment row). k and N for B12–B15 were read from SHAFT step screenshots. IntelliJ: no run recorded — pending, not verified.</p>
+<h3>Fixes [M]</h3>
+<div class="tbl"><table><thead><tr><th>ID</th><th>Framework</th><th>Failed run</th><th>Classification</th><th>Change</th><th>Verified by</th></tr></thead><tbody><tr><td><strong>E-001</strong></td><td>A (Playwright)</td><td>A1</td><td>Environment</td><td>npx playwright install chromium (no code change)</td><td>A2 launched the browser</td></tr><tr><td><strong>H-001</strong></td><td>A (Playwright)</td><td>A2</td><td>Test-script defect (wait plumbing)</td><td>Regex allows surrounding whitespace: ^\s*\(\d+\) Records? Found\s*$</td><td>A3 PASS, then A4–A6 PASS</td></tr><tr><td><strong>H-002</strong></td><td>B (SHAFT)</td><td>B1</td><td>Framework configuration</td><td>Surefire systemPropertyVariables: rp.enable=false (ReportPortal not used)</td><td>B2: the test ran</td></tr><tr><td><strong>H-003</strong></td><td>B (SHAFT)</td><td>B2</td><td>Environment + framework defect</td><td>Optional, empty-by-default Maven property shaft.extraArgLine appended to the test JVM argLine; on this machine -Dshaft.extraArgLine=-Duser.home=C:\Users\QCUSER~1 (8.3 short form of the same folder)</td><td>B3 BUILD SUCCESS, then B4–B6</td></tr><tr><td><strong>H-004</strong></td><td>B (SHAFT)</td><td>B12</td><td>Test-script defect (wait plumbing, introduced by the 2026-10-19 simplification)</td><td>Wait until the option is visible, then click it (Directory_Page.selectOption)</td><td>B13: both selections and Search passed (B13 then failed at H-005)</td></tr><tr><td><strong>H-005</strong></td><td>B (SHAFT)</td><td>B13</td><td>Framework configuration (introduced by the same simplification)</td><td>screenshotParams_highlightElements=false (screenshots per action kept)</td><td>B14 PASS</td></tr></tbody></table></div>
+<p class="hint">From <code>self-healing/healing-log.md</code> §2. Every fix was made interactively by the agent after a human request and verified by a new run; autonomous or unattended healing has not been demonstrated.</p>
+
+<h2 id="tc054">3. Sequence — the TC-054 test itself</h2>
+<p>Steps follow <a href="../test-design/TestCases.md"><code>test-design/TestCases.md</code></a> (### TC-054, v1.4.0). Both frameworks implement the same sequence. k and N are read in the same run; only N &gt; k is compared, because the shared demo data changes during a session (OBS-021).</p>
+<p class="callout"><strong>Approved expected result (verbatim):</strong> Employee Name is empty, Job Title and Location display "-- Select --", and the results header reads "(N) Records Found" with N greater than the count k noted in step 3.</p>
+<ul class="legend" aria-label="Sequence legend"><li><span class="ln"></span>Request / action</li><li><span class="ln ret"></span>Response / result</li>
+<li><span class="ln fail ret"></span>Failure</li><li><span class="ln fix"></span>Fix (healing log ID)</li><li><span class="ln pass ret"></span>Passing result</li><li><span class="ln pend"></span>Pending / not verified</li></ul>
+<div class="scroll" tabindex="0" aria-label="TC-054 test sequence diagram, scrollable"><svg class="diag" viewBox="0 0 1040 1206" width="1040" height="1206" role="img" aria-labelledby="tc-t tc-d">
+<title id="tc-t">Sequence of the TC-054 test</title><desc id="tc-d">Steps 1 to 6 of TC-054 between the test, the browser and the OrangeHRM demo app, including the reads of k and N and the final assertions.</desc>
+<defs><marker id="tc-call" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-call-h"/></marker><marker id="tc-ret" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-ret-h"/></marker><marker id="tc-fail" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-fail-h"/></marker><marker id="tc-fix" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-fix-h"/></marker><marker id="tc-pass" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-pass-h"/></marker><marker id="tc-self" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-call-h"/></marker><marker id="tc-pend" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-pend-h"/></marker></defs>
+<rect x="8" y="90" width="1024" height="24" rx="6" class="phase"/><text x="18" y="107" class="phaset">Precondition — no authenticated session</text>
+<rect x="8" y="164" width="1024" height="24" rx="6" class="phase"/><text x="18" y="181" class="phaset">Step 1 — open the Directory URL and log in (DATA-001)</text>
+<rect x="8" y="442" width="1024" height="24" rx="6" class="phase"/><text x="18" y="459" class="phaset">Step 2 — select the DATA-012 Job Title and Location; click Search</text>
+<rect x="8" y="550" width="1024" height="24" rx="6" class="phase"/><text x="18" y="567" class="phaset">Step 3 — wait for result cards; read the header → k</text>
+<rect x="8" y="658" width="1024" height="24" rx="6" class="phase"/><text x="18" y="675" class="phaset">Step 4 — click the first result card, then the panel&#x27;s arrow icon</text>
+<rect x="8" y="834" width="1024" height="24" rx="6" class="phase"/><text x="18" y="851" class="phaset">Step 5 — click Reset</text>
+<rect x="8" y="942" width="1024" height="24" rx="6" class="phase"/><text x="18" y="959" class="phaset">Step 6 — wait for cards; read the header → N</text>
+<rect x="8" y="1084" width="1024" height="24" rx="6" class="phase"/><text x="18" y="1101" class="phaset">Assertions — the single approved expected result, unchanged</text>
+<line x1="150" y1="70" x2="150" y2="1194" class="life"/>
+<rect x="72" y="8" width="156" height="56" rx="8" class="actor"/>
+<text x="150" y="32" text-anchor="middle" class="actort">TC-054 test</text><text x="150" y="50" text-anchor="middle" class="actors">spec / TestNG method</text>
+<line x1="520" y1="70" x2="520" y2="1194" class="life"/>
+<rect x="442" y="8" width="156" height="56" rx="8" class="actor"/>
+<text x="520" y="32" text-anchor="middle" class="actort">Browser</text><text x="520" y="50" text-anchor="middle" class="actors">Chromium / Chrome, headless or headed</text>
+<line x1="890" y1="70" x2="890" y2="1194" class="life"/>
+<rect x="812" y="8" width="156" height="56" rx="8" class="actor"/>
+<text x="890" y="32" text-anchor="middle" class="actort">OrangeHRM demo app</text><text x="890" y="50" text-anchor="middle" class="actors">Directory page</text>
+<line x1="150" y1="134" x2="518" y2="134" class="m-call" marker-end="url(#tc-call)"/>
+<text x="158" y="128" class="mt mt-call">New browser context</text>
+<line x1="150" y1="208" x2="518" y2="208" class="m-call" marker-end="url(#tc-call)"/>
+<text x="158" y="202" class="mt mt-call">Open the Directory URL</text>
+<line x1="520" y1="242" x2="888" y2="242" class="m-call" marker-end="url(#tc-call)"/>
+<text x="528" y="236" class="mt mt-call">Request the Directory page</text>
+<line x1="890" y1="276" x2="522" y2="276" class="m-ret" marker-end="url(#tc-ret)"/>
+<text x="528" y="270" class="mt mt-ret">Redirect to /auth/login</text>
+<line x1="150" y1="310" x2="518" y2="310" class="m-call" marker-end="url(#tc-call)"/>
+<text x="158" y="304" class="mt mt-call">Fill login form from QA_USERNAME / QA_PASSWORD; submit</text>
+<line x1="890" y1="344" x2="522" y2="344" class="m-ret" marker-end="url(#tc-ret)"/>
+<text x="528" y="338" class="mt mt-ret">Directory page (directory/viewDirectory)</text>
+<line x1="150" y1="378" x2="518" y2="378" class="m-call" marker-end="url(#tc-call)"/>
+<text x="158" y="372" class="mt mt-call">Read unfiltered header; DATA-012 pair from the first card with job title + location</text>
+<line x1="520" y1="412" x2="152" y2="412" class="m-ret" marker-end="url(#tc-ret)"/>
+<text x="158" y="406" class="mt mt-ret">Pair varies with the shared data (3 different pairs across runs)</text>
+<line x1="150" y1="486" x2="518" y2="486" class="m-call" marker-end="url(#tc-call)"/>
+<text x="158" y="480" class="mt mt-call">Select Job Title, select Location, click Search</text>
+<line x1="520" y1="520" x2="888" y2="520" class="m-call" marker-end="url(#tc-call)"/>
+<text x="528" y="514" class="mt mt-call">Filtered search</text>
+<line x1="890" y1="594" x2="522" y2="594" class="m-ret" marker-end="url(#tc-ret)"/>
+<text x="528" y="588" class="mt mt-ret">Filtered result cards + header</text>
+<line x1="520" y1="628" x2="152" y2="628" class="m-ret" marker-end="url(#tc-ret)"/>
+<text x="158" y="622" class="mt mt-ret">&quot;(k) Record(s) Found&quot; → k ∈ {1, 6} across runs; check k &lt; unfiltered</text>
+<line x1="150" y1="702" x2="518" y2="702" class="m-call" marker-end="url(#tc-call)"/>
+<text x="158" y="696" class="mt mt-call">Click first card</text>
+<line x1="520" y1="736" x2="152" y2="736" class="m-ret" marker-end="url(#tc-ret)"/>
+<text x="158" y="730" class="mt mt-ret">Detail panel open</text>
+<line x1="150" y1="770" x2="518" y2="770" class="m-call" marker-end="url(#tc-call)"/>
+<text x="158" y="764" class="mt mt-call">Click the arrow icon</text>
+<line x1="520" y1="804" x2="152" y2="804" class="m-ret" marker-end="url(#tc-ret)"/>
+<text x="158" y="798" class="mt mt-ret">Detail panel closed</text>
+<line x1="150" y1="878" x2="518" y2="878" class="m-call" marker-end="url(#tc-call)"/>
+<text x="158" y="872" class="mt mt-call">Click Reset</text>
+<line x1="520" y1="912" x2="888" y2="912" class="m-call" marker-end="url(#tc-call)"/>
+<text x="528" y="906" class="mt mt-call">Results reload without filters</text>
+<line x1="890" y1="986" x2="522" y2="986" class="m-ret" marker-end="url(#tc-ret)"/>
+<text x="528" y="980" class="mt mt-ret">Unfiltered result cards + header</text>
+<line x1="150" y1="1020" x2="518" y2="1020" class="m-call" marker-end="url(#tc-call)"/>
+<text x="158" y="1014" class="mt mt-call">Wait until the header changes and cards are displayed</text>
+<line x1="520" y1="1054" x2="152" y2="1054" class="m-ret" marker-end="url(#tc-ret)"/>
+<text x="158" y="1048" class="mt mt-ret">&quot;(N) Records Found&quot; → N (8–178 across runs); field values</text>
+<path d="M150,1122 H184 V1140 H154" fill="none" class="m-call" marker-end="url(#tc-self)"/><text x="192" y="1134" class="mt">Employee Name = &quot;&quot; · Job Title = &quot;-- Select --&quot; · Location = &quot;-- Select --&quot; · header (N) Records Found · N &gt; k</text>
+</svg></div>
+<p class="hint">On narrow screens, scroll the diagram sideways. DATA-012 pairs seen: Chief Financial Officer + New York Sales Office; HR Manager + Texas R&amp;D; Probation Trainee PLW1462 + New York Sales Office. Credentials are read from the environment variables <code>QA_USERNAME</code> / <code>QA_PASSWORD</code>; SHAFT types them with <code>typeSecure</code>.</p>
+
+<footer><p>Measured facts [M] come from the files linked above; nothing in this page is estimated. No credentials, e-mail addresses or phone numbers are included. Journal state at generation: 62 events (last EVT-0062).</p></footer>
+</main>
+</body>
+</html>

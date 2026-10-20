@@ -1,0 +1,575 @@
+{
+  "_about": "TEMPLATE, not a runtime event. Stage-specific constants of the test-design skill for each event type. Values that are null or '<runtime…>' MUST be filled from the actual execution (system clock, real paths, real hashes, the real design). Never fabricated. Conforms to platform/schemas/journal-event.schema.json (v1.3.0) once filled. revision_request and approval_decision also require the common runtime fields shown in stage_execution (event_id, step_number, attempt, workflow_run_id, task_id, timestamp, decisions, revision). workflow_run_id is READ from journal/workflow-run.json (active_run_id), never created by the skill. Array examples show one item's shape; runtime arrays contain exactly the real items (possibly none).",
+  "stage_execution": {
+    "schema_version": "1.3.0",
+    "event_id": "<runtime: EVT-NNNN, next sequence in execution-log.json>",
+    "event_type": "stage_execution",
+    "step_number": null,
+    "attempt": null,
+    "workflow_run_id": "<runtime: journal/workflow-run.json → active_run_id; never created by the skill>",
+    "task_id": "<runtime>",
+    "timestamp": "<runtime: system clock, UTC>",
+    "stage_id": "test-design",
+    "stage_name": "Test Design",
+    "skill_name": "test-design",
+    "skill_version": "1.0.1",
+    "prompt_id": "test-design",
+    "prompt_version": "1.0.0",
+    "prompt_variables": {
+      "task_name": "<runtime>",
+      "task_path": "<runtime>",
+      "workflow_run_id": "<runtime>"
+    },
+    "trigger": {
+      "reason": "<runtime: e.g. 'Test design requested after EXPLORATION_APPROVED' or 'Revision after change request EVT-NNNN'>",
+      "initiated_by": "<runtime: user|workflow>",
+      "user_message": "<runtime: verbatim>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/context/ProjectContext.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Documented scope and business rules"
+      },
+      {
+        "path": "<runtime: journal:EVT-NNNN (accepted PROJECT_CONTEXT_APPROVED)>",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "Post-approval hash matched current ProjectContext.md"
+      },
+      {
+        "path": "<runtime>/exploration/ExplorationReport.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Observed behavior"
+      },
+      {
+        "path": "<runtime: journal:EVT-NNNN (accepted EXPLORATION_APPROVED)>",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "Post-approval hash matched; exploration baseline = current approved ProjectContext"
+      },
+      {
+        "path": "<runtime>/prd/PRD.md",
+        "role": "task_prd",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Traceability references only"
+      },
+      {
+        "path": "<runtime>/context/TaskContext.md",
+        "role": "task_metadata",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Identity only"
+      },
+      {
+        "path": ".claude/prompts/test-design.md",
+        "role": "prompt",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": null
+      }
+    ],
+    "source_references": [
+      {
+        "path": "<runtime>/context/ProjectContext.md",
+        "sections": [
+          "<runtime: e.g. §5 BR-001…, §6 EB-001…>"
+        ]
+      },
+      {
+        "path": "<runtime>/exploration/ExplorationReport.md",
+        "sections": [
+          "<runtime: e.g. §5 OBS-001…, §13>"
+        ]
+      }
+    ],
+    "tools_used": [
+      {
+        "tool": "<runtime: e.g. Read / Write / Bash sha256sum>",
+        "purpose": "<runtime>",
+        "targets": [
+          "<runtime>"
+        ]
+      }
+    ],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Test Design operates on approved artifacts and does not require live browser exploration."
+        }
+      ]
+    },
+    "actions": [
+      "<runtime: e.g. Prerequisites 1–11 verified (TD-V01)>",
+      "<runtime: Behaviors/rules identified>",
+      "<runtime: Techniques selected and applied>",
+      "<runtime: Coverage verified>",
+      "<runtime: TestCases.md written>"
+    ],
+    "decisions": [
+      {
+        "decision": "<runtime: e.g. collapsed DT combinations / priority basis / Needs Automation FALSE for TC-###>",
+        "rationale": "<runtime>"
+      }
+    ],
+    "revision": "<runtime: null on attempt 1; otherwise {artifact_path, version_before, version_after, reason, changed_sections, revision_request_event_id, prompt_version_changed, previous_prompt_version, items_added, items_modified, items_removed}>",
+    "output_artifacts": [
+      {
+        "path": "<runtime>/test-design/TestCases.md",
+        "operation": "<runtime: created (placeholder replaced) | updated>",
+        "artifact_status": "draft",
+        "artifact_version": "<runtime: 1.0.0 on attempt 1; minor bump per revision>",
+        "sha256": "<runtime>",
+        "summary": "<runtime: counts by type, TQ, CG>"
+      }
+    ],
+    "techniques_used": [
+      {
+        "id": "<runtime: TA-###>",
+        "technique": "<runtime: Equivalence Partitioning|Boundary Value Analysis|Decision Table|State Transition|Pairwise|Error Guessing>",
+        "applied": true,
+        "areas": [
+          "<runtime: PC SA-### / field>"
+        ],
+        "sources": [
+          "<runtime: PC BR-### / PC EB-### / OBS-###>"
+        ],
+        "rationale": "<runtime: why selected>",
+        "resulting_cases": [
+          "<runtime: TC-###>"
+        ]
+      },
+      {
+        "id": null,
+        "technique": "<runtime: technique not applied>",
+        "applied": false,
+        "areas": [],
+        "sources": [],
+        "rationale": "<runtime: why not applied>",
+        "resulting_cases": []
+      }
+    ],
+    "generated_test_case_ids": [
+      "<runtime: TC-###>"
+    ],
+    "test_cases": [
+      {
+        "id": "<runtime: TC-###>",
+        "title": "<runtime>",
+        "type": "<runtime: one of 9 types>",
+        "priority": "<runtime: High|Medium|Low|Not established>",
+        "priority_basis": "<runtime>",
+        "expected_result_basis": "<runtime: e.g. PC EB-### + OBS-### (MATCH detail) | Not established>",
+        "sources": [
+          "<runtime>"
+        ],
+        "technique_ids": [
+          "<runtime: TA-###>"
+        ],
+        "valid_in_scope": "<runtime: true|false>",
+        "valid_in_scope_reason": "<runtime>",
+        "needs_automation": "<runtime: true|false>",
+        "needs_automation_rationale": "<runtime>",
+        "status": "active",
+        "report_ref": "<runtime: test-design/TestCases.md §4 TC-###>"
+      }
+    ],
+    "traceability": {
+      "matrix": [
+        {
+          "source_id": "<runtime: PC BR-### / PC EB-### / OBS-### / PRD FR-###>",
+          "source_type": "<runtime: Business Rule|Expected Behavior|Dependency|Scope Area|Exploration Observation|Documented Requirement>",
+          "description": "<runtime>",
+          "test_cases": [
+            "<runtime: TC-###>"
+          ]
+        }
+      ],
+      "uncovered_sources": [
+        {
+          "source_id": "<runtime>",
+          "reason": "<runtime>",
+          "gap_id": "<runtime: CG-###>"
+        }
+      ],
+      "observations_considered": [
+        {
+          "observation_id": "<runtime: OBS-###>",
+          "classification": "<runtime>",
+          "test_cases": [
+            "<runtime>"
+          ],
+          "question_ids": [
+            "<runtime: TQ-###>"
+          ],
+          "reason_if_none": "<runtime or null>"
+        }
+      ]
+    },
+    "coverage": {
+      "total_test_cases": "<runtime>",
+      "by_type": {
+        "Positive": "<runtime>",
+        "Negative": "<runtime>",
+        "Boundary": "<runtime>",
+        "Validation": "<runtime>",
+        "Business Rule": "<runtime>",
+        "Dependency": "<runtime>",
+        "Error Handling": "<runtime>",
+        "Exploratory": "<runtime>",
+        "End-to-End": "<runtime>"
+      },
+      "valid_in_scope_true": "<runtime>",
+      "needs_automation_true": "<runtime>",
+      "sources_total": "<runtime>",
+      "sources_covered": "<runtime>",
+      "uncovered_sources": [
+        {
+          "source_id": "<runtime>",
+          "reason": "<runtime>",
+          "gap_id": "<runtime>"
+        }
+      ],
+      "observations_considered": "<runtime>",
+      "observations_without_test": [
+        {
+          "id": "<runtime: OBS-###>",
+          "reason": "<runtime>"
+        }
+      ],
+      "open_questions": "<runtime>",
+      "coverage_gaps": "<runtime>"
+    },
+    "exploratory_cases": [
+      {
+        "test_case_id": "<runtime: TC-###>",
+        "reason": "<runtime>",
+        "observed_behavior": "<runtime: OBS-### …>",
+        "unknown": "<runtime>",
+        "question_id": "<runtime: TQ-###>",
+        "sources": [
+          "<runtime: XGAP-### / EVD-###>"
+        ]
+      }
+    ],
+    "coverage_gaps": [
+      {
+        "id": "<runtime: CG-###>",
+        "category": "<runtime>",
+        "item": "<runtime>",
+        "reason": "<runtime>",
+        "impact": "<runtime or null>",
+        "blocker": "<runtime or null>",
+        "follow_up_required": "<runtime: true|false>"
+      }
+    ],
+    "test_data_requirements": [
+      {
+        "id": "<runtime: DATA-###>",
+        "description": "<runtime>",
+        "category": "<runtime>",
+        "used_by": [
+          "<runtime: TC-###>"
+        ],
+        "source": "<runtime: configured test-data source — never a secret value>",
+        "notes": null
+      }
+    ],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [
+      {
+        "id": "<runtime: TQ-###>",
+        "question": "<runtime>",
+        "related": "<runtime: source>",
+        "owner": null,
+        "related_test_cases": [
+          "<runtime: TC-###>"
+        ],
+        "ambiguity": "<runtime>",
+        "required_clarification": "<runtime>"
+      }
+    ],
+    "validation": {
+      "performed": true,
+      "overall": "<runtime>",
+      "checks": [
+        {
+          "check_id": "TD-V01",
+          "description": "Prerequisites 1–11 verified before any design work",
+          "result": "<runtime>",
+          "notes": null
+        }
+      ]
+    },
+    "status": "awaiting_approval",
+    "stop_reason": "HARD STOP: TestCases.md produced; human review required. Only TEST_DESIGN_APPROVED unlocks test-review (mandatory before manual-execution and automation-generation, ADR-001).",
+    "approval_required": true,
+    "approval_key": "TEST_DESIGN_APPROVED",
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "test-review",
+      "unlocked": false,
+      "condition": "Exact standalone key TEST_DESIGN_APPROVED sent by the human."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  },
+  "stage_execution_blocked": {
+    "schema_version": "1.3.0",
+    "event_type": "stage_execution",
+    "stage_id": "test-design",
+    "stage_name": "Test Design",
+    "skill_name": "test-design",
+    "skill_version": "1.0.1",
+    "prompt_id": "test-design",
+    "prompt_version": "1.0.0",
+    "trigger": {
+      "reason": "<runtime>",
+      "initiated_by": "<runtime: user|workflow>",
+      "user_message": "<runtime>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime: the prerequisite file/approval checked>",
+        "role": "<runtime>",
+        "status": "<runtime: missing|read>",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "<runtime: why it failed>"
+      }
+    ],
+    "source_references": [],
+    "tools_used": [
+      {
+        "tool": "<runtime: e.g. Read>",
+        "purpose": "Prerequisite verification",
+        "targets": [
+          "<runtime>"
+        ]
+      }
+    ],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Test Design operates on approved artifacts and does not require live browser exploration."
+        }
+      ]
+    },
+    "actions": [
+      "<runtime: Prerequisite check failed at #N>"
+    ],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [],
+    "techniques_used": [],
+    "generated_test_case_ids": [],
+    "test_cases": [],
+    "traceability": null,
+    "coverage": null,
+    "exploratory_cases": [],
+    "coverage_gaps": [],
+    "test_data_requirements": [],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "fail",
+      "checks": [
+        {
+          "check_id": "TD-V01",
+          "description": "Prerequisites 1–11 verified before any design work",
+          "result": "fail",
+          "notes": "<runtime>"
+        }
+      ]
+    },
+    "status": "blocked",
+    "stop_reason": "<runtime: 'Blocked: <TD-E##> — <prerequisite>. No test cases designed, no TestCases.md written.'>",
+    "approval_required": true,
+    "approval_key": "TEST_DESIGN_APPROVED",
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "test-review",
+      "unlocked": false,
+      "condition": "Prerequisite must be satisfied, test design completed, and TEST_DESIGN_APPROVED given."
+    },
+    "errors": [
+      {
+        "code": "<runtime: TD-E##>",
+        "message": "<runtime>",
+        "resolution": null
+      }
+    ],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  },
+  "revision_request": {
+    "schema_version": "1.3.0",
+    "event_type": "revision_request",
+    "stage_id": "test-design",
+    "stage_name": "Test Design",
+    "skill_name": "test-design",
+    "skill_version": "1.0.1",
+    "prompt_id": null,
+    "prompt_version": null,
+    "trigger": {
+      "reason": "Human requested changes to TestCases.md",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim change request>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/test-design/TestCases.md",
+        "role": "previous_version_of_output",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": null
+      }
+    ],
+    "source_references": [],
+    "tools_used": [],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Test Design operates on approved artifacts and does not require live browser exploration."
+        }
+      ]
+    },
+    "actions": [
+      "Recorded change request; the next stage_execution attempt updates TestCases.md in place (minor version bump, IDs preserved)."
+    ],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": false,
+      "overall": "not_applicable",
+      "checks": []
+    },
+    "status": "revision_requested",
+    "stop_reason": null,
+    "approval_required": true,
+    "approval_key": "TEST_DESIGN_APPROVED",
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "test-review",
+      "unlocked": false,
+      "condition": "Revision must be produced (minor version bump), presented, and approved with TEST_DESIGN_APPROVED."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  },
+  "approval_decision": {
+    "schema_version": "1.3.0",
+    "event_type": "approval_decision",
+    "stage_id": "test-design",
+    "stage_name": "Test Design",
+    "skill_name": "test-design",
+    "skill_version": "1.0.1",
+    "prompt_id": null,
+    "prompt_version": null,
+    "trigger": {
+      "reason": "Human replied at the Test Design gate",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim reply>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/test-design/TestCases.md",
+        "role": "previous_version_of_output",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": null
+      }
+    ],
+    "source_references": [],
+    "tools_used": [],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Gate decision only."
+        }
+      ]
+    },
+    "actions": [],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [
+      {
+        "path": "<runtime>/test-design/TestCases.md",
+        "operation": "<runtime: updated (Status → Approved) | unchanged>",
+        "artifact_status": "<runtime: approved|draft>",
+        "artifact_version": "<runtime: unchanged by approval>",
+        "sha256": "<runtime: POST-update hash; used downstream to detect stale approval>",
+        "summary": null
+      }
+    ],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "<runtime>",
+      "checks": [
+        {
+          "check_id": "TD-G01",
+          "description": "Reply is exactly the standalone key TEST_DESIGN_APPROVED",
+          "result": "<runtime>",
+          "notes": null
+        }
+      ]
+    },
+    "status": "<runtime: approved | approval_not_accepted>",
+    "stop_reason": "<runtime: null if accepted; otherwise 'Reply was not the exact standalone approval key; stage remains stopped.'>",
+    "approval_required": true,
+    "approval_key": "TEST_DESIGN_APPROVED",
+    "approval_outcome": "<runtime: accepted | not_accepted>",
+    "next_stage": {
+      "stage_id": "test-review",
+      "unlocked": "<runtime: true only if accepted>",
+      "condition": "Exact standalone key TEST_DESIGN_APPROVED sent by the human. Unlocks test-review only; Test Review starts only when orchestration starts it."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  }
+}

@@ -1,0 +1,98 @@
+// TEMPLATE (automation-generation scaffold, binding shaft-java-testng)
+package {{base_package}}.support;
+
+import com.shaft.driver.SHAFT;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Browser lifecycle, step logging and evidence. One fresh browser per test: no
+ * shared state, no dependency on test order. Evidence for every run:
+ *   <runDir>/<caseId>/steps.log and final.png (pass) or failure.png (fail).
+ * SHAFT's own Allure results (with its validation screenshots) are kept as well.
+ * Nothing here retries, swallows a failure or records a credential.
+ */
+public abstract class BaseTest {
+
+    protected SHAFT.GUI.WebDriver driver;
+    private final List<String> stepLog = new ArrayList<>();
+
+    /** Case ID of the test, e.g. "TC-001"; used in messages and evidence paths. */
+    protected abstract String caseId();
+
+    @BeforeMethod(alwaysRun = true)
+    public void openBrowser() {
+        SHAFT.Properties.web.set()
+                .targetBrowserName(Config.browser())
+                .headlessExecution(Config.headless())
+                .browserWindowWidth(1920)
+                .browserWindowHeight(1080);
+        SHAFT.Properties.timeouts.set().defaultElementIdentificationTimeout(Config.timeoutMs() / 1000.0);
+        SHAFT.Properties.flags.set().retryMaximumNumberOfAttempts(0).autoMaximizeBrowserWindow(false);
+        SHAFT.Properties.allure.set().automaticallyOpen(false);
+        driver = new SHAFT.GUI.WebDriver();
+    }
+
+    /** Labels an approved precondition; text is the approved precondition, verbatim. */
+    protected void precondition(String text) {
+        log("Precondition: " + text);
+    }
+
+    /** Labels approved step n; text is the approved step, verbatim. */
+    protected void step(int n, String text) {
+        log("Step " + n + ": " + text);
+    }
+
+    /** Records a value read from the page during a step (never a secret). */
+    protected void observed(String what, Object value) {
+        log("  observed " + what + " = " + value);
+    }
+
+    protected void log(String line) {
+        String stamped = Instant.now() + " [" + caseId() + "] " + line;
+        stepLog.add(stamped);
+        SHAFT.Report.log(stamped);
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void closeBrowser(ITestResult result) throws IOException {
+        boolean failed = result.getStatus() == ITestResult.FAILURE;
+        Path out = Config.runDir().resolve(caseId());
+        Files.createDirectories(out);
+        try {
+            if (driver != null) {
+                byte[] png = ((TakesScreenshot) driver.getDriver()).getScreenshotAs(OutputType.BYTES);
+                Path shot = out.resolve(failed ? "failure.png" : "final.png");
+                Files.write(shot, png);
+                log("Screenshot written: " + shot.toAbsolutePath().normalize());
+            }
+            if (failed && result.getThrowable() != null) {
+                log("Failure: " + result.getThrowable());
+            }
+            log("Result: " + (failed ? "FAILED" : result.getStatus() == ITestResult.SUCCESS ? "PASSED" : "SKIPPED"));
+            Files.write(out.resolve("steps.log"), stepLog, StandardCharsets.UTF_8);
+        } finally {
+            if (driver != null) {
+                driver.quit();
+            }
+        }
+    }
+
+    /** Test-data problem, distinguishable from an assertion failure. */
+    public static final class TestDataUnavailableException extends IllegalStateException {
+        public TestDataUnavailableException(String dataId, String detail) {
+            super("[TEST DATA] test data not available: " + dataId + " (" + detail + ")");
+        }
+    }
+}

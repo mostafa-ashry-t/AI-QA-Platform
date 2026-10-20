@@ -1,0 +1,249 @@
+{
+  "_about": "Journal event template for the automation-execution skill (schema 1.7.0). One stage_execution per binding per request. <runtime> values are filled at run time; commands carry env var NAMES only.",
+  "stage_execution": {
+    "schema_version": "1.7.0",
+    "event_id": "<runtime: EVT-NNNN, next sequence in execution-log.json>",
+    "event_type": "stage_execution",
+    "step_number": null,
+    "attempt": null,
+    "workflow_run_id": "<runtime: journal/workflow-run.json → active_run_id; never created by the skill>",
+    "task_id": "<runtime>",
+    "timestamp": "<runtime: system clock, UTC>",
+    "stage_id": "automation-execution",
+    "stage_name": "Automation Execution",
+    "skill_name": "automation-execution",
+    "skill_version": "1.0.0",
+    "prompt_id": "automation-execution",
+    "prompt_version": "1.0.0",
+    "prompt_variables": {
+      "task_name": "<runtime>",
+      "task_path": "<runtime>",
+      "workflow_run_id": "<runtime>",
+      "binding_ids": "<runtime>",
+      "test_case_ids": "<runtime>",
+      "run_ids": "<runtime>",
+      "credential_env_vars": "<runtime>"
+    },
+    "trigger": {
+      "reason": "<runtime>",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim, secrets redacted>"
+    },
+    "input_references": [
+      {
+        "path": "<task>/automation/<project-dir>/",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "Generated project (read only)"
+      },
+      {
+        "path": "<task>/automation/AutomationGeneration.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Bindings, commands, env var names"
+      },
+      {
+        "path": "<task>/test-design/TestCases.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Verbatim expected results"
+      },
+      {
+        "path": "journal:EVT-NNNN",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "automation-generation stage_execution of this binding"
+      },
+      {
+        "path": ".claude/prompts/automation-execution.md",
+        "role": "prompt",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": null
+      }
+    ],
+    "source_references": [],
+    "tools_used": [
+      {
+        "tool": "<runtime: e.g. npx playwright test / mvn test>",
+        "purpose": "Run the binding (retries 0, credentials via environment variables)",
+        "targets": [
+          "<task>/automation/<project-dir>/"
+        ]
+      }
+    ],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Tests run through the binding's own runner; MCP is not the automation framework"
+        }
+      ]
+    },
+    "actions": [
+      "<runtime>"
+    ],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [
+      {
+        "path": "<task>/automation-execution/execution-metrics.json",
+        "operation": "updated",
+        "artifact_status": "completed",
+        "artifact_version": null,
+        "sha256": "<runtime>",
+        "summary": "<runtime>"
+      },
+      {
+        "path": "<task>/automation-execution/<project-dir>/automation-report.html",
+        "operation": "created",
+        "artifact_status": "completed",
+        "artifact_version": null,
+        "sha256": "<runtime>",
+        "summary": "<runtime>"
+      }
+    ],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "<runtime: pass | fail | partial>",
+      "checks": [
+        {
+          "check_id": "AE-V01",
+          "description": "Prerequisites checked per binding",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "AE-V02",
+          "description": "Unique run IDs and folders",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "AE-V03",
+          "description": "Outcomes and durations from runner output / timer",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "AE-V04",
+          "description": "Non-passing runs classified with evidence",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "AE-V05",
+          "description": "execution-metrics.json validates",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "AE-V06",
+          "description": "Secret scan: 0 credential values",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "AE-V07",
+          "description": "Test code and approved artifacts unchanged",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "AE-V08",
+          "description": "HTML report parses, links resolve, no secrets",
+          "result": "<runtime>",
+          "notes": null
+        }
+      ]
+    },
+    "status": "completed",
+    "stop_reason": "STOP: runs recorded; self-healing only for non-passing runs not caused by the application.",
+    "approval_required": false,
+    "approval_key": null,
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "<runtime: self-healing | reporting>",
+      "unlocked": true,
+      "condition": "<runtime: e.g. non-passing runs handed to self-healing>"
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null,
+    "environment": {
+      "environment": "<runtime>",
+      "application_url": "<runtime>",
+      "configuration": "<runtime: binding, headless, timeout, retries 0>",
+      "test_data_source": "<runtime: env var NAMES; DATA-### resolved at run time>",
+      "execution_started_at": null,
+      "execution_ended_at": null,
+      "unavailable_fields": []
+    },
+    "browser": {
+      "available": true,
+      "unavailable_reason": null,
+      "name": "<runtime>",
+      "version": "<runtime or null>",
+      "source": "<runtime>"
+    },
+    "automation_runs": [
+      {
+        "run_id": "run-<yyyymmdd>-<letter><n>",
+        "binding_id": "<runtime>",
+        "project_dir": "<task>/automation/<project-dir>",
+        "command": "<runtime: env var NAMES only>",
+        "test_case_ids": [
+          "TC-NNN"
+        ],
+        "started_at": null,
+        "ended_at": null,
+        "exit_code": null,
+        "outcome": "passed",
+        "tests_total": null,
+        "tests_passed": null,
+        "tests_failed": null,
+        "test_duration_ms": null,
+        "runner_total_ms": null,
+        "wall_clock_ms": null,
+        "failure_class": null,
+        "failure_summary": null,
+        "result_files": [],
+        "evidence_ids": [],
+        "healing_ids": [],
+        "bug_ids": [],
+        "notes": null
+      }
+    ],
+    "test_results": [
+      {
+        "test_case_id": "TC-NNN",
+        "expected_result": "<runtime: verbatim>",
+        "actual_result": "<runtime: observed values>",
+        "status": "PASS",
+        "reason": null,
+        "failed_step": null,
+        "evidence_ids": [],
+        "failure_cause": null,
+        "bug_ids": [],
+        "test_case_issue_ids": [],
+        "deviation_ids": [],
+        "with_deviation": false
+      }
+    ]
+  }
+}

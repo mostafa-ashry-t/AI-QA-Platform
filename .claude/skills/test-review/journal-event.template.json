@@ -1,0 +1,686 @@
+{
+  "_about": "TEMPLATE, not a runtime event. Stage-specific constants of the test-review skill for each event type. Values that are null or '<runtime…>' MUST be filled from the actual execution (system clock, real paths, real hashes, the real review). Never fabricated. Conforms to platform/schemas/journal-event.schema.json (v1.5.0) once filled. revision_request and approval_decision also require the common runtime fields shown in stage_execution (event_id, step_number, attempt, workflow_run_id, task_id, timestamp, decisions, revision). workflow_run_id is READ from journal/workflow-run.json (active_run_id), never created by the skill. Array examples show one item's shape; runtime arrays contain exactly the real items (possibly none). The review never modifies TestCases.md: review_binding.reviewed_test_cases.sha256 is the hash at review start, which must equal the hash at review end (TR-V09).",
+  "stage_execution": {
+    "schema_version": "1.5.0",
+    "event_id": "<runtime: EVT-NNNN, next sequence in execution-log.json>",
+    "event_type": "stage_execution",
+    "step_number": null,
+    "attempt": null,
+    "workflow_run_id": "<runtime: journal/workflow-run.json → active_run_id; never created by the skill>",
+    "task_id": "<runtime>",
+    "timestamp": "<runtime: system clock, UTC>",
+    "stage_id": "test-review",
+    "stage_name": "Test Review",
+    "skill_name": "test-review",
+    "skill_version": "1.0.0",
+    "prompt_id": "test-review",
+    "prompt_version": "1.0.0",
+    "prompt_variables": {
+      "task_name": "<runtime>",
+      "task_path": "<runtime>",
+      "workflow_run_id": "<runtime>"
+    },
+    "trigger": {
+      "reason": "<runtime: e.g. 'Test review requested after TEST_DESIGN_APPROVED' | 'Re-review of TestCases vX.Y.Z after test-design revision' | 'Revision after change request EVT-NNNN'>",
+      "initiated_by": "<runtime: user|workflow>",
+      "user_message": "<runtime: verbatim>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/test-design/TestCases.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime: the REVIEWED hash (start of review = end of review)>",
+        "referenced_by": null,
+        "notes": "Reviewed artifact (read only); the approval of this review is bound to this hash"
+      },
+      {
+        "path": "<runtime: journal:EVT-NNNN (accepted TEST_DESIGN_APPROVED)>",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "Post-approval hash matched current TestCases.md; no later test-design run; design baseline = current approved ProjectContext and ExplorationReport"
+      },
+      {
+        "path": "<runtime>/context/ProjectContext.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Documented scope and business rules"
+      },
+      {
+        "path": "<runtime: journal:EVT-NNNN (accepted PROJECT_CONTEXT_APPROVED)>",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "Post-approval hash matched current ProjectContext.md"
+      },
+      {
+        "path": "<runtime>/exploration/ExplorationReport.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Observed behavior"
+      },
+      {
+        "path": "<runtime: journal:EVT-NNNN (accepted EXPLORATION_APPROVED)>",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "Post-approval hash matched; exploration baseline = current approved ProjectContext"
+      },
+      {
+        "path": "<runtime>/prd/PRD.md",
+        "role": "task_prd",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Traceability chains only"
+      },
+      {
+        "path": "<runtime>/context/TaskContext.md",
+        "role": "task_metadata",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Identity only"
+      },
+      {
+        "path": ".claude/prompts/test-review.md",
+        "role": "prompt",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": null
+      }
+    ],
+    "source_references": [
+      {
+        "path": "<runtime>/test-design/TestCases.md",
+        "sections": [
+          "<runtime: e.g. §4 TC-001…, §5, §9, §11>"
+        ]
+      },
+      {
+        "path": "<runtime>/context/ProjectContext.md",
+        "sections": [
+          "<runtime: e.g. §5 BR-001…, §6 EB-001…>"
+        ]
+      },
+      {
+        "path": "<runtime>/exploration/ExplorationReport.md",
+        "sections": [
+          "<runtime: e.g. §5 OBS-001…, §13>"
+        ]
+      }
+    ],
+    "tools_used": [
+      {
+        "tool": "<runtime: e.g. Read / Write / Bash sha256sum>",
+        "purpose": "<runtime>",
+        "targets": [
+          "<runtime>"
+        ]
+      }
+    ],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Test Review operates on approved artifacts only and does not require live browser access."
+        }
+      ]
+    },
+    "actions": [
+      "<runtime: e.g. Prerequisites 1–13 verified (TR-V01)>",
+      "<runtime: Binding recorded (TestCases, ProjectContext, ExplorationReport hashes)>",
+      "<runtime: 8 checks run over every active case; source coverage verified>",
+      "<runtime: Findings classified; earlier findings re-assessed (re-review only)>",
+      "<runtime: TestCases.md re-hashed, unchanged (TR-V09)>",
+      "<runtime: TestReview.md written>"
+    ],
+    "decisions": [
+      {
+        "decision": "<runtime: e.g. TR-### classified Change Required>",
+        "rationale": "<runtime: the classification rule applied>"
+      }
+    ],
+    "revision": "<runtime: null on attempt 1; otherwise {artifact_path, version_before, version_after, reason, changed_sections, revision_request_event_id (null for a re-review without a test-review change request), prompt_version_changed, previous_prompt_version, items_added, items_modified, items_removed}>",
+    "output_artifacts": [
+      {
+        "path": "<runtime>/test-review/TestReview.md",
+        "operation": "<runtime: created (placeholder replaced) | updated>",
+        "artifact_status": "<runtime: draft | changes_required>",
+        "artifact_version": "<runtime: 1.0.0 on attempt 1; minor bump per re-review or revision>",
+        "sha256": "<runtime>",
+        "summary": "<runtime: cases reviewed; findings CR/Adv open; outcome>"
+      }
+    ],
+    "review_binding": {
+      "reviewed_test_cases": {
+        "path": "<runtime>/test-design/TestCases.md",
+        "artifact_version": "<runtime>",
+        "sha256": "<runtime: reviewed hash>",
+        "approval_event_id": "<runtime: EVT-NNNN (TEST_DESIGN_APPROVED)>",
+        "produced_by_event_id": "<runtime: EVT-NNNN (test-design stage_execution)>"
+      },
+      "project_context": {
+        "path": "<runtime>/context/ProjectContext.md",
+        "artifact_version": "<runtime>",
+        "sha256": "<runtime>",
+        "approval_event_id": "<runtime: EVT-NNNN (PROJECT_CONTEXT_APPROVED)>",
+        "produced_by_event_id": null
+      },
+      "exploration_report": {
+        "path": "<runtime>/exploration/ExplorationReport.md",
+        "artifact_version": "<runtime>",
+        "sha256": "<runtime>",
+        "approval_event_id": "<runtime: EVT-NNNN (EXPLORATION_APPROVED)>",
+        "produced_by_event_id": null
+      }
+    },
+    "reviewed_test_case_ids": [
+      "<runtime: TC-###>"
+    ],
+    "review_findings": [
+      {
+        "id": "<runtime: TR-###>",
+        "classification": "<runtime: Change Required|Advisory>",
+        "category": "<runtime: missing_coverage|duplicate|unclear_step|invalid_expected_result|missing_precondition|unsupported_assumption|traceability_error|flag_inconsistency>",
+        "test_case_ids": [
+          "<runtime: TC-###>"
+        ],
+        "sources": [
+          "<runtime: PC BR-### / OBS-### / TestCases §n>"
+        ],
+        "description": "<runtime>",
+        "basis": "<runtime>",
+        "proposed_change": "<runtime: what must change and where; never applied here>",
+        "reason": "<runtime>",
+        "status": "open",
+        "resolution": null,
+        "classification_history": [],
+        "raised_in_review_version": "<runtime>",
+        "report_ref": "<runtime: test-review/TestReview.md §6 TR-###>"
+      }
+    ],
+    "review_outcome": "<runtime: changes_required | ready_for_approval>",
+    "coverage": {
+      "test_cases_reviewed": "<runtime>",
+      "test_cases_withdrawn_not_reviewed": "<runtime>",
+      "sources_checked": "<runtime>",
+      "sources_without_coverage": [
+        {
+          "source_id": "<runtime>",
+          "finding_id": "<runtime: TR-###>"
+        }
+      ],
+      "findings_total": "<runtime>",
+      "by_classification": {
+        "Advisory": "<runtime>",
+        "Change Required": "<runtime>"
+      },
+      "by_category": {
+        "missing_coverage": "<runtime>",
+        "duplicate": "<runtime>",
+        "unclear_step": "<runtime>",
+        "invalid_expected_result": "<runtime>",
+        "missing_precondition": "<runtime>",
+        "unsupported_assumption": "<runtime>",
+        "traceability_error": "<runtime>",
+        "flag_inconsistency": "<runtime>"
+      },
+      "open_change_required": "<runtime>",
+      "open_advisory": "<runtime>",
+      "resolved": "<runtime>",
+      "withdrawn": "<runtime>",
+      "open_questions": "<runtime>"
+    },
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [
+      {
+        "id": "<runtime: RQ-###>",
+        "question": "<runtime>",
+        "related": "<runtime: PC OQ-### / XQ-### / TQ-###>",
+        "owner": null,
+        "related_test_cases": [
+          "<runtime: TC-###>"
+        ],
+        "ambiguity": "<runtime>",
+        "required_clarification": "<runtime>"
+      }
+    ],
+    "validation": {
+      "performed": true,
+      "overall": "<runtime>",
+      "checks": [
+        {
+          "check_id": "TR-V01",
+          "description": "Prerequisites 1–13 verified before any review work",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "TR-V09",
+          "description": "TestCases.md not modified: hash at review end equals the reviewed hash",
+          "result": "<runtime>",
+          "notes": null
+        }
+      ]
+    },
+    "status": "awaiting_approval",
+    "stop_reason": "<runtime: 'HARD STOP: TestReview.md produced; human review required. Only TEST_REVIEW_APPROVED unlocks manual-execution and automation-generation (ADR-001).' — when Change Required findings are open, add: 'Not approvable until TR-### are resolved through a test-design revision or withdrawn/downgraded by a human decision.'>",
+    "approval_required": true,
+    "approval_key": "TEST_REVIEW_APPROVED",
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "manual-execution",
+      "unlocked": false,
+      "condition": "Exact standalone key TEST_REVIEW_APPROVED, accepted only with no open Change Required finding and a current review binding. The same approval also gates automation-generation."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  },
+  "stage_execution_blocked": {
+    "schema_version": "1.5.0",
+    "event_type": "stage_execution",
+    "stage_id": "test-review",
+    "stage_name": "Test Review",
+    "skill_name": "test-review",
+    "skill_version": "1.0.0",
+    "prompt_id": "test-review",
+    "prompt_version": "1.0.0",
+    "trigger": {
+      "reason": "<runtime>",
+      "initiated_by": "<runtime: user|workflow>",
+      "user_message": "<runtime>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime: the prerequisite file/approval checked>",
+        "role": "<runtime>",
+        "status": "<runtime: missing|read>",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "<runtime: why it failed>"
+      }
+    ],
+    "source_references": [],
+    "tools_used": [
+      {
+        "tool": "<runtime: e.g. Read>",
+        "purpose": "Prerequisite verification",
+        "targets": [
+          "<runtime>"
+        ]
+      }
+    ],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Test Review operates on approved artifacts only and does not require live browser access."
+        }
+      ]
+    },
+    "actions": [
+      "<runtime: Prerequisite check failed at #N>"
+    ],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [],
+    "review_binding": null,
+    "reviewed_test_case_ids": [],
+    "review_findings": [],
+    "review_outcome": null,
+    "coverage": null,
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "fail",
+      "checks": [
+        {
+          "check_id": "TR-V01",
+          "description": "Prerequisites 1–13 verified before any review work",
+          "result": "fail",
+          "notes": "<runtime>"
+        }
+      ]
+    },
+    "status": "blocked",
+    "stop_reason": "<runtime: 'Blocked: <TR-E##> — <prerequisite>. Nothing reviewed, no TestReview.md written.'>",
+    "approval_required": true,
+    "approval_key": "TEST_REVIEW_APPROVED",
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "manual-execution",
+      "unlocked": false,
+      "condition": "Prerequisite must be satisfied, the review completed, and TEST_REVIEW_APPROVED accepted. Manual Execution and Automation Generation stay blocked."
+    },
+    "errors": [
+      {
+        "code": "<runtime: TR-E##>",
+        "message": "<runtime>",
+        "resolution": null
+      }
+    ],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  },
+  "stage_execution_failed": {
+    "schema_version": "1.5.0",
+    "event_type": "stage_execution",
+    "stage_id": "test-review",
+    "stage_name": "Test Review",
+    "skill_name": "test-review",
+    "skill_version": "1.0.0",
+    "prompt_id": "test-review",
+    "prompt_version": "1.0.0",
+    "trigger": {
+      "reason": "<runtime>",
+      "initiated_by": "<runtime: user|workflow>",
+      "user_message": "<runtime>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/test-design/TestCases.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime: hash at review start>",
+        "referenced_by": null,
+        "notes": "<runtime: hash at review end differed: <hash>>"
+      }
+    ],
+    "source_references": [],
+    "tools_used": [
+      {
+        "tool": "<runtime: e.g. Bash sha256sum>",
+        "purpose": "Reviewed-artifact integrity check (TR-V09)",
+        "targets": [
+          "<runtime>/test-design/TestCases.md"
+        ]
+      }
+    ],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Test Review operates on approved artifacts only and does not require live browser access."
+        }
+      ]
+    },
+    "actions": [
+      "<runtime: Review started; TestCases.md hash changed before the review completed>"
+    ],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [],
+    "review_binding": null,
+    "reviewed_test_case_ids": [],
+    "review_findings": [],
+    "review_outcome": null,
+    "coverage": null,
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "fail",
+      "checks": [
+        {
+          "check_id": "TR-V09",
+          "description": "TestCases.md not modified: hash at review end equals the reviewed hash",
+          "result": "fail",
+          "notes": "<runtime>"
+        }
+      ]
+    },
+    "status": "failed",
+    "stop_reason": "Failed: TestCases.md changed during the review, so no version was reviewed. Nothing is presented as reviewed.",
+    "approval_required": true,
+    "approval_key": "TEST_REVIEW_APPROVED",
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "manual-execution",
+      "unlocked": false,
+      "condition": "A complete review of a stable, approved TestCases.md version, then TEST_REVIEW_APPROVED."
+    },
+    "errors": [
+      {
+        "code": "TR-V09",
+        "message": "<runtime>",
+        "resolution": null
+      }
+    ],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  },
+  "revision_request": {
+    "schema_version": "1.5.0",
+    "event_type": "revision_request",
+    "stage_id": "test-review",
+    "stage_name": "Test Review",
+    "skill_name": "test-review",
+    "skill_version": "1.0.0",
+    "prompt_id": null,
+    "prompt_version": null,
+    "trigger": {
+      "reason": "Human requested changes to TestReview.md (e.g. dispute, withdraw or downgrade a finding)",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim change request>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/test-review/TestReview.md",
+        "role": "previous_version_of_output",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": null
+      }
+    ],
+    "source_references": [],
+    "tools_used": [],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Test Review operates on approved artifacts only and does not require live browser access."
+        }
+      ]
+    },
+    "actions": [
+      "Recorded change request; the next stage_execution attempt updates TestReview.md in place (minor version bump, TR IDs preserved). TestCases.md is not changed by this stage."
+    ],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": false,
+      "overall": "not_applicable",
+      "checks": []
+    },
+    "status": "revision_requested",
+    "stop_reason": null,
+    "approval_required": true,
+    "approval_key": "TEST_REVIEW_APPROVED",
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "manual-execution",
+      "unlocked": false,
+      "condition": "Revision must be produced (minor version bump), presented, and approved with TEST_REVIEW_APPROVED."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  },
+  "approval_decision": {
+    "schema_version": "1.5.0",
+    "event_type": "approval_decision",
+    "stage_id": "test-review",
+    "stage_name": "Test Review",
+    "skill_name": "test-review",
+    "skill_version": "1.0.0",
+    "prompt_id": null,
+    "prompt_version": null,
+    "trigger": {
+      "reason": "Human replied at the Test Review gate",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim reply>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/test-review/TestReview.md",
+        "role": "previous_version_of_output",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": null
+      },
+      {
+        "path": "<runtime>/test-design/TestCases.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime: current hash; must equal review_binding.reviewed_test_cases.sha256 (TR-G03)>",
+        "referenced_by": null,
+        "notes": "Binding re-verified at the moment of the reply"
+      }
+    ],
+    "source_references": [],
+    "tools_used": [],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Gate decision only."
+        }
+      ]
+    },
+    "actions": [],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [
+      {
+        "path": "<runtime>/test-review/TestReview.md",
+        "operation": "<runtime: updated (Status → Approved) | unchanged>",
+        "artifact_status": "<runtime: approved|draft|changes_required>",
+        "artifact_version": "<runtime: unchanged by approval>",
+        "sha256": "<runtime: POST-update hash; used downstream to detect stale approval (S1)>",
+        "summary": null
+      }
+    ],
+    "review_binding": {
+      "reviewed_test_cases": {
+        "path": "<runtime>/test-design/TestCases.md",
+        "artifact_version": "<runtime>",
+        "sha256": "<runtime: reviewed hash, copied from the latest test-review stage_execution>",
+        "approval_event_id": "<runtime: EVT-NNNN (TEST_DESIGN_APPROVED)>",
+        "produced_by_event_id": "<runtime: EVT-NNNN>"
+      },
+      "project_context": {
+        "path": "<runtime>/context/ProjectContext.md",
+        "artifact_version": "<runtime>",
+        "sha256": "<runtime>",
+        "approval_event_id": "<runtime: EVT-NNNN>",
+        "produced_by_event_id": null
+      },
+      "exploration_report": {
+        "path": "<runtime>/exploration/ExplorationReport.md",
+        "artifact_version": "<runtime>",
+        "sha256": "<runtime>",
+        "approval_event_id": "<runtime: EVT-NNNN>",
+        "produced_by_event_id": null
+      }
+    },
+    "review_findings": [
+      {
+        "id": "<runtime: TR-### — every finding still open at the gate (Advisory if accepted; the blocking Change Required ones if not)>",
+        "classification": "<runtime>",
+        "category": "<runtime>",
+        "test_case_ids": [
+          "<runtime: TC-###>"
+        ],
+        "sources": [
+          "<runtime>"
+        ],
+        "description": "<runtime>",
+        "basis": "<runtime>",
+        "proposed_change": "<runtime>",
+        "reason": "<runtime>",
+        "status": "open",
+        "resolution": null,
+        "classification_history": [],
+        "raised_in_review_version": "<runtime>",
+        "report_ref": "<runtime>"
+      }
+    ],
+    "review_outcome": "<runtime: ready_for_approval | changes_required>",
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "<runtime>",
+      "checks": [
+        {
+          "check_id": "TR-G01",
+          "description": "Reply is exactly the standalone key TEST_REVIEW_APPROVED",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "TR-G02",
+          "description": "No Change Required finding is open",
+          "result": "<runtime>",
+          "notes": "<runtime: open Change Required IDs, if any>"
+        },
+        {
+          "check_id": "TR-G03",
+          "description": "Review still current: TestReview.md, TestCases.md, ProjectContext.md and ExplorationReport.md match the bound hashes; no later test-review or test-design run",
+          "result": "<runtime>",
+          "notes": null
+        }
+      ]
+    },
+    "status": "<runtime: approved | approval_not_accepted>",
+    "stop_reason": "<runtime: null if accepted; otherwise one of 'Reply was not the exact standalone approval key; stage remains stopped.' | 'Change Required findings TR-### are open; resolve them through a test-design revision, or withdraw/downgrade them by a human decision.' | 'Review is stale (<S#>); a re-review is required.'>",
+    "approval_required": true,
+    "approval_key": "TEST_REVIEW_APPROVED",
+    "approval_outcome": "<runtime: accepted | not_accepted>",
+    "next_stage": {
+      "stage_id": "manual-execution",
+      "unlocked": "<runtime: true only if accepted>",
+      "condition": "Unlocks manual-execution. automation-generation also requires this same approval to be current, plus MANUAL_EXECUTION_APPROVED. Stages start only when orchestration starts them."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  }
+}

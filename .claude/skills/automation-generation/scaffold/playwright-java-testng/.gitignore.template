@@ -1,0 +1,14 @@
+# TEMPLATE (automation-generation scaffold)
+# Build output
+target/
+# Run evidence belongs to automation-execution, never to the automation sources
+test-output/
+results/
+# Local secrets: never generated with values, never committed
+.env
+.env.*
+# IDE workspace (shared run configurations live in .run/ and ARE kept)
+.idea/
+*.iml
+# Browser downloads / caches
+.cache/

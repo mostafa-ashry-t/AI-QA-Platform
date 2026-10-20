@@ -1,0 +1,42 @@
+Source: Playwright MCP accessibility snapshot written by browser_wait_for (EVT-0012 mcp_actions seq 3) to .playwright-mcp/page-2026-10-15T09-12-32-048Z.yml at 2026-10-15T09:12:32Z (tool file-name timestamp). Copied verbatim except: the 2 credential values in the login hint were replaced with [REDACTED: credential]; MCP snapshot refs were removed.
+
+- generic:
+  - generic:
+    - img "company-branding"
+    - generic:
+      - heading "Login" [level=5]
+      - generic:
+        - generic:
+          - paragraph: "Username : [REDACTED: credential]"
+          - paragraph: "Password : [REDACTED: credential]"
+        - generic:
+          - generic:
+            - generic:
+              - generic: 
+              - generic: Username
+            - textbox "Username" [active]
+          - generic:
+            - generic:
+              - generic: 
+              - generic: Password
+            - textbox "Password"
+          - button "Login" [cursor=pointer]
+          - paragraph [cursor=pointer]: Forgot your password?
+      - generic:
+        - generic:
+          - link [cursor=pointer]:
+            - /url: https://www.linkedin.com/company/orangehrm/mycompany/
+          - link [cursor=pointer]:
+            - /url: https://www.facebook.com/OrangeHRM/
+          - link [cursor=pointer]:
+            - /url: https://twitter.com/orangehrm?lang=en
+          - link [cursor=pointer]:
+            - /url: https://www.youtube.com/c/OrangeHRMInc
+        - generic:
+          - paragraph: OrangeHRM OS 5.9
+          - paragraph:
+            - text: © 2005 - 2026
+            - link "OrangeHRM, Inc" [cursor=pointer]:
+              - /url: http://www.orangehrm.com
+            - text: . All rights reserved.
+  - img "orangehrm-logo"

@@ -1,0 +1,14 @@
+# Created at 2026-10-18T13:50:02.050
+java.lang.NullPointerException: Cannot invoke "String.trim()" because the return value of "java.lang.System.getProperty(String)" is null
+	at com.shaft.listeners.TestNGListener.onExecutionStart(TestNGListener.java:120)
+	at org.testng.TestNG.runExecutionListeners(TestNG.java:1129)
+	at org.testng.TestNG.run(TestNG.java:1074)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+

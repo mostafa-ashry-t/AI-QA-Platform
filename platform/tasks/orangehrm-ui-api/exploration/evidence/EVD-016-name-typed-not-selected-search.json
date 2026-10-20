@@ -1,0 +1,14 @@
+{
+  "inputValue": "Sara",
+  "inputClass": "",
+  "errors": [
+    {
+      "cls": "oxd-text oxd-text--span oxd-input-field-error-message oxd-input-group__message",
+      "text": "Invalid"
+    }
+  ],
+  "countTexts": [
+    "(137) Records Found"
+  ],
+  "cardCount": 14
+}

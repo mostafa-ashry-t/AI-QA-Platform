@@ -1,0 +1,11 @@
+{
+  "_comment": "Static, approved values for TC-054 (TestCases v1.4.0). Dynamic data (employee names, the DATA-012 Job Title + Location pair, record counts) is read from the application at run time and is never stored here. No credentials.",
+  "testCase": {
+    "id": "TC-054",
+    "dataPairId": "DATA-012"
+  },
+  "expected": {
+    "defaultOption": "-- Select --",
+    "resultsHeaderPattern": "^\\(\\d+\\) Records Found$"
+  }
+}

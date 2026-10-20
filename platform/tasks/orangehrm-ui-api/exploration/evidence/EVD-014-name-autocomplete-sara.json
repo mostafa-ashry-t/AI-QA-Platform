@@ -1,0 +1,12 @@
+{
+  "inputValue": "Sara",
+  "listbox": {
+    "data-v-3ebc98ba": "",
+    "data-v-390abb6d": "",
+    "role": "listbox",
+    "class": "oxd-autocomplete-dropdown --positon-bottom"
+  },
+  "suggestions": [
+    "Sara Tencrady"
+  ]
+}

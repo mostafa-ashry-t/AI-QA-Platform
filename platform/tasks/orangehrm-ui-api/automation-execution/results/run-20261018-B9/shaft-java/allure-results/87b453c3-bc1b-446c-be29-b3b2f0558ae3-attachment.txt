@@ -1,0 +1,30 @@
+[ReportManager] Loaded Test Data: "src/test/resources/testDataFiles/OrangeHRMDirectory.json". @18-10-2026 16:41:49.0128 PM
+[ReportManager] Successfully created attachment 'Test Data - JSON' @18-10-2026 16:41:49.0131 PM
+[ReportManager] Setting "headlessExecution" property with "true". @18-10-2026 16:41:50.0743 PM
+[ReportManager] Setting "defaultElementIdentificationTimeout" property with "30.0". @18-10-2026 16:41:50.0746 PM
+[ReportManager] Setting "retryMaximumNumberOfAttempts" property with "0". @18-10-2026 16:41:50.0748 PM
+[ReportManager] Setting "autoMaximizeBrowserWindow" property with "false". @18-10-2026 16:41:50.0751 PM
+[ReportManager] Post processing some properties to support platforms-specific restrictions. @18-10-2026 16:41:50.0765 PM
+[ReportManager] Setting "targetOperatingSystem" property with "windows". @18-10-2026 16:41:50.0791 PM
+[ReportManager] Setting "screenshotParams_scalingFactor" property with "1.0". @18-10-2026 16:41:50.0953 PM
+[ReportManager] Capabilities {browserName: chrome, goog:chromeOptions: {args: [--headless, --window-position=0,0, --window-size=1920,1080, --disable-features=Password..., --disable-features=Password..., --disable-save-password-bubble, --headless=new], extensions: [], prefs: {credentials_enable_service: false, profile.password_manager_enabled: false, profile.password_manager_leak_detection: false}}, pageLoadStrategy: none, timeouts: {pageLoad: 60000, script: 30000}, webSocketUrl: true} @18-10-2026 16:41:50.0965 PM
+[ReportManager] Attempting to run locally on: "Windows | Chrome", Headless Execution. @18-10-2026 16:41:50.0966 PM
+[ReportManager] Identifying OS/Driver combination. Please note that if a new browser/driver executable will be downloaded it may take some time depending on your connection... @18-10-2026 16:41:50.0966 PM
+[ReportManager] Successfully Opened: "Windows | Chrome", Headless Execution. @18-10-2026 16:41:55.0885 PM
+[ReportManager] Initial window size: (1920, 1080) @18-10-2026 16:41:56.0032 PM
+[ReportManager] Window size after SWD Maximize: (800, 600) @18-10-2026 16:41:56.0094 PM
+[ReportManager] Maximize window "New screen size is now: (800, 600)". @18-10-2026 16:41:56.0096 PM
+[ReportManager] Initial window size: (800, 600) @18-10-2026 16:41:56.0201 PM
+[ReportManager] Window size after SWD: (1920, 1080) @18-10-2026 16:41:56.0263 PM
+[ReportManager] Set window size "New screen size is now: (1920, 1080)". @18-10-2026 16:41:56.0264 PM
+[ReportManager] 2026-10-18T13:41:56.264438100Z [TC-054] Precondition: No authenticated session in the browser (fresh browser context, or logged out). @18-10-2026 16:41:56.0264 PM
+[ReportManager] 2026-10-18T13:41:56.301043700Z [TC-054]   observed cookies in the fresh browser = 0 @18-10-2026 16:41:56.0301 PM
+[ReportManager] 2026-10-18T13:41:56.302041Z [TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001). @18-10-2026 16:41:56.0302 PM
+[ReportManager] Target URL: "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory", and after redirection: "/auth/login" @18-10-2026 16:41:56.0337 PM
+[ReportManager] Initial URL: "about:blank" @18-10-2026 16:41:56.0409 PM
+[ReportManager] Navigate to url "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory". @18-10-2026 16:41:59.0488 PM
+[ReportManager] 2026-10-18T13:42:00.129833400Z [TC-054]   observed URL after opening the Directory URL = https://opensource-demo.orangehrmlive.com/web/index.php/auth/login @18-10-2026 16:42:00.0129 PM
+[ReportManager] Type  securely "Username" @18-10-2026 16:42:00.0440 PM
+[ReportManager] Type  securely "Password" @18-10-2026 16:42:00.0707 PM
+[ReportManager] Click "Login" @18-10-2026 16:42:00.0902 PM
+[ReportManager] 2026-10-18T13:42:02.410980900Z [TC-054]   observed URL after login = https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory @18-10-2026 16:42:02.0412 PM

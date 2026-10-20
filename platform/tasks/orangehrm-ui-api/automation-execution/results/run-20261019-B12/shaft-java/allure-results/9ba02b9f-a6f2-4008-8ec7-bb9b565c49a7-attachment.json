@@ -1,0 +1,9 @@
+{
+  "jobTitleLocationPair": {
+    "dataId": "DATA-012"
+  },
+  "expected": {
+    "defaultOption": "-- Select --",
+    "resultsHeaderPattern": "^\\(\\d+\\) Records Found$"
+  }
+}

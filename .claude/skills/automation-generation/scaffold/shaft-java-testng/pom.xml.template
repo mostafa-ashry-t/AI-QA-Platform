@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TEMPLATE (automation-generation scaffold, binding shaft-java-testng).
+  Pin {{shaft_version}} to the newest SHAFT release whose compiler target is <= {{java_level}}
+  (check the release POM's maven-compiler-plugin source/target or jdk.version).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>{{group_id}}</groupId>
+    <artifactId>{{artifact_id}}</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>{{project_name}}</name>
+
+    <properties>
+        <maven.compiler.release>{{java_level}}</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <shaft.version>{{shaft_version}}</shaft.version>
+        <aspectj.version>{{aspectj_version}}</aspectj.version>
+        <surefire.version>{{surefire_version}}</surefire.version>
+        <!-- Optional extra JVM arguments for the test JVM (empty by default). On Windows
+             profiles whose path contains a space, pass -Dshaft.extraArgLine=-Duser.home=<8.3 short path>:
+             SHAFT 10.1 runs its Allure CLI from user.home without quoting (otherwise the build fails after the tests). -->
+        <shaft.extraArgLine></shaft.extraArgLine>
+    </properties>
+
+    <dependencies>
+        <!-- Brings Selenium WebDriver, TestNG and Allure (record the resolved versions). -->
+        <dependency>
+            <groupId>io.github.shafthq</groupId>
+            <artifactId>SHAFT_ENGINE</artifactId>
+            <version>${shaft.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire.version}</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <!-- Never rerun a failed test: a rerun could hide a real failure. -->
+                    <rerunFailingTestsCount>0</rerunFailingTestsCount>
+                    <!-- SHAFT's TestNG listener reads rp.enable before its defaults are loaded
+                         (otherwise an NPE in SHAFT 10.1 TestNGListener.onExecutionStart). ReportPortal is not used. -->
+                    <systemPropertyVariables>
+                        <rp.enable>false</rp.enable>
+                    </systemPropertyVariables>
+                    <argLine>-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar" ${shaft.extraArgLine}</argLine>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-testng</artifactId>
+                        <version>${surefire.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+</project>

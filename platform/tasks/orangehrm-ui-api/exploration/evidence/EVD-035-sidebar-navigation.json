@@ -1,0 +1,13 @@
+{
+  "url": "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory",
+  "title": "OrangeHRM",
+  "sidebarDirectory": {
+    "href": "/web/index.php/directory/viewDirectory",
+    "cls": "oxd-main-menu-item active"
+  },
+  "headerTitle": "Directory",
+  "formVisible": true,
+  "count": [
+    "No Records Found"
+  ]
+}

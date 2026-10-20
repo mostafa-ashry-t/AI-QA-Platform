@@ -1,0 +1,201 @@
+{
+  "format": "ai-qa-platform/journal-curation",
+  "about": "Short titles and descriptions written for the journal page in plain language. They summarize the recorded history; they are not part of it. Original prompts and outputs come only from session-history.json and the repository.",
+  "activities": {
+    "ACT-01": {
+      "kind": "implementation",
+      "stages": [],
+      "title": {
+        "en": "Set up the platform",
+        "ar": "إعداد المنصة"
+      },
+      "summary": {
+        "en": "Created the folders, the reusable task template, the list of QA steps, and the project rules. No testing was done.",
+        "ar": "إنشاء المجلدات وقالب المهمة القابل لإعادة الاستخدام وقائمة خطوات ضمان الجودة وقواعد المشروع. لم يُجرَ أي اختبار."
+      }
+    },
+    "ACT-02": {
+      "kind": "implementation",
+      "stages": [
+        "project-context"
+      ],
+      "title": {
+        "en": "Added the “Project Context” step",
+        "ar": "إضافة خطوة «سياق المشروع»"
+      },
+      "summary": {
+        "en": "Wrote the instructions for turning approved requirements into a clear QA analysis: scope, rules, risks and open questions. The step was not run.",
+        "ar": "كتابة تعليمات تحويل المتطلبات المعتمدة إلى تحليل واضح للجودة: النطاق والقواعد والمخاطر والأسئلة المفتوحة. لم تُشغَّل الخطوة."
+      }
+    },
+    "ACT-03": {
+      "kind": "implementation",
+      "stages": [
+        "prd-generation",
+        "project-context"
+      ],
+      "title": {
+        "en": "Fixed the structure and added the “Requirements (PRD)” step",
+        "ar": "تصحيح البنية وإضافة خطوة «وثيقة المتطلبات»"
+      },
+      "summary": {
+        "en": "Separated the raw task request from the analysis, added an approval before analysis starts, and wrote the step that turns a request into a requirements document. Nothing was run.",
+        "ar": "فصل طلب المهمة الخام عن التحليل، وإضافة اعتماد قبل بدء التحليل، وكتابة الخطوة التي تحوّل الطلب إلى وثيقة متطلبات. لم يُشغَّل شيء."
+      }
+    },
+    "ACT-04": {
+      "kind": "implementation",
+      "stages": [
+        "exploration"
+      ],
+      "title": {
+        "en": "Added the “Explore the app” step",
+        "ar": "إضافة خطوة «استكشاف التطبيق»"
+      },
+      "summary": {
+        "en": "Wrote the instructions for opening the real application in a browser, comparing what it does with the requirements, and saving evidence. The application was not opened.",
+        "ar": "كتابة تعليمات فتح التطبيق الحقيقي في المتصفح ومقارنة سلوكه بالمتطلبات وحفظ الأدلة. لم يُفتح التطبيق."
+      }
+    },
+    "ACT-05": {
+      "kind": "implementation",
+      "stages": [
+        "test-design"
+      ],
+      "title": {
+        "en": "Added the “Write test cases” step",
+        "ar": "إضافة خطوة «كتابة حالات الاختبار»"
+      },
+      "summary": {
+        "en": "Wrote the instructions for designing test cases with standard techniques, linked to the requirements, without guessing expected results. No test cases were written.",
+        "ar": "كتابة تعليمات تصميم حالات الاختبار بتقنيات معروفة، مربوطة بالمتطلبات، دون تخمين النتائج المتوقعة. لم تُكتب حالات اختبار."
+      }
+    },
+    "ACT-06": {
+      "kind": "implementation",
+      "stages": [
+        "manual-execution"
+      ],
+      "title": {
+        "en": "Added the “Run the tests by hand” step",
+        "ar": "إضافة خطوة «تنفيذ الاختبارات يدويًا»"
+      },
+      "summary": {
+        "en": "Wrote the instructions for running approved test cases in the browser, recording pass or fail, and reporting bugs. No tests were run.",
+        "ar": "كتابة تعليمات تشغيل حالات الاختبار المعتمدة في المتصفح وتسجيل النجاح أو الفشل والإبلاغ عن الأخطاء. لم تُشغَّل أي اختبارات."
+      }
+    },
+    "ACT-07": {
+      "kind": "audit",
+      "stages": [],
+      "title": {
+        "en": "Reviewed the design (no changes)",
+        "ar": "مراجعة التصميم (دون تغييرات)"
+      },
+      "summary": {
+        "en": "Checked the whole setup and listed problems and missing pieces before continuing. No files were changed.",
+        "ar": "فحص الإعداد كاملًا وتحديد المشكلات والأجزاء الناقصة قبل المتابعة. لم يُعدَّل أي ملف."
+      }
+    },
+    "ACT-08": {
+      "kind": "decision",
+      "stages": [
+        "test-review",
+        "manual-execution",
+        "automation-generation"
+      ],
+      "title": {
+        "en": "Decided: test cases must be reviewed first",
+        "ar": "قرار: يجب مراجعة حالات الاختبار أولًا"
+      },
+      "summary": {
+        "en": "Recorded a decision (ADR-001): test cases must be reviewed and approved before anyone runs or automates them.",
+        "ar": "تسجيل قرار (ADR-001): يجب مراجعة حالات الاختبار واعتمادها قبل تشغيلها أو أتمتتها."
+      }
+    },
+    "ACT-09": {
+      "kind": "implementation",
+      "stages": [
+        "test-review"
+      ],
+      "title": {
+        "en": "Added the “Review test cases” step",
+        "ar": "إضافة خطوة «مراجعة حالات الاختبار»"
+      },
+      "summary": {
+        "en": "Wrote the instructions for reviewing test cases, marking each finding as advisory or must-fix, and blocking approval until must-fix items are solved. The step was not run.",
+        "ar": "كتابة تعليمات مراجعة حالات الاختبار، وتصنيف كل ملاحظة إلى استشارية أو واجبة الإصلاح، ومنع الاعتماد حتى تُحل الملاحظات الواجبة. لم تُشغَّل الخطوة."
+      }
+    },
+    "ACT-10": {
+      "kind": "journal",
+      "stages": [],
+      "title": {
+        "en": "Built this journal page",
+        "ar": "بناء صفحة السجل هذه"
+      },
+      "summary": {
+        "en": "Created a detailed journal page from the project files and the conversation history.",
+        "ar": "إنشاء صفحة سجل مفصلة من ملفات المشروع وسجل المحادثة."
+      }
+    },
+    "ACT-11": {
+      "kind": "journal",
+      "stages": [],
+      "title": {
+        "en": "Simplified this journal page",
+        "ar": "تبسيط صفحة السجل هذه"
+      },
+      "summary": {
+        "en": "Reduced the page to three sections: Overview, Project History and Next Step. Its record ends where it was saved, so it is incomplete.",
+        "ar": "اختصار الصفحة إلى ثلاثة أقسام: نظرة عامة، وتاريخ المشروع، والخطوة التالية. ينتهي سجلها عند لحظة حفظه، لذا فهو غير مكتمل."
+      }
+    }
+  },
+  "stage_names": {
+    "task-creation": {
+      "en": "Create a task",
+      "ar": "إنشاء مهمة"
+    },
+    "prd-generation": {
+      "en": "Requirements (PRD)",
+      "ar": "وثيقة المتطلبات"
+    },
+    "project-context": {
+      "en": "Project context",
+      "ar": "سياق المشروع"
+    },
+    "exploration": {
+      "en": "Explore the app",
+      "ar": "استكشاف التطبيق"
+    },
+    "test-design": {
+      "en": "Write test cases",
+      "ar": "كتابة حالات الاختبار"
+    },
+    "test-review": {
+      "en": "Review test cases",
+      "ar": "مراجعة حالات الاختبار"
+    },
+    "manual-execution": {
+      "en": "Run tests by hand",
+      "ar": "تنفيذ الاختبارات يدويًا"
+    },
+    "automation-generation": {
+      "en": "Write automated tests",
+      "ar": "كتابة الاختبارات الآلية"
+    },
+    "automation-execution": {
+      "en": "Run automated tests",
+      "ar": "تشغيل الاختبارات الآلية"
+    },
+    "self-healing": {
+      "en": "Fix broken automated tests",
+      "ar": "إصلاح الاختبارات الآلية المعطلة"
+    },
+    "reporting": {
+      "en": "Final reports",
+      "ar": "التقارير النهائية"
+    }
+  }
+}

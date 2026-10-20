@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "platform/schemas/execution-metrics.schema.json",
+  "title": "Automation execution metrics",
+  "description": "platform/tasks/<task-name>/automation-execution/execution-metrics.json, written by the automation-execution skill. One entry per command run of one binding, extracted from the runner's machine-readable outputs. Values are never estimated: unknown values are null. Case-specific observed values (e.g. counts read during the run) may be added as extra properties.",
+  "type": "object",
+  "required": ["generated_from", "runs"],
+  "properties": {
+    "generated_from": {
+      "type": "string",
+      "description": "Which outputs the values were extracted from."
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["run_id", "framework", "test_status"],
+        "additionalProperties": true,
+        "properties": {
+          "run_id": { "type": "string" },
+          "framework": { "type": "string", "description": "Project dir of the binding, e.g. playwright-ts, shaft-java." },
+          "test_status": { "enum": ["passed", "failed", "not_run", "skipped"], "description": "Status of the test itself as the runner recorded it. A run whose test passed but whose command failed keeps 'passed' here and sets build = FAILURE." },
+          "test_duration_ms": { "type": ["integer", "null"] },
+          "runner_total_ms": { "type": ["integer", "null"] },
+          "wall_clock_ms": { "type": ["integer", "null"], "description": "Shell time around the whole command; null when not measured." },
+          "build": { "enum": ["SUCCESS", "FAILURE"], "description": "Build-tool result, for bindings that use one (Maven)." },
+          "error": { "type": ["string", "null"], "description": "First error line, secrets removed." }
+        }
+      }
+    }
+  }
+}

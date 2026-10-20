@@ -1,0 +1,31 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="1" time="0.6406919999999999">
+<testsuite name="TC-054.spec.ts" timestamp="2026-10-18T10:45:46.991Z" hostname="chromium" tests="1" failures="0" skipped="0" time="0.002" errors="1">
+<testcase name="TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset" classname="TC-054.spec.ts" time="0.002">
+<properties>
+<property name="case" value="TC-054">
+</property>
+</properties>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\error-context.md]]
+]]>
+</system-out>
+<error message="browserType.launch: Executable doesn&apos;t exist at C:\Users\QC User\AppData\Local\ms-playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe" type="Error">
+<![CDATA[  [chromium] › TC-054.spec.ts:14:5 › TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset @TC-054 @e2e 
+
+    Error: browserType.launch: Executable doesn't exist at C:\Users\QC User\AppData\Local\ms-playwright\chromium_headless_shell-1248\chrome-headless-shell-win64\chrome-headless-shell.exe
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: ..\..\..\automation-execution\results\run-20261018-A1\playwright-ts\test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\error-context.md
+]]>
+</error>
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Playwright outputs
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Playwright MCP runtime output (keep folder)
+.playwright-mcp/*
+!.playwright-mcp/.gitkeep
+
+# Claude Code local-only settings
+.claude/settings.local.json
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# LibreOffice / office lock files
+.~lock.*#

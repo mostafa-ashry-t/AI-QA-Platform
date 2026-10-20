@@ -1,0 +1,294 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\node_modules\\@playwright\\test\\cli.js",
+      "test"
+    ],
+    "configFile": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\playwright.config.ts",
+    "rootDir": "C:/Users/QC User/Desktop/FinalAI/AI-QA-Platform/platform/tasks/orangehrm-ui-api/automation/playwright-ts/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/QC User/Desktop/FinalAI/AI-QA-Platform/platform/tasks/orangehrm-ui-api/automation-execution/results/run-20261018-A3/playwright-ts/test-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/QC User/Desktop/FinalAI/AI-QA-Platform/platform/tasks/orangehrm-ui-api/automation/playwright-ts/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A3\\playwright-ts\\test-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "chromium",
+        "testDir": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\tests",
+        "snapshotDir": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\tests",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 240000,
+        "use": {
+          "baseURL": "https://opensource-demo.orangehrmlive.com",
+          "headless": true,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "actionTimeout": 30000,
+          "navigationTimeout": 30000,
+          "screenshot": "off",
+          "trace": "off",
+          "video": "off",
+          "browserName": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A3\\playwright-ts\\html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A3\\playwright-ts\\results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A3\\playwright-ts\\junit.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "TC-054.spec.ts",
+      "file": "TC-054.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset",
+          "ok": true,
+          "tags": [
+            "TC-054",
+            "e2e"
+          ],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [
+                {
+                  "type": "case",
+                  "description": "TC-054",
+                  "location": {
+                    "file": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\tests\\TC-054.spec.ts",
+                    "line": 14,
+                    "column": 5
+                  }
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11169,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "2026-10-18T10:49:21.224Z [TC-054] Precondition: No authenticated session in the browser (fresh browser context, or logged out).\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:21.226Z [TC-054]   observed cookies in the fresh browser context = 0\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:21.226Z [TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001).\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:28.140Z [TC-054]   observed URL after opening the Directory URL = \"https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\"\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:29.287Z [TC-054]   observed URL after login = \"https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory\"\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:29.299Z [TC-054] Tracing started (login step intentionally not traced: secrets).\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:29.657Z [TC-054]   observed unfiltered results header (for the DATA-012 condition) = \"(111) Records Found\"\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:29.845Z [TC-054]   observed DATA-012 pair (from the card of Diego Alvarez) = {\"jobTitle\":\"Probation Trainee PLW1462\",\"location\":\"New York Sales Office\"}\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:29.845Z [TC-054] Step 2: Select the Job Title and the Location of the DATA-012 pair; click Search.\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:30.141Z [TC-054] Step 3: Wait until result cards are displayed; read the results header and note the filtered record count k (\"(k) Records Found\", or \"(1) Record Found\" when k is 1).\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:30.982Z [TC-054]   observed filtered results header = \"(6) Records Found\"\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:30.982Z [TC-054]   observed k = 6\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:30.982Z [TC-054] Step 4: Click the first result card; then click the panel's arrow icon.\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:31.036Z [TC-054]   observed detail panel opened for the first card = \"Diego Alvarez\"\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:31.091Z [TC-054]   observed detail panel after the arrow click = \"not displayed\"\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:31.097Z [TC-054] Step 5: Click Reset.\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:31.147Z [TC-054] Step 6: Wait until employee result cards are displayed, then read the results header.\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:31.975Z [TC-054]   observed results header changed after Reset within the timeout = true\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:32.015Z [TC-054]   observed state after Reset = {\"header\":\"(111) Records Found\",\"employeeName\":\"\",\"jobTitle\":\"-- Select --\",\"location\":\"-- Select --\"}\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:32.018Z [TC-054]   observed N = 111\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:32.152Z [TC-054] Screenshot written: C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A3\\playwright-ts\\TC-054\\final.png\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:32.155Z [TC-054] Result: PASSED (status passed)\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "[TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001).",
+                      "duration": 8061
+                    },
+                    {
+                      "title": "[TC-054] Step 2: Select the Job Title and the Location of the DATA-012 pair; click Search.",
+                      "duration": 295
+                    },
+                    {
+                      "title": "[TC-054] Step 3: Wait until result cards are displayed; read the results header and note the filtered record count k (\"(k) Records Found\", or \"(1) Record Found\" when k is 1).",
+                      "duration": 841
+                    },
+                    {
+                      "title": "[TC-054] Step 4: Click the first result card; then click the panel's arrow icon.",
+                      "duration": 109
+                    },
+                    {
+                      "title": "[TC-054] Step 5: Click Reset.",
+                      "duration": 50
+                    },
+                    {
+                      "title": "[TC-054] Step 6: Wait until employee result cards are displayed, then read the results header.",
+                      "duration": 868
+                    }
+                  ],
+                  "startTime": "2026-10-18T10:49:20.843Z",
+                  "annotations": [
+                    {
+                      "type": "case",
+                      "description": "TC-054",
+                      "location": {
+                        "file": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\tests\\TC-054.spec.ts",
+                        "line": 14,
+                        "column": 5
+                      }
+                    }
+                  ],
+                  "attachments": [
+                    {
+                      "name": "final.png",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A3\\playwright-ts\\test-output\\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\\attachments\\final-png-91692590e4ba6dad2e4cfb3001bc17e927ddcf65.png"
+                    },
+                    {
+                      "name": "steps.log",
+                      "contentType": "text/plain",
+                      "path": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A3\\playwright-ts\\test-output\\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\\attachments\\steps-log-c8ab892a60627612ecf8f6459f18fc7f80066251.log"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "373e626296c0c794b633-0d3aae5e707b9e2fabb7",
+          "file": "TC-054.spec.ts",
+          "line": 14,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-18T10:49:20.187Z",
+    "duration": 12312.836000000001,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

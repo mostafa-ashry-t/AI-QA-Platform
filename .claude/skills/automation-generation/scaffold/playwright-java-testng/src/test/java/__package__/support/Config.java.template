@@ -1,0 +1,73 @@
+package {{base_package}}.support;
+
+/**
+ * TEMPLATE (automation-generation scaffold). Central run configuration.
+ *
+ * Every value comes from an environment variable. Non-secret values have a safe
+ * default; credentials have NO default and fail fast when missing. A missing
+ * variable is reported by NAME only, never by value. Values are never logged.
+ */
+public final class Config {
+
+    private Config() {
+    }
+
+    /** Application entry point (not secret). */
+    public static String baseUrl() {
+        return optional("QA_BASE_URL", "{{base_url}}");
+    }
+
+    /** chromium | firefox | webkit */
+    public static String browser() {
+        return optional("QA_BROWSER", "chromium");
+    }
+
+    public static boolean headless() {
+        return Boolean.parseBoolean(optional("QA_HEADLESS", "true"));
+    }
+
+    /** Central timeout for actions and retrying assertions, in milliseconds. */
+    public static double timeoutMs() {
+        return Double.parseDouble(optional("QA_TIMEOUT_MS", "{{default_timeout_ms}}"));
+    }
+
+    /** Root folder for run evidence; belongs to the automation-execution stage. */
+    public static String artifactsDir() {
+        return optional("QA_ARTIFACTS_DIR", "{{default_artifacts_dir}}");
+    }
+
+    /** Identifier of this run, used in evidence paths. */
+    public static String runId() {
+        return optional("QA_RUN_ID", "local-" + System.currentTimeMillis());
+    }
+
+    public static String username() {
+        return required("{{username_env_var}}");
+    }
+
+    public static String password() {
+        return required("{{password_env_var}}");
+    }
+
+    private static String optional(String name, String fallback) {
+        String value = System.getenv(name);
+        return value == null || value.trim().isEmpty() ? fallback : value.trim();
+    }
+
+    private static String required(String name) {
+        String value = System.getenv(name);
+        if (value == null || value.isEmpty()) {
+            throw new MissingConfigurationException(
+                    "Missing required environment variable: " + name
+                            + " (set it in your shell or IDE run configuration; it is never stored in the project)");
+        }
+        return value;
+    }
+
+    /** Configuration problem, distinguishable from an assertion failure. */
+    public static final class MissingConfigurationException extends IllegalStateException {
+        public MissingConfigurationException(String message) {
+            super("[CONFIGURATION] " + message);
+        }
+    }
+}

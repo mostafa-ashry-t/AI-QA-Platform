@@ -1,0 +1,37 @@
+// TEMPLATE (automation-generation scaffold, binding playwright-ts)
+import * as path from 'path';
+import { defineConfig } from '@playwright/test';
+import { settings } from './src/support/config';
+
+/**
+ * Retries 0, one worker, no fixed sleeps. Tracing, screenshots and step logs are
+ * handled by the qa fixture (src/support/fixtures.ts) so that the login step,
+ * which types secrets on a page that displays the demo credentials, is never traced.
+ */
+export default defineConfig({
+  testDir: './tests',
+  fullyParallel: false,
+  workers: 1,
+  retries: 0,
+  forbidOnly: true,
+  timeout: settings.testTimeoutMs,
+  expect: { timeout: settings.timeoutMs },
+  outputDir: path.join(settings.runDir, 'test-output'),
+  reporter: [
+    ['list'],
+    ['html', { outputFolder: path.join(settings.runDir, 'html-report'), open: 'never' }],
+    ['json', { outputFile: path.join(settings.runDir, 'results.json') }],
+    ['junit', { outputFile: path.join(settings.runDir, 'junit.xml') }],
+  ],
+  use: {
+    baseURL: settings.baseUrl,
+    headless: settings.headless,
+    viewport: { width: 1920, height: 1080 },
+    actionTimeout: settings.timeoutMs,
+    navigationTimeout: settings.timeoutMs,
+    screenshot: 'off',
+    trace: 'off',
+    video: 'off',
+  },
+  projects: [{ name: settings.browser, use: { browserName: settings.browser } }],
+});

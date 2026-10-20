@@ -1,0 +1,30 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="{{run_name}}" type="TestNG">
+    <module name="{{artifact_id}}" />
+    <shortenClasspath name="NONE" />
+    <useClassPathOnly />
+    <option name="SUITE_NAME" value="$PROJECT_DIR$/testng.xml" />
+    <option name="PACKAGE_NAME" value="" />
+    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="GROUP_NAME" value="" />
+    <option name="TEST_OBJECT" value="SUITE" />
+    <option name="VM_PARAMETERS" value="-ea -javaagent:&quot;$MAVEN_REPOSITORY$/org/aspectj/aspectjweaver/{{aspectj_version}}/aspectjweaver-{{aspectj_version}}.jar&quot;" />
+    <option name="PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="OUTPUT_DIRECTORY" value="" />
+    <option name="TEST_SEARCH_SCOPE">
+      <value defaultName="moduleWithDependencies" />
+    </option>
+    <envs>
+      <env name="{{username_env_var}}" value="" />
+      <env name="{{password_env_var}}" value="" />
+      <env name="QA_HEADLESS" value="false" />
+    </envs>
+    <properties />
+    <listeners />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

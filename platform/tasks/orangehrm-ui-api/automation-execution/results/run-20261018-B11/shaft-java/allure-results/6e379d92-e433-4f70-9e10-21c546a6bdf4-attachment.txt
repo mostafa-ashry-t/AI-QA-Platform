@@ -1,0 +1,24 @@
+[ReportManager] 2026-10-18T14:11:51.045381700Z Test started: TC054_verifyThatResetRestoresDefaultsAfterCombinedFilterAndEmployeeDetails @18-10-2026 17:11:51.0045 PM
+
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                        Starting Execution: '1 out of 1' test cases in the current suite                                        
+         Test Method: 'OrangeHRMPages.Directory.Directory_TC.TC054_verifyThatResetRestoresDefaultsAfterCombinedFilterAndEmployeeDetails'         
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m
+[ReportManager] 2026-10-18T14:11:51.198972100Z Results header: (114) Records Found @18-10-2026 17:11:51.0198 PM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 17:11:52.0981 PM
+[ReportManager] Click "Chief Financial Officer" @18-10-2026 17:11:53.0266 PM
+[ReportManager] 2026-10-18T14:11:53.308700300Z Selected Job Title 'Chief Financial Officer' @18-10-2026 17:11:53.0308 PM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 17:11:53.0567 PM
+[ReportManager] Click "New York Sales Office" @18-10-2026 17:11:53.0841 PM
+[ReportManager] 2026-10-18T14:11:53.884435800Z Selected Location 'New York Sales Office' @18-10-2026 17:11:53.0884 PM
+[ReportManager] Click "Search" @18-10-2026 17:11:54.0098 PM
+[ReportManager] 2026-10-18T14:11:54.770387600Z After Search: results header '(1) Record Found' (changed: true) @18-10-2026 17:11:54.0770 PM
+[ReportManager] 2026-10-18T14:11:54.881367200Z Results header: (1) Record Found @18-10-2026 17:11:54.0881 PM
+[ReportManager] Click "By.xpath: (//div[contains(@class,'orangehrm-container')]//div[contains(concat(' ',normalize-space(@class),' '),' orangehrm-directory-card ')])[1]" @18-10-2026 17:11:55.0163 PM
+[ReportManager] 2026-10-18T14:11:55.163669600Z Clicked the first result card: Peter Mac Anderson @18-10-2026 17:11:55.0163 PM
+[ReportManager] 2026-10-18T14:11:55.228758600Z Employee details panel opened @18-10-2026 17:11:55.0228 PM
+[ReportManager] Click "By.xpath: //div[contains(@class,'orangehrm-corporate-directory-sidebar')]//i[contains(@class,'bi-arrow-right')]" @18-10-2026 17:11:55.0471 PM
+[ReportManager] 2026-10-18T14:11:55.500857600Z Employee details panel closed @18-10-2026 17:11:55.0502 PM
+[ReportManager] Click "Reset" @18-10-2026 17:11:55.0741 PM
+[ReportManager] 2026-10-18T14:11:56.399145200Z After Reset: results header '(113) Records Found' (changed: true) @18-10-2026 17:11:56.0399 PM

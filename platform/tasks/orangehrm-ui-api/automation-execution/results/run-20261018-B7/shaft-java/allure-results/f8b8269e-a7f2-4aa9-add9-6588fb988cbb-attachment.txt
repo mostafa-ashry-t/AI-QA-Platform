@@ -1,0 +1,15 @@
+[ReportManager] Setting "targetBrowserName" property with "chrome". @18-10-2026 15:26:17.0547 PM
+[ReportManager] Setting "headlessExecution" property with "false". @18-10-2026 15:26:17.0549 PM
+[ReportManager] Setting "browserWindowWidth" property with "1920". @18-10-2026 15:26:17.0551 PM
+[ReportManager] Setting "browserWindowHeight" property with "1080". @18-10-2026 15:26:17.0553 PM
+[ReportManager] Setting "defaultElementIdentificationTimeout" property with "30.0". @18-10-2026 15:26:17.0556 PM
+[ReportManager] Setting "retryMaximumNumberOfAttempts" property with "0". @18-10-2026 15:26:17.0558 PM
+[ReportManager] Setting "autoMaximizeBrowserWindow" property with "false". @18-10-2026 15:26:17.0560 PM
+[ReportManager] Setting "allure.automaticallyOpen" property with "false". @18-10-2026 15:26:17.0562 PM
+[ReportManager] Post processing some properties to support platforms-specific restrictions. @18-10-2026 15:26:17.0592 PM
+[ReportManager] Setting "targetOperatingSystem" property with "windows". @18-10-2026 15:26:17.0621 PM
+[ReportManager] Setting "screenshotParams_scalingFactor" property with "1.0". @18-10-2026 15:26:17.0923 PM
+[ReportManager] Capabilities {browserName: chrome, goog:chromeOptions: {args: [--window-position=0,0, --window-size=1920,1080], extensions: [], prefs: {download.default_directory: C:\Users\QC User\Desktop\Fi..., download.prompt_for_download: false}}, pageLoadStrategy: none, timeouts: {pageLoad: 60000, script: 30000}, webSocketUrl: true} @18-10-2026 15:26:17.0940 PM
+[ReportManager] Attempting to run locally on: "Windows | Chrome". @18-10-2026 15:26:17.0941 PM
+[ReportManager] Identifying OS/Driver combination. Please note that if a new browser/driver executable will be downloaded it may take some time depending on your connection... @18-10-2026 15:26:17.0941 PM
+[ReportManager] Successfully Opened: "Windows | Chrome". @18-10-2026 15:26:23.0919 PM

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TEMPLATE (automation-generation scaffold, binding playwright-java-testng).
+  Placeholders {{...}} are filled at generation time. Versions are verified from
+  the package registry at generation time and pinned exactly; never guessed.
+  No credentials here: they are read from environment variables at run time.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>{{group_id}}</groupId>
+  <artifactId>{{artifact_id}}</artifactId>
+  <version>1.0.0</version>
+  <name>{{project_name}}</name>
+  <description>{{project_description}}</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>{{java_level}}</maven.compiler.source>
+    <maven.compiler.target>{{java_level}}</maven.compiler.target>
+    <playwright.version>{{playwright_version}}</playwright.version>
+    <testng.version>{{testng_version}}</testng.version>
+    <surefire.version>{{surefire_version}}</surefire.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.playwright</groupId>
+      <artifactId>playwright</artifactId>
+      <version>${playwright.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>${testng.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefire.version}</version>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
+          <!-- Retries stay 0: a failure is reported, never retried away. -->
+          <rerunFailingTestsCount>0</rerunFailingTestsCount>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,23 @@
+[ReportManager] Loaded Test Data: "src/test/resources/testDataFiles/OrangeHRMDirectory.json". @19-10-2026 09:25:04.0978 AM
+[ReportManager] Successfully created attachment 'Test Data - JSON' @19-10-2026 09:25:04.0983 AM
+[ReportManager] Setting "headlessExecution" property with "true". @19-10-2026 09:25:05.0025 AM
+[ReportManager] Post processing some properties to support platforms-specific restrictions. @19-10-2026 09:25:05.0057 AM
+[ReportManager] Setting "targetOperatingSystem" property with "windows". @19-10-2026 09:25:05.0085 AM
+[ReportManager] Setting "screenshotParams_scalingFactor" property with "1.0". @19-10-2026 09:25:05.0261 AM
+[ReportManager] Capabilities {browserName: chrome, goog:chromeOptions: {args: [--headless, --window-position=0,0, --window-size=1920,1080, --disable-features=Password..., --disable-features=Password..., --disable-save-password-bubble, --headless=new], extensions: [], prefs: {credentials_enable_service: false, profile.password_manager_enabled: false, profile.password_manager_leak_detection: false}}, pageLoadStrategy: none, timeouts: {pageLoad: 60000, script: 30000}, webSocketUrl: true} @19-10-2026 09:25:05.0274 AM
+[ReportManager] Attempting to run locally on: "Windows | Chrome", Headless Execution. @19-10-2026 09:25:05.0275 AM
+[ReportManager] Identifying OS/Driver combination. Please note that if a new browser/driver executable will be downloaded it may take some time depending on your connection... @19-10-2026 09:25:05.0275 AM
+[ReportManager] Successfully Opened: "Windows | Chrome", Headless Execution. @19-10-2026 09:25:10.0045 AM
+[ReportManager] Initial window size: (1920, 1080) @19-10-2026 09:25:10.0216 AM
+[ReportManager] Window size after SWD: (1920, 1080) @19-10-2026 09:25:10.0282 AM
+[ReportManager] Window size after JavascriptExecutor: (1920, 1080) @19-10-2026 09:25:10.0401 AM
+[ReportManager] skipping window resizing due to unknown error, marking step as passed. @19-10-2026 09:25:10.0401 AM
+[ReportManager] Set window size "New screen size is now: (1920, 1080)". @19-10-2026 09:25:11.0159 AM
+[ReportManager] Successfully created attachment 'Screenshot - Set window size_09-25-11-159_19102026' @19-10-2026 09:25:11.0163 AM
+[ReportManager] Target URL: "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory", and after redirection: "/auth/login" @19-10-2026 09:25:11.0222 AM
+[ReportManager] Initial URL: "about:blank" @19-10-2026 09:25:11.0333 AM
+[ReportManager] Navigate to url "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory". @19-10-2026 09:25:33.0756 AM
+[ReportManager] Successfully created attachment 'Screenshot - Navigate to url_09-25-33-756_19102026' @19-10-2026 09:25:33.0758 AM
+[ReportManager] Type  securely "Username" @19-10-2026 09:25:40.0567 AM
+[ReportManager] Type  securely "Password" @19-10-2026 09:25:41.0326 AM
+[ReportManager] Click "Login" @19-10-2026 09:25:42.0058 AM

@@ -1,0 +1,3862 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "platform/schemas/journal-event.schema.json",
+  "title": "AI QA Execution Journal — Event",
+  "description": "One entry in platform/tasks/<task-name>/journal/execution-log.json → entries[]. Shared by every workflow stage. Records what actually happened; never contains fabricated runtime values. Optional stage-specific blocks (mcp_actions, observations, classifications, candidate_locators, coverage; test-design: techniques_used, generated_test_case_ids, test_cases, traceability, exploratory_cases, coverage_gaps, test_data_requirements; manual-execution: environment, build, browser, test_case_ids, executed_test_case_ids, execution_actions, test_results, statuses, failure_analysis, blocked_cases, test_case_issues, deviations, bugs, defect_grouping; test-review: review_binding, reviewed_test_case_ids, review_findings, review_outcome; automation-generation: automation_binding, automated_cases, locator_decisions, generated_files, static_validation) are used by stages that produce them (e.g. exploration, test-design). See docs/architecture/ai-qa-execution-journal.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_type",
+    "step_number",
+    "attempt",
+    "workflow_run_id",
+    "task_id",
+    "timestamp",
+    "stage_id",
+    "stage_name",
+    "skill_name",
+    "skill_version",
+    "prompt_id",
+    "prompt_version",
+    "trigger",
+    "input_references",
+    "source_references",
+    "tools_used",
+    "mcp_used",
+    "actions",
+    "output_artifacts",
+    "assumptions",
+    "gaps",
+    "open_questions",
+    "validation",
+    "status",
+    "approval_required",
+    "approval_key",
+    "next_stage",
+    "errors",
+    "notes",
+    "decisions",
+    "stop_reason",
+    "approval_outcome",
+    "fixes",
+    "evidence",
+    "revision"
+  ],
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "1.2.0",
+        "1.3.0",
+        "1.4.0",
+        "1.5.0",
+        "1.6.0",
+        "1.7.0"
+      ],
+      "description": "Schema version the event was written against. 1.3.0, 1.4.0, 1.5.0, 1.6.0 and 1.7.0 are backward-compatible supersets of 1.2.0 (optional stage blocks only; 1.7.0 adds automation_runs and healing_attempts; 1.6.0 also adds the status 'completed')."
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^EVT-[0-9]{4,}$",
+      "description": "Sequential within the task journal: EVT-0001, EVT-0002, …"
+    },
+    "event_type": {
+      "enum": [
+        "stage_execution",
+        "revision_request",
+        "approval_decision"
+      ],
+      "description": "stage_execution = the stage ran (success or failure). revision_request = the human asked for changes. approval_decision = the human replied to a gate (accepted or not)."
+    },
+    "step_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Position of this event in the journal (= numeric part of event_id)."
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Attempt number of this stage within the workflow run. Increments on every re-run/revision."
+    },
+    "workflow_run_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^RUN-[A-Za-z0-9-]+$",
+      "description": "Read from journal/workflow-run.json → active_run_id. OWNED BY THE ORCHESTRATION LAYER: skills never create or invent it. null is allowed ONLY on a 'failed' stage_execution whose error is the missing run context."
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC, taken from the system clock at the moment of the event. Never estimated."
+    },
+    "stage_id": {
+      "type": "string",
+      "description": "Stage id from platform/workflows/*.yaml"
+    },
+    "stage_name": {
+      "type": "string"
+    },
+    "skill_name": {
+      "type": "string",
+      "description": "Skill id from platform/registry/skills.yaml"
+    },
+    "skill_version": {
+      "type": "string"
+    },
+    "prompt_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "References journal/prompts.json. null only for events where no prompt was executed (e.g. approval_decision)."
+    },
+    "prompt_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "prompt_variables": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Values substituted into the prompt's {{variables}} for this run."
+    },
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason",
+        "initiated_by"
+      ],
+      "properties": {
+        "reason": {
+          "type": "string",
+          "description": "Why this step was executed."
+        },
+        "initiated_by": {
+          "enum": [
+            "user",
+            "workflow",
+            "skill"
+          ]
+        },
+        "user_message": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Verbatim human message that caused the event (instruction, change request, or gate reply)."
+        },
+        "redactions": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "What was redacted from user_message (e.g. a password), if anything."
+        }
+      }
+    },
+    "input_references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "role",
+          "status"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "File path, URL (role project_url), or journal reference 'journal:EVT-NNNN' (role user_message / upstream_approval)."
+          },
+          "role": {
+            "enum": [
+              "task_intake",
+              "task_metadata",
+              "task_prd",
+              "project_url",
+              "knowledge_base",
+              "supporting_document",
+              "upstream_artifact",
+              "upstream_approval",
+              "previous_version_of_output",
+              "user_message",
+              "prompt"
+            ]
+          },
+          "status": {
+            "enum": [
+              "read",
+              "accessed",
+              "not_accessed",
+              "inaccessible",
+              "missing",
+              "unreadable",
+              "not_applicable"
+            ],
+            "description": "Files: read | missing | unreadable. URLs: accessed | not_accessed | inaccessible."
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "referenced_by": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Where the input was referenced from, e.g. 'PRD §4.2'."
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "e.g. access method and HTTP status for a URL, or why an input was not read."
+          }
+        }
+      }
+    },
+    "source_references": {
+      "type": "array",
+      "description": "Sources the output cites (e.g. PRD sections used for traceability).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "sections"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "tools_used": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tool",
+          "purpose"
+        ],
+        "properties": {
+          "tool": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "mcp_used": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "used",
+        "servers",
+        "intentionally_not_used"
+      ],
+      "description": "Records MCP usage AND deliberate non-usage, so the HTML journal can show 'MCP: None' with the reason.",
+      "properties": {
+        "used": {
+          "type": "boolean"
+        },
+        "servers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "server",
+              "purpose"
+            ],
+            "properties": {
+              "server": {
+                "type": "string"
+              },
+              "tools": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "purpose": {
+                "type": "string"
+              },
+              "version": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Server package/version as reported, or null if not determinable."
+              }
+            }
+          }
+        },
+        "intentionally_not_used": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "server",
+              "reason"
+            ],
+            "properties": {
+              "server": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Ordered list of what was actually done."
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "decision",
+          "rationale"
+        ],
+        "properties": {
+          "decision": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "revision": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "description": "Only on a stage_execution that revises an existing artifact (attempt > 1). null otherwise.",
+      "required": [
+        "artifact_path",
+        "version_before",
+        "version_after",
+        "reason",
+        "changed_sections",
+        "revision_request_event_id",
+        "prompt_version_changed"
+      ],
+      "properties": {
+        "artifact_path": {
+          "type": "string"
+        },
+        "version_before": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version_after": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "description": "Why the revision was made (summarizes the verbatim change request)."
+        },
+        "changed_sections": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "revision_request_event_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^EVT-[0-9]{4,}$"
+        },
+        "prompt_version_changed": {
+          "type": "boolean",
+          "description": "true if this attempt used a different prompt_version than the previous attempt."
+        },
+        "previous_prompt_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "items_added": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "IDs added in this revision (e.g. TC-###)."
+        },
+        "items_modified": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "IDs modified in this revision."
+        },
+        "items_removed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "IDs withdrawn in this revision (IDs are never reused)."
+        },
+        "re_executed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "description": "Cases re-executed in this revision."
+        },
+        "result_changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "item_id",
+              "before",
+              "after"
+            ],
+            "properties": {
+              "item_id": {
+                "type": "string"
+              },
+              "before": {
+                "type": "string"
+              },
+              "after": {
+                "type": "string"
+              },
+              "reason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "output_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "operation"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "operation": {
+            "enum": [
+              "created",
+              "updated",
+              "unchanged"
+            ]
+          },
+          "artifact_status": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "e.g. draft, approved"
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "e.g. section item counts"
+          },
+          "artifact_version": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Version declared inside the artifact, e.g. PRD 1.1.0."
+          }
+        }
+      }
+    },
+    "mcp_actions": {
+      "type": "array",
+      "description": "Ordered log of MCP tool calls actually performed (e.g. browser opened, URL visited, form submitted, snapshot captured). Empty when no MCP was used.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "seq",
+          "server",
+          "tool",
+          "action",
+          "result"
+        ],
+        "properties": {
+          "seq": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "server": {
+            "type": "string"
+          },
+          "tool": {
+            "type": "string",
+            "description": "Exact MCP tool name as invoked."
+          },
+          "action": {
+            "type": "string",
+            "description": "Plain-language description of what was done."
+          },
+          "target": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "URL, element description, or value category (secrets never recorded)."
+          },
+          "area": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Scope area explored (e.g. PC SA-002)."
+          },
+          "data_changing": {
+            "type": "boolean",
+            "description": "true if the action created/changed/deleted application data."
+          },
+          "human_confirmed": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "For destructive/irreversible/bulk actions: whether explicit human confirmation was obtained."
+          },
+          "result": {
+            "enum": [
+              "success",
+              "error",
+              "blocked",
+              "no_effect"
+            ]
+          },
+          "timestamp": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "observations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "test_case_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "step": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "observations": {
+      "type": "array",
+      "description": "Summary copies of the artifact observations (full detail lives in the artifact), so the HTML journal can navigate Observation → Classification → Evidence → Report.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "area",
+          "classification",
+          "summary",
+          "sources",
+          "evidence_ids",
+          "report_ref"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^OBS-[0-9]{3,}$"
+          },
+          "area": {
+            "type": "string"
+          },
+          "classification": {
+            "enum": [
+              "MATCH",
+              "FINDING",
+              "GAP",
+              "QUESTION",
+              "POTENTIAL BUG"
+            ]
+          },
+          "class_item_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "FND-/XGAP-/XQ-/PB- id, null for MATCH."
+          },
+          "summary": {
+            "type": "string"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Upstream references, e.g. 'PC EB-003'; empty when ProjectContext is silent."
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "report_ref": {
+            "type": "string",
+            "description": "Artifact location, e.g. 'exploration/ExplorationReport.md §7 FND-002'."
+          },
+          "status": {
+            "enum": [
+              "active",
+              "withdrawn"
+            ],
+            "description": "withdrawn observations keep their id."
+          }
+        }
+      }
+    },
+    "classifications": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "MATCH",
+        "FINDING",
+        "GAP",
+        "QUESTION",
+        "POTENTIAL BUG"
+      ],
+      "description": "Counts per classification across active observations.",
+      "properties": {
+        "MATCH": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "FINDING": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "GAP": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "QUESTION": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "POTENTIAL BUG": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "candidate_locators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "element",
+          "related_observations"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^LOC-[0-9]{3,}$"
+          },
+          "element": {
+            "type": "string"
+          },
+          "page": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "stable_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "xpath_attribute": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Observed attribute name and value, e.g. name=\"username\". Never framework code."
+          },
+          "stability": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "related_observations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "coverage": {
+      "description": "Stage coverage block: exploration, test-design, manual-execution or test-review shape; null when not applicable.",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/explorationCoverage"
+        },
+        {
+          "$ref": "#/$defs/testDesignCoverage"
+        },
+        {
+          "$ref": "#/$defs/executionCoverage"
+        },
+        {
+          "$ref": "#/$defs/testReviewCoverage"
+        }
+      ]
+    },
+    "techniques_used": {
+      "type": "array",
+      "description": "Test-design technique applications (TA-###) and techniques deliberately not applied.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "technique",
+          "applied",
+          "rationale"
+        ],
+        "properties": {
+          "id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^TA-[0-9]{3,}$",
+            "description": "null for a not-applied entry."
+          },
+          "technique": {
+            "enum": [
+              "Equivalence Partitioning",
+              "Boundary Value Analysis",
+              "Decision Table",
+              "State Transition",
+              "Pairwise",
+              "Error Guessing"
+            ]
+          },
+          "applied": {
+            "type": "boolean"
+          },
+          "areas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string",
+            "description": "Why selected, or why not applied."
+          },
+          "resulting_cases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^TC-[0-9]{3,}$"
+            }
+          }
+        }
+      }
+    },
+    "generated_test_case_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^TC-[0-9]{3,}$"
+      },
+      "description": "Active test case IDs in the artifact after this event."
+    },
+    "test_cases": {
+      "type": "array",
+      "description": "Per-case summary (full detail in TestCases.md).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "type",
+          "priority",
+          "expected_result_basis",
+          "sources",
+          "valid_in_scope",
+          "needs_automation",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "Positive",
+              "Negative",
+              "Boundary",
+              "Validation",
+              "Business Rule",
+              "Dependency",
+              "Error Handling",
+              "Exploratory",
+              "End-to-End"
+            ]
+          },
+          "priority": {
+            "enum": [
+              "High",
+              "Medium",
+              "Low",
+              "Not established"
+            ]
+          },
+          "priority_basis": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "expected_result_basis": {
+            "type": "string",
+            "description": "e.g. 'PC EB-003 + OBS-007 (MATCH detail)' or 'Not established'."
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "technique_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "valid_in_scope": {
+            "type": "boolean"
+          },
+          "valid_in_scope_reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "needs_automation": {
+            "type": "boolean"
+          },
+          "needs_automation_rationale": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "active",
+              "withdrawn"
+            ]
+          },
+          "report_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "traceability": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "matrix",
+        "uncovered_sources",
+        "observations_considered"
+      ],
+      "properties": {
+        "matrix": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_id",
+              "source_type",
+              "test_cases"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string"
+              },
+              "source_type": {
+                "enum": [
+                  "Business Rule",
+                  "Expected Behavior",
+                  "Dependency",
+                  "Scope Area",
+                  "Exploration Observation",
+                  "Documented Requirement"
+                ]
+              },
+              "description": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "test_cases": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^TC-[0-9]{3,}$"
+                }
+              }
+            }
+          }
+        },
+        "uncovered_sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_id",
+              "reason"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "gap_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "observations_considered": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "observation_id",
+              "classification",
+              "test_cases"
+            ],
+            "properties": {
+              "observation_id": {
+                "type": "string",
+                "pattern": "^OBS-[0-9]{3,}$"
+              },
+              "classification": {
+                "enum": [
+                  "MATCH",
+                  "FINDING",
+                  "GAP",
+                  "QUESTION",
+                  "POTENTIAL BUG"
+                ]
+              },
+              "test_cases": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^TC-[0-9]{3,}$"
+                }
+              },
+              "question_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "reason_if_none": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "exploratory_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "test_case_id",
+          "reason",
+          "unknown",
+          "question_id",
+          "sources"
+        ],
+        "properties": {
+          "test_case_id": {
+            "type": "string",
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "observed_behavior": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "unknown": {
+            "type": "string"
+          },
+          "question_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "coverage_gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "category",
+          "item",
+          "reason",
+          "follow_up_required"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^CG-[0-9]{3,}$"
+          },
+          "category": {
+            "enum": [
+              "Uncovered business rule",
+              "Uncovered observation",
+              "Inaccessible functionality",
+              "Missing test data",
+              "Unavailable role",
+              "Environment limitation",
+              "Intentional exclusion",
+              "Other"
+            ]
+          },
+          "item": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "impact": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "blocker": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "follow_up_required": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "test_data_requirements": {
+      "type": "array",
+      "description": "Data required for execution. Never contains secret or credential values.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "description",
+          "category",
+          "used_by",
+          "source"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^DATA-[0-9]{3,}$"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "User",
+              "Role",
+              "Date",
+              "Numeric range",
+              "Account state",
+              "Dependent record",
+              "Other"
+            ]
+          },
+          "used_by": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^TC-[0-9]{3,}$"
+            }
+          },
+          "source": {
+            "type": "string",
+            "description": "Where the data comes from (e.g. configured test-data source); never the secret value."
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "environment",
+        "application_url",
+        "test_data_source"
+      ],
+      "description": "Execution environment as recorded before the first case. Never fabricated; unknown values are null with unavailable_fields reasons.",
+      "properties": {
+        "environment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "application_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configuration": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "test_data_source": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Source names only; never secret values."
+        },
+        "execution_started_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "execution_ended_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "unavailable_fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "field",
+              "reason"
+            ],
+            "properties": {
+              "field": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "build": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "available"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "unavailable_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "identifier": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "How it was determined (e.g. shown in UI footer, supplied by human)."
+        }
+      }
+    },
+    "browser": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "available"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "unavailable_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "test_case_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^TC-[0-9]{3,}$"
+      },
+      "description": "Cases selected for execution."
+    },
+    "executed_test_case_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^TC-[0-9]{3,}$"
+      },
+      "description": "Cases actually executed."
+    },
+    "execution_actions": {
+      "type": "array",
+      "description": "Execution timeline: one entry per meaningful step action.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "test_case_id",
+          "step",
+          "action",
+          "tool",
+          "result"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^EXEC-[0-9]{3,}$"
+          },
+          "test_case_id": {
+            "type": "string",
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "step": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "action": {
+            "type": "string",
+            "description": "As written in the approved case."
+          },
+          "tool": {
+            "type": "string"
+          },
+          "target": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "data_ref": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "DATA-### or value category; never a secret value."
+          },
+          "result": {
+            "type": "string",
+            "description": "Observed result."
+          },
+          "mcp_seq": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^EVD-[0-9]{3,}$"
+            }
+          },
+          "deviation_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^DEV-[0-9]{3,}$"
+          },
+          "timestamp": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "test_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "test_case_id",
+          "expected_result",
+          "actual_result",
+          "status",
+          "evidence_ids"
+        ],
+        "properties": {
+          "test_case_id": {
+            "type": "string",
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "expected_result": {
+            "type": "string",
+            "description": "Verbatim from the approved TestCases.md."
+          },
+          "actual_result": {
+            "type": "string",
+            "description": "Observed behavior only."
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "BLOCKED"
+            ]
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Required for FAIL and BLOCKED."
+          },
+          "failed_step": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^EVD-[0-9]{3,}$"
+            }
+          },
+          "failure_cause": {
+            "enum": [
+              "APPLICATION_DEFECT",
+              "TEST_CASE_DEFECT",
+              "TEST_DATA_PROBLEM",
+              "ENVIRONMENT_PROBLEM",
+              "DEPENDENCY_PROBLEM",
+              "UNKNOWN",
+              null
+            ]
+          },
+          "bug_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^BUG-[0-9]{3,}$"
+            }
+          },
+          "test_case_issue_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "deviation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "with_deviation": {
+            "type": "boolean"
+          },
+          "executed_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "statuses": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "PASS",
+        "FAIL",
+        "BLOCKED",
+        "NOT_EXECUTED"
+      ],
+      "properties": {
+        "PASS": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "FAIL": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "BLOCKED": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "NOT_EXECUTED": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "failure_analysis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "test_case_id",
+          "cause_category",
+          "reasoning",
+          "evidence_ids",
+          "confidence"
+        ],
+        "properties": {
+          "test_case_id": {
+            "type": "string",
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "failed_step": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "cause_category": {
+            "enum": [
+              "APPLICATION_DEFECT",
+              "TEST_CASE_DEFECT",
+              "TEST_DATA_PROBLEM",
+              "ENVIRONMENT_PROBLEM",
+              "DEPENDENCY_PROBLEM",
+              "UNKNOWN"
+            ]
+          },
+          "reasoning": {
+            "type": "string"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^EVD-[0-9]{3,}$"
+            }
+          },
+          "confidence": {
+            "enum": [
+              "High",
+              "Medium",
+              "Low"
+            ]
+          },
+          "limitations": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "bug_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^BUG-[0-9]{3,}$"
+          },
+          "related_exploration": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "blocked_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "test_case_id",
+          "blocker_type",
+          "blocker",
+          "impact",
+          "unblock_condition"
+        ],
+        "properties": {
+          "test_case_id": {
+            "type": "string",
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "blocker_type": {
+            "enum": [
+              "environment",
+              "test_data",
+              "authentication",
+              "dependency",
+              "application_unreachable",
+              "test_case_issue",
+              "deviation_required",
+              "other"
+            ]
+          },
+          "blocker": {
+            "type": "string"
+          },
+          "impact": {
+            "type": "string"
+          },
+          "unblock_condition": {
+            "type": "string"
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^EVD-[0-9]{3,}$"
+            }
+          }
+        }
+      }
+    },
+    "test_case_issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "issue_type",
+          "description",
+          "consequence",
+          "recommended_action"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^TCI-[0-9]{3,}$"
+          },
+          "test_case_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "issue_type": {
+            "enum": [
+              "invalid_case",
+              "ambiguous_step",
+              "missing_data",
+              "incorrect_assumption",
+              "deviation",
+              "unexecutable",
+              "missing_test_case"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "step": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "consequence": {
+            "type": "string"
+          },
+          "recommended_action": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "deviations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "test_case_id",
+          "step",
+          "original_step",
+          "deviation",
+          "reason",
+          "consequence",
+          "kind",
+          "performed"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^DEV-[0-9]{3,}$"
+          },
+          "test_case_id": {
+            "type": "string",
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "step": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "original_step": {
+            "type": "string"
+          },
+          "deviation": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "consequence": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "incidental",
+              "substantive"
+            ]
+          },
+          "performed": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "bugs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "severity",
+          "severity_rationale",
+          "priority",
+          "priority_basis",
+          "affected_test_cases",
+          "evidence_ids",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^BUG-[0-9]{3,}$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "description": "Project model value, or Critical/High/Medium/Low (platform default)."
+          },
+          "severity_model": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "severity_rationale": {
+            "type": "string"
+          },
+          "priority": {
+            "enum": [
+              "High",
+              "Medium",
+              "Low",
+              "Not established"
+            ]
+          },
+          "priority_basis": {
+            "type": "string"
+          },
+          "affected_test_cases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^TC-[0-9]{3,}$"
+            },
+            "minItems": 1
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^EVD-[0-9]{3,}$"
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "root_cause_assessment": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "possibly_related": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^BUG-[0-9]{3,}$"
+            }
+          },
+          "status": {
+            "enum": [
+              "Open",
+              "Withdrawn"
+            ]
+          },
+          "report_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "defect_grouping": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "bug_id",
+          "test_case_ids",
+          "rationale"
+        ],
+        "properties": {
+          "bug_id": {
+            "type": "string",
+            "pattern": "^BUG-[0-9]{3,}$"
+          },
+          "test_case_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^TC-[0-9]{3,}$"
+            },
+            "minItems": 1
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "possibly_related": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^BUG-[0-9]{3,}$"
+            }
+          }
+        }
+      }
+    },
+    "review_binding": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "description": "Test Review: the exact artifact versions the review applies to (ADR-001). A TEST_REVIEW_APPROVED approval is stale when any bound hash no longer matches the current approved artifact.",
+      "required": [
+        "reviewed_test_cases",
+        "project_context",
+        "exploration_report"
+      ],
+      "properties": {
+        "reviewed_test_cases": {
+          "$ref": "#/$defs/reviewBoundArtifact"
+        },
+        "project_context": {
+          "$ref": "#/$defs/reviewBoundArtifact"
+        },
+        "exploration_report": {
+          "$ref": "#/$defs/reviewBoundArtifact"
+        }
+      }
+    },
+    "reviewed_test_case_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^TC-[0-9]{3,}$"
+      },
+      "description": "Test Review: active cases reviewed."
+    },
+    "review_findings": {
+      "type": "array",
+      "description": "Test Review findings (TR-###), including resolved and withdrawn ones. Change Required blocks TEST_REVIEW_APPROVED while open; Advisory does not.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "classification",
+          "category",
+          "test_case_ids",
+          "sources",
+          "description",
+          "basis",
+          "proposed_change",
+          "reason",
+          "status",
+          "resolution"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^TR-[0-9]{3,}$"
+          },
+          "classification": {
+            "enum": [
+              "Advisory",
+              "Change Required"
+            ]
+          },
+          "category": {
+            "enum": [
+              "missing_coverage",
+              "duplicate",
+              "unclear_step",
+              "invalid_expected_result",
+              "missing_precondition",
+              "unsupported_assumption",
+              "traceability_error",
+              "flag_inconsistency"
+            ]
+          },
+          "test_case_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^TC-[0-9]{3,}$"
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Approved source IDs or TestCases sections the finding rests on."
+          },
+          "description": {
+            "type": "string",
+            "description": "What is wrong, as observed in the reviewed TestCases.md version."
+          },
+          "basis": {
+            "type": "string",
+            "description": "The approved source or test-design rule that shows it."
+          },
+          "proposed_change": {
+            "type": "string",
+            "description": "What must change and where. Never applied by the review."
+          },
+          "reason": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "resolved",
+              "withdrawn"
+            ]
+          },
+          "resolution": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "required": [
+              "method",
+              "reference"
+            ],
+            "properties": {
+              "method": {
+                "enum": [
+                  "test_design_revision",
+                  "reviewer_decision"
+                ]
+              },
+              "reference": {
+                "type": "string",
+                "description": "TestCases version + TEST_DESIGN_APPROVED event, or the human's revision_request event."
+              },
+              "verified_in_review_version": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "classification_history": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "from",
+                "to",
+                "reason",
+                "decided_by"
+              ],
+              "properties": {
+                "from": {
+                  "enum": [
+                    "Advisory",
+                    "Change Required"
+                  ]
+                },
+                "to": {
+                  "enum": [
+                    "Advisory",
+                    "Change Required"
+                  ]
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "decided_by": {
+                  "enum": [
+                    "reviewer",
+                    "human"
+                  ],
+                  "description": "Downgrades (Change Required -> Advisory) are always human."
+                },
+                "decision_event_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^EVT-[0-9]{4,}$"
+                }
+              }
+            }
+          },
+          "raised_in_review_version": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "report_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "open"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "resolution": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "resolution": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "withdrawn"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "resolution": {
+                  "properties": {
+                    "method": {
+                      "const": "reviewer_decision"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "resolved"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "resolution": {
+                  "properties": {
+                    "method": {
+                      "const": "test_design_revision"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "review_outcome": {
+      "enum": [
+        "ready_for_approval",
+        "changes_required",
+        null
+      ],
+      "description": "Test Review: changes_required exactly when at least one Change Required finding is open."
+    },
+    "automation_binding": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "description": "Automation Generation: the framework / language binding used and why (schema 1.6.0).",
+      "required": [
+        "framework",
+        "binding_id",
+        "language",
+        "runner",
+        "decision_source"
+      ],
+      "properties": {
+        "framework": {
+          "type": "string"
+        },
+        "framework_source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "binding_id": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "runner": {
+          "type": "string"
+        },
+        "build_tool": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "project_dir": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decision_source": {
+          "type": "string",
+          "description": "Approved artifact ID, journal event, or platform default rule that decided the binding."
+        },
+        "library_versions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "version"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "source": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "toolchain": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "version"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "minimum_required": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "ide": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "edition": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "run_configuration": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "notes": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "credential_env_vars": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Environment variable NAMES only; never values."
+        }
+      }
+    },
+    "automated_cases": {
+      "type": "array",
+      "description": "Automation Generation: one entry per candidate case (Needs Automation = TRUE), generated or not.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "test_case_id",
+          "status"
+        ],
+        "properties": {
+          "test_case_id": {
+            "type": "string",
+            "pattern": "^TC-[0-9]{3,}$"
+          },
+          "status": {
+            "enum": [
+              "generated",
+              "not_generated"
+            ]
+          },
+          "warning_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "manual_result": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "BLOCKED",
+              "NOT_EXECUTED",
+              null
+            ]
+          },
+          "test_file": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "test_method": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "steps_mapped": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "expected_result": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Verbatim from the approved TestCases.md."
+          },
+          "assertion_summary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "data_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "locator_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "bug_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^BUG-[0-9]{3,}$"
+            }
+          }
+        }
+      }
+    },
+    "locator_decisions": {
+      "type": "array",
+      "description": "Automation Generation: every locator used, its strategy and its source (LOC-### or verification).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "element",
+          "locator",
+          "strategy"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "element": {
+            "type": "string"
+          },
+          "locator": {
+            "type": "string",
+            "description": "As written in the generated code."
+          },
+          "strategy": {
+            "enum": [
+              "id",
+              "attribute",
+              "role",
+              "label_anchored",
+              "text",
+              "structural"
+            ]
+          },
+          "source_loc_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "verification": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^EVD-[0-9]{3,}$"
+            }
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "generated_files": {
+      "type": "array",
+      "description": "Automation Generation: every file written, with its role and hash.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "role",
+          "operation"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "build",
+              "config",
+              "page_object",
+              "test",
+              "support",
+              "data",
+              "run_configuration",
+              "documentation",
+              "ignore_rules",
+              "report"
+            ]
+          },
+          "operation": {
+            "enum": [
+              "created",
+              "updated",
+              "unchanged",
+              "removed"
+            ]
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "static_validation": {
+      "type": "array",
+      "description": "Automation Generation: static checks (no run against the application).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "check_id",
+          "description",
+          "result"
+        ],
+        "properties": {
+          "check_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "result": {
+            "enum": [
+              "pass",
+              "fail",
+              "not_applicable"
+            ]
+          },
+          "command": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "output_excerpt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "automation_runs": {
+      "type": "array",
+      "description": "Automation Execution: one entry per command run of one binding (schema 1.7.0). Never fabricated: unknown values are null.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "run_id",
+          "binding_id",
+          "project_dir",
+          "command",
+          "outcome"
+        ],
+        "properties": {
+          "run_id": {
+            "type": "string"
+          },
+          "binding_id": {
+            "type": "string"
+          },
+          "project_dir": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string",
+            "description": "As executed, with environment variable NAMES only; never values."
+          },
+          "test_case_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^TC-[0-9]{3,}$"
+            }
+          },
+          "started_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "ended_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "exit_code": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "outcome": {
+            "enum": [
+              "passed",
+              "failed",
+              "not_run",
+              "harness_failed"
+            ],
+            "description": "passed = all selected tests passed and the command succeeded; failed = at least one test failed; not_run = no test started; harness_failed = tests ran but the runner/build failed (never counted as a pass)."
+          },
+          "tests_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "tests_passed": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "tests_failed": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "test_duration_ms": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "runner_total_ms": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "wall_clock_ms": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "failure_class": {
+            "enum": [
+              "application",
+              "test_script",
+              "configuration",
+              "environment",
+              "framework_defect",
+              "test_data",
+              "unknown",
+              null
+            ]
+          },
+          "failure_summary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "result_files": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^EVD-[0-9]{3,}$"
+            }
+          },
+          "healing_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "bug_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^BUG-[0-9]{3,}$"
+            }
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "healing_attempts": {
+      "type": "array",
+      "description": "Self-Healing: one entry per healing attempt (schema 1.7.0).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "healing_id",
+          "binding_id",
+          "failed_run_id",
+          "classification",
+          "root_cause",
+          "change",
+          "assertion_changed",
+          "result"
+        ],
+        "properties": {
+          "healing_id": {
+            "type": "string",
+            "pattern": "^(H|E)-[0-9]{3,}$"
+          },
+          "binding_id": {
+            "type": "string"
+          },
+          "failed_run_id": {
+            "type": "string"
+          },
+          "symptom": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "classification": {
+            "enum": [
+              "environment",
+              "test_script",
+              "configuration",
+              "framework_defect",
+              "test_data",
+              "application"
+            ]
+          },
+          "root_cause": {
+            "type": "string"
+          },
+          "diagnosis_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Evidence IDs or task-relative paths of the preserved failure evidence used."
+          },
+          "change": {
+            "type": "string",
+            "description": "What was changed; 'none' for an environment action or an application defect."
+          },
+          "files_changed": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "sha256_before": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "sha256_after": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "assertion_changed": {
+            "type": "boolean",
+            "description": "Must be false. Expected results and assertions are never healed."
+          },
+          "verified_by_run_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "result": {
+            "enum": [
+              "fixed",
+              "not_fixed",
+              "not_healed_application_defect",
+              "escalated"
+            ]
+          },
+          "attempt": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "summary",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "confirmed",
+              "unconfirmed"
+            ]
+          }
+        }
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "summary"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "related": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "question",
+          "owner"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string"
+          },
+          "related": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "owner": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "null unless a source or the human explicitly named one."
+          },
+          "related_test_cases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^TC-[0-9]{3,}$"
+            }
+          },
+          "ambiguity": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The exact ambiguity."
+          },
+          "required_clarification": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "performed",
+        "overall",
+        "checks"
+      ],
+      "properties": {
+        "performed": {
+          "type": "boolean"
+        },
+        "overall": {
+          "enum": [
+            "pass",
+            "fail",
+            "partial",
+            "not_applicable"
+          ]
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "check_id",
+              "description",
+              "result"
+            ],
+            "properties": {
+              "check_id": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "result": {
+                "enum": [
+                  "pass",
+                  "fail",
+                  "not_applicable"
+                ]
+              },
+              "notes": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "enum": [
+        "awaiting_approval",
+        "revision_requested",
+        "approved",
+        "approval_not_accepted",
+        "blocked",
+        "failed",
+        "completed"
+      ],
+      "description": "State of the stage after this event. 'blocked' = a prerequisite was not met, so the stage did not start (no tools/MCP used, no artifact). 'failed' = the stage started but could not complete. 'completed' = an ungated stage finished successfully (no approval key; e.g. automation-generation)."
+    },
+    "stop_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Why the workflow stopped after this event."
+    },
+    "approval_required": {
+      "type": "boolean"
+    },
+    "approval_key": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The literal key that unlocks the next stage."
+    },
+    "approval_outcome": {
+      "enum": [
+        "accepted",
+        "not_accepted",
+        null
+      ],
+      "description": "Only set on approval_decision events; null on all others."
+    },
+    "next_stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stage_id",
+        "unlocked",
+        "condition"
+      ],
+      "properties": {
+        "stage_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "unlocked": {
+          "type": "boolean"
+        },
+        "condition": {
+          "type": "string",
+          "description": "What must happen before the next stage may start."
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "resolution": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "fixes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "description"
+        ],
+        "properties": {
+          "error_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Evidence items produced by this event. Empty when the stage produces none. Every item is real: captured from the system/tool, or explicitly not_captured with a reason.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "type",
+          "capture_status",
+          "source_action",
+          "related_observations",
+          "path",
+          "captured_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^EVD-[0-9]{3,}$"
+          },
+          "type": {
+            "enum": [
+              "screenshot",
+              "accessibility_snapshot",
+              "element_attributes",
+              "url",
+              "page_title",
+              "network",
+              "api_response",
+              "console",
+              "browser_state",
+              "log",
+              "report",
+              "other",
+              "ui_text",
+              "application_output"
+            ]
+          },
+          "capture_status": {
+            "enum": [
+              "captured",
+              "not_captured"
+            ]
+          },
+          "source_action": {
+            "type": [
+              "integer",
+              "string",
+              "null"
+            ],
+            "description": "mcp_actions[].seq (or tool/step description) that produced it."
+          },
+          "related_observations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "path": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Task-relative file path, or null if not captured / inline."
+          },
+          "original_path": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Where the tool wrote it before being moved into the task (e.g. .playwright-mcp/...)."
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "captured_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "System/tool timestamp; null if unavailable."
+          },
+          "redactions": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "What was redacted (e.g. auth token), if anything."
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Required when capture_status is not_captured: the actual reason."
+          },
+          "related_test_cases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^TC-[0-9]{3,}$"
+            }
+          },
+          "related_step": {
+            "type": [
+              "integer",
+              "string",
+              "null"
+            ]
+          },
+          "related_bugs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^BUG-[0-9]{3,}$"
+            }
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "$defs": {
+    "explorationCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "areas_explored",
+        "flows_explored",
+        "pages_visited",
+        "not_explored",
+        "limits"
+      ],
+      "properties": {
+        "areas_explored": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "flows_explored": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pages_visited": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "URLs actually visited."
+        },
+        "out_of_scope_followed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "area",
+              "reason"
+            ],
+            "properties": {
+              "area": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "not_explored": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "area",
+              "reason"
+            ],
+            "properties": {
+              "area": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "limits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "started_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "ended_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "description": "Exploration coverage (pages/areas/flows)."
+    },
+    "testDesignCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Test-design coverage (counts by type, sources covered/uncovered, observations considered).",
+      "required": [
+        "total_test_cases",
+        "by_type",
+        "sources_total",
+        "sources_covered",
+        "uncovered_sources",
+        "observations_considered",
+        "observations_without_test"
+      ],
+      "properties": {
+        "total_test_cases": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by_type": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "Positive",
+            "Negative",
+            "Boundary",
+            "Validation",
+            "Business Rule",
+            "Dependency",
+            "Error Handling",
+            "Exploratory",
+            "End-to-End"
+          ],
+          "properties": {
+            "Positive": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "Negative": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "Boundary": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "Validation": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "Business Rule": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "Dependency": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "Error Handling": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "Exploratory": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "End-to-End": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "valid_in_scope_true": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "needs_automation_true": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sources_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sources_covered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "uncovered_sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_id",
+              "reason"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "gap_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "observations_considered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "observations_without_test": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "reason"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "open_questions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "coverage_gaps": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "executionCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Manual-execution coverage (approved vs executed).",
+      "required": [
+        "approved_total",
+        "selected",
+        "executed",
+        "passed",
+        "failed",
+        "blocked",
+        "not_executed"
+      ],
+      "properties": {
+        "approved_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "selected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "executed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "not_executed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "test_case_id",
+              "reason"
+            ],
+            "properties": {
+              "test_case_id": {
+                "type": "string",
+                "pattern": "^TC-[0-9]{3,}$"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "test_case_issues": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bugs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_coverage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_id",
+              "test_cases"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string"
+              },
+              "test_cases": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^TC-[0-9]{3,}$"
+                }
+              },
+              "executed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "passed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "failed": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "blocked": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "bugs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^BUG-[0-9]{3,}$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "reviewBoundArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "An approved artifact a Test Review is bound to (ADR-001).",
+      "required": [
+        "path",
+        "sha256",
+        "approval_event_id"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "artifact_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "approval_event_id": {
+          "type": "string",
+          "pattern": "^EVT-[0-9]{4,}$",
+          "description": "The accepted approval_decision event of the artifact's stage."
+        },
+        "produced_by_event_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^EVT-[0-9]{4,}$",
+          "description": "The stage_execution event that produced this version, when known."
+        }
+      }
+    },
+    "testReviewCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Test-review coverage (cases reviewed, sources checked, findings by classification and category).",
+      "required": [
+        "test_cases_reviewed",
+        "test_cases_withdrawn_not_reviewed",
+        "sources_checked",
+        "sources_without_coverage",
+        "findings_total",
+        "by_classification",
+        "by_category",
+        "open_change_required",
+        "open_advisory",
+        "resolved",
+        "withdrawn"
+      ],
+      "properties": {
+        "test_cases_reviewed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "test_cases_withdrawn_not_reviewed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sources_checked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sources_without_coverage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_id",
+              "finding_id"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string"
+              },
+              "finding_id": {
+                "type": "string",
+                "pattern": "^TR-[0-9]{3,}$"
+              }
+            }
+          }
+        },
+        "findings_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by_classification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "Advisory",
+            "Change Required"
+          ],
+          "properties": {
+            "Advisory": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "Change Required": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "by_category": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "missing_coverage",
+            "duplicate",
+            "unclear_step",
+            "invalid_expected_result",
+            "missing_precondition",
+            "unsupported_assumption",
+            "traceability_error",
+            "flag_inconsistency"
+          ],
+          "properties": {
+            "missing_coverage": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "duplicate": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unclear_step": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "invalid_expected_result": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "missing_precondition": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unsupported_assumption": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "traceability_error": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "flag_inconsistency": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "open_change_required": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "open_advisory": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resolved": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "withdrawn": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "open_questions": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

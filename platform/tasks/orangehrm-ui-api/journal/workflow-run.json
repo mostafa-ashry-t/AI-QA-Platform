@@ -1,0 +1,18 @@
+{
+  "schema": "platform/schemas/workflow-run.schema.json",
+  "owner": "workflow orchestration layer (skills read only)",
+  "task_id": "orangehrm-ui-api",
+  "active_run_id": "RUN-001",
+  "runs": [
+    {
+      "workflow_run_id": "RUN-001",
+      "workflow_id": "default-qa-workflow",
+      "workflow_version": "0.8.0",
+      "started_at": "2026-10-14T09:17:11Z",
+      "initiated_by": "user request of 2026-10-14T09:13:58Z (task created and run started by Claude Code on the user's instruction)",
+      "status": "active",
+      "ended_at": null,
+      "notes": "First run. Scope requested by the user: Milestone 1 (PRD Generation) only; stop after the PRD for review."
+    }
+  ]
+}

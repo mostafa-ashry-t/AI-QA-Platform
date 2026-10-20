@@ -1,0 +1,7 @@
+{
+  "journal_version": "1.2.0",
+  "event_schema": "platform/schemas/journal-event.schema.json",
+  "task_id": null,
+  "rules": "Append-only. Each entry conforms to event_schema. Runtime values come from the actual execution and are never fabricated. workflow_run_id is read from journal/workflow-run.json.",
+  "entries": []
+}

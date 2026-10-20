@@ -1,0 +1,131 @@
+{
+  "rect": {
+    "x": 1612,
+    "y": 433.390625,
+    "width": 250,
+    "height": 650,
+    "top": 433.390625,
+    "right": 1862,
+    "bottom": 1083.390625,
+    "left": 1612
+  },
+  "scrollH": 650,
+  "elements": [
+    {
+      "tag": "i",
+      "cls": "oxd-icon bi-arrow-right",
+      "alt": null,
+      "text": ""
+    },
+    {
+      "tag": "p",
+      "cls": "oxd-text oxd-text--p orangehrm-directory-card-header",
+      "alt": null,
+      "text": "Sara Tencrady"
+    },
+    {
+      "tag": "img",
+      "cls": "orangehrm-profile-picture-img",
+      "alt": "Profile Picture",
+      "src": "/web/index.php/pim/viewPhoto/empNumber/26",
+      "text": ""
+    },
+    {
+      "tag": "p",
+      "cls": "oxd-text oxd-text--p orangehrm-directory-card-subtitle",
+      "alt": null,
+      "text": "Payroll Administrator"
+    },
+    {
+      "tag": "i",
+      "cls": "oxd-icon bi-geo-alt-fill orangehrm-directory-card-icon",
+      "alt": null,
+      "text": ""
+    },
+    {
+      "tag": "p",
+      "cls": "oxd-text oxd-text--p orangehrm-directory-card-description",
+      "alt": null,
+      "text": "Human Resources"
+    },
+    {
+      "tag": "p",
+      "cls": "oxd-text oxd-text--p orangehrm-directory-card-description",
+      "alt": null,
+      "text": "Texas R&D"
+    },
+    {
+      "tag": "hr",
+      "cls": "oxd-divider",
+      "alt": null,
+      "text": ""
+    },
+    {
+      "tag": "i",
+      "cls": "oxd-icon bi-telephone-fill",
+      "alt": null,
+      "text": ""
+    },
+    {
+      "tag": "i",
+      "cls": "oxd-icon bi-envelope-fill",
+      "alt": null,
+      "text": ""
+    },
+    {
+      "tag": "p",
+      "cls": "oxd-text oxd-text--p oxd-text--toast-message",
+      "alt": null,
+      "text": "Work Telephone"
+    },
+    {
+      "tag": "p",
+      "cls": "oxd-text oxd-text--p oxd-text--toast-title",
+      "alt": null,
+      "text": ""
+    },
+    {
+      "tag": "i",
+      "cls": "oxd-icon bi-files",
+      "alt": null,
+      "text": ""
+    },
+    {
+      "tag": "hr",
+      "cls": "oxd-divider",
+      "alt": null,
+      "text": ""
+    },
+    {
+      "tag": "p",
+      "cls": "oxd-text oxd-text--p oxd-text--toast-message",
+      "alt": null,
+      "text": "Work Email"
+    },
+    {
+      "tag": "p",
+      "cls": "oxd-text oxd-text--p oxd-text--toast-title",
+      "alt": null,
+      "text": "[REDACTED: email]"
+    },
+    {
+      "tag": "i",
+      "cls": "oxd-icon bi-files",
+      "alt": null,
+      "text": ""
+    },
+    {
+      "tag": "hr",
+      "cls": "oxd-divider",
+      "alt": null,
+      "text": ""
+    },
+    {
+      "tag": "img",
+      "cls": "orangehrm-qr-code",
+      "alt": null,
+      "src": "data:image/png;base64,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",
+      "text": ""
+    }
+  ]
+}

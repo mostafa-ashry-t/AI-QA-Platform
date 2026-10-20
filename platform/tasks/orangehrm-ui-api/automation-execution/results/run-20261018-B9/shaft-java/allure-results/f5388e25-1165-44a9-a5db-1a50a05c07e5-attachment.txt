@@ -1,0 +1,31 @@
+
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                        Starting Execution: '1 out of 1' test cases in the current suite                                        
+         Test Method: 'OrangeHRMPages.Directory.Directory_TC.TC054_verifyThatResetRestoresDefaultsAfterCombinedFilterAndEmployeeDetails'         
+                     Test Description: 'TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset'                     
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m
+[ReportManager] 2026-10-18T13:42:02.665205Z [TC-054]   observed unfiltered results header (for the DATA-012 condition) = (8) Records Found @18-10-2026 16:42:02.0665 PM
+[ReportManager] 2026-10-18T13:42:03.613266500Z [TC-054]   observed DATA-012 pair (from the card of John Mike Doe) = jobTitle="HR Manager", location="Texas R&D" @18-10-2026 16:42:03.0613 PM
+[ReportManager] 2026-10-18T13:42:03.613266500Z [TC-054] Step 2: Select the Job Title and the Location of the DATA-012 pair; click Search. @18-10-2026 16:42:03.0614 PM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 16:42:03.0830 PM
+[ReportManager] Click "HR Manager" @18-10-2026 16:42:04.0098 PM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 16:42:04.0341 PM
+[ReportManager] Click "Texas R&D" @18-10-2026 16:42:04.0657 PM
+[ReportManager] Click "Search" @18-10-2026 16:42:04.0907 PM
+[ReportManager] 2026-10-18T13:42:04.907918500Z [TC-054] Step 3: Wait until result cards are displayed; read the results header and note the filtered record count k ("(k) Records Found", or "(1) Record Found" when k is 1). @18-10-2026 16:42:04.0907 PM
+[ReportManager] 2026-10-18T13:42:05.676276400Z [TC-054]   observed filtered results header = (1) Record Found @18-10-2026 16:42:05.0676 PM
+[ReportManager] 2026-10-18T13:42:05.676276400Z [TC-054]   observed k = 1 @18-10-2026 16:42:05.0676 PM
+[ReportManager] 2026-10-18T13:42:05.676276400Z [TC-054] Step 4: Click the first result card; then click the panel's arrow icon. @18-10-2026 16:42:05.0676 PM
+[ReportManager] Click "By.xpath: (//div[contains(@class,'orangehrm-container')]//div[contains(concat(' ',normalize-space(@class),' '),' orangehrm-directory-card ')])[1]" @18-10-2026 16:42:05.0942 PM
+[ReportManager] Click "By.xpath: //div[contains(@class,'orangehrm-corporate-directory-sidebar')]//i[contains(@class,'bi-arrow-right')]" @18-10-2026 16:42:06.0254 PM
+[ReportManager] 2026-10-18T13:42:06.283595700Z [TC-054]   observed detail panel opened and closed for the first card = John Mike Doe @18-10-2026 16:42:06.0283 PM
+[ReportManager] 2026-10-18T13:42:06.284642100Z [TC-054] Step 5: Click Reset. @18-10-2026 16:42:06.0284 PM
+[ReportManager] Click "Reset" @18-10-2026 16:42:06.0510 PM
+[ReportManager] 2026-10-18T13:42:06.510643900Z [TC-054] Step 6: Wait until employee result cards are displayed, then read the results header. @18-10-2026 16:42:06.0510 PM
+[ReportManager] 2026-10-18T13:42:07.156528900Z [TC-054]   observed results header changed after Reset within the timeout = true @18-10-2026 16:42:07.0156 PM
+[ReportManager] Get  dom  property "Type for hints..." @18-10-2026 16:42:07.0334 PM
+[ReportManager] Get  text "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 16:42:07.0455 PM
+[ReportManager] Get  text "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 16:42:07.0584 PM
+[ReportManager] 2026-10-18T13:42:07.611889400Z [TC-054]   observed state after Reset = header="(8) Records Found", employeeName="", jobTitle="-- Select --", location="-- Select --" @18-10-2026 16:42:07.0611 PM
+[ReportManager] 2026-10-18T13:42:07.611889400Z [TC-054]   observed N = 8 @18-10-2026 16:42:07.0611 PM

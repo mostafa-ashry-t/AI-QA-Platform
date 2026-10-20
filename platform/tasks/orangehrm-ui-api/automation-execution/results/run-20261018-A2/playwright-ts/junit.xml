@@ -1,0 +1,80 @@
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="39.697208999999994">
+<testsuite name="TC-054.spec.ts" timestamp="2026-10-18T10:48:23.261Z" hostname="chromium" tests="1" failures="1" skipped="0" time="37.016" errors="0">
+<testcase name="TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset" classname="TC-054.spec.ts" time="37.016">
+<properties>
+<property name="case" value="TC-054">
+</property>
+</properties>
+<system-out>
+<![CDATA[2026-10-18T10:48:25.877Z [TC-054] Precondition: No authenticated session in the browser (fresh browser context, or logged out).
+2026-10-18T10:48:25.880Z [TC-054]   observed cookies in the fresh browser context = 0
+2026-10-18T10:48:25.880Z [TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001).
+2026-10-18T10:48:30.877Z [TC-054]   observed URL after opening the Directory URL = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"
+2026-10-18T10:48:32.084Z [TC-054]   observed URL after login = "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory"
+2026-10-18T10:48:32.097Z [TC-054] Tracing started (login step intentionally not traced: secrets).
+2026-10-18T10:49:02.621Z [TC-054] Screenshot written: C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation-execution\results\run-20261018-A2\playwright-ts\TC-054\failure.png
+2026-10-18T10:49:02.697Z [TC-054] Trace written: C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation-execution\results\run-20261018-A2\playwright-ts\TC-054\trace.zip
+2026-10-18T10:49:02.697Z [TC-054] Result: FAILED (status failed)
+
+[[ATTACHMENT|test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\attachments\failure-png-f7aa308ba908cc4ada264419bddbc355e45f42f7.png]]
+
+[[ATTACHMENT|test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\attachments\trace-8a587781e31f54215d89181b5e681490867a7f3b.zip]]
+
+[[ATTACHMENT|test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\attachments\steps-log-b6c215f4e49ceca934c301322a4e6499d58c0de9.log]]
+
+[[ATTACHMENT|test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\error-context.md]]
+]]>
+</system-out>
+<failure message="results header shows a record count" type="expect.toHaveText">
+<![CDATA[  [chromium] › TC-054.spec.ts:14:5 › TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset @TC-054 @e2e 
+
+    Error: results header shows a record count
+
+    expect(locator).toHaveText(expected) failed
+
+    Locator: locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first()
+    Expected pattern: /^\(\d+\) Records? Found$/
+    Received string:  " (111) Records Found"
+    Timeout: 30000ms
+
+    Call log:
+      - results header shows a record count locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first() with timeout 30000ms
+      - waiting for locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first()
+        62 × locator resolved to <span data-v-7b563373="" data-v-5a621acd="" class="oxd-text oxd-text--span"> (111) Records Found</span>
+           - unexpected value " (111) Records Found"
+
+
+       at ..\src\pages\DirectoryPage.ts:72
+
+      70 |   async waitForResults(): Promise<{ header: string; count: number }> {
+      71 |     await this.cards.first().waitFor({ state: 'visible' });
+    > 72 |     await expect(this.resultsHeader.first(), 'results header shows a record count').toHaveText(/^\(\d+\) Records? Found$/);
+         |                                                                                     ^
+      73 |     const header = await this.headerText();
+      74 |     return { header, count: parseCount(header) as number };
+      75 |   }
+        at DirectoryPage.waitForResults (C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation\playwright-ts\src\pages\DirectoryPage.ts:72:85)
+        at C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation\playwright-ts\tests\TC-054.spec.ts:36:24
+
+    attachment #1: failure.png (image/png) ─────────────────────────────────────────────────────────
+    ..\..\..\automation-execution\results\run-20261018-A2\playwright-ts\test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\attachments\failure-png-f7aa308ba908cc4ada264419bddbc355e45f42f7.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\automation-execution\results\run-20261018-A2\playwright-ts\test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\attachments\trace-8a587781e31f54215d89181b5e681490867a7f3b.zip
+    Usage:
+
+        npx playwright show-trace ..\..\..\automation-execution\results\run-20261018-A2\playwright-ts\test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\attachments\trace-8a587781e31f54215d89181b5e681490867a7f3b.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: steps.log (text/plain) ──────────────────────────────────────────────────────────
+    ..\..\..\automation-execution\results\run-20261018-A2\playwright-ts\test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\attachments\steps-log-b6c215f4e49ceca934c301322a4e6499d58c0de9.log
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\automation-execution\results\run-20261018-A2\playwright-ts\test-output\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\error-context.md
+]]>
+</failure>
+</testcase>
+</testsuite>
+</testsuites>

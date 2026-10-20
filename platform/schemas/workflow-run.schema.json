@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "platform/schemas/workflow-run.schema.json",
+  "title": "Workflow Run Context",
+  "description": "platform/tasks/<task-name>/journal/workflow-run.json. OWNED BY THE WORKFLOW ORCHESTRATION LAYER. The orchestrator creates the workflow_run_id when a workflow execution starts. Every stage of that execution shares it. Skills only READ active_run_id and never create, change or invent it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "owner", "task_id", "active_run_id", "runs"],
+  "properties": {
+    "schema": { "const": "platform/schemas/workflow-run.schema.json" },
+    "owner": { "type": "string" },
+    "task_id": { "type": ["string", "null"] },
+    "active_run_id": {
+      "type": ["string", "null"],
+      "pattern": "^RUN-[A-Za-z0-9-]+$",
+      "description": "The run that stages currently belong to. null = no active run, so no stage may execute."
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["workflow_run_id", "workflow_id", "workflow_version", "started_at", "initiated_by", "status"],
+        "properties": {
+          "workflow_run_id": { "type": "string", "pattern": "^RUN-[A-Za-z0-9-]+$", "description": "Recommended format: RUN-001, RUN-002, … sequential per task." },
+          "workflow_id": { "type": "string" },
+          "workflow_version": { "type": "string" },
+          "started_at": { "type": "string", "format": "date-time" },
+          "initiated_by": { "type": "string" },
+          "status": { "enum": ["active", "completed", "aborted"] },
+          "ended_at": { "type": ["string", "null"], "format": "date-time" },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

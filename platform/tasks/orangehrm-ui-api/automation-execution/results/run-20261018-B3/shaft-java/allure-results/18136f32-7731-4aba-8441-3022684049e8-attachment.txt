@@ -1,0 +1,67 @@
+
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                        Starting Execution: '1 out of 1' test cases in the current suite                                        
+                              Test Method: 'qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest.tc054EndToEnd'                              
+                     Test Description: 'TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset'                     
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m
+[ReportManager] 2026-10-18T10:53:05.853551500Z [TC-054] Precondition: No authenticated session in the browser (fresh browser context, or logged out). @18-10-2026 13:53:05.0854 PM
+[ReportManager] 2026-10-18T10:53:05.890389100Z [TC-054]   observed cookies in the fresh browser = 0 @18-10-2026 13:53:05.0890 PM
+[ReportManager] 2026-10-18T10:53:05.890389100Z [TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001). @18-10-2026 13:53:05.0890 PM
+[ReportManager] Target URL: "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory", and after redirection: "/auth/login" @18-10-2026 13:53:06.0018 PM
+[ReportManager] Initial URL: "about:blank" @18-10-2026 13:53:06.0171 PM
+[ReportManager] Navigate to url "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory". @18-10-2026 13:53:09.0568 PM
+[ReportManager] 2026-10-18T10:53:09.584004Z [TC-054]   observed URL after opening the Directory URL = https://opensource-demo.orangehrmlive.com/web/index.php/auth/login @18-10-2026 13:53:09.0584 PM
+[ReportManager] Type  securely "Username" @18-10-2026 13:53:10.0209 PM
+[ReportManager] Type  securely "Password" @18-10-2026 13:53:10.0459 PM
+[ReportManager] Click "Login" @18-10-2026 13:53:10.0615 PM
+[ReportManager] 2026-10-18T10:53:12.073844400Z [TC-054]   observed URL after login = https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory @18-10-2026 13:53:12.0073 PM
+[ReportManager] 2026-10-18T10:53:12.217203600Z [TC-054]   observed unfiltered results header (for the DATA-012 condition) = (111) Records Found @18-10-2026 13:53:12.0217 PM
+[ReportManager] 2026-10-18T10:53:13.858775Z [TC-054]   observed DATA-012 pair (from the card of Diego Alvarez) = jobTitle="Probation Trainee PLW1462", location="New York Sales Office" @18-10-2026 13:53:13.0858 PM
+[ReportManager] 2026-10-18T10:53:13.858775Z [TC-054] Step 2: Select the Job Title and the Location of the DATA-012 pair; click Search. @18-10-2026 13:53:13.0858 PM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:53:14.0050 PM
+[ReportManager] Click "Probation Trainee PLW1462" @18-10-2026 13:53:14.0322 PM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:53:14.0584 PM
+[ReportManager] Click "New York Sales Office" @18-10-2026 13:53:14.0840 PM
+[ReportManager] Click "Search" @18-10-2026 13:53:15.0122 PM
+[ReportManager] 2026-10-18T10:53:15.122587300Z [TC-054] Step 3: Wait until result cards are displayed; read the results header and note the filtered record count k ("(k) Records Found", or "(1) Record Found" when k is 1). @18-10-2026 13:53:15.0122 PM
+[ReportManager] 2026-10-18T10:53:15.881293Z [TC-054]   observed filtered results header = (6) Records Found @18-10-2026 13:53:15.0881 PM
+[ReportManager] 2026-10-18T10:53:15.881293Z [TC-054]   observed k = 6 @18-10-2026 13:53:15.0882 PM
+[ReportManager] 2026-10-18T10:53:15.882290300Z [TC-054] Step 4: Click the first result card; then click the panel's arrow icon. @18-10-2026 13:53:15.0882 PM
+[ReportManager] Click "By.xpath: (//div[contains(@class,'orangehrm-container')]//div[contains(concat(' ',normalize-space(@class),' '),' orangehrm-directory-card ')])[1]" @18-10-2026 13:53:16.0184 PM
+[ReportManager] Click "By.xpath: //div[contains(@class,'orangehrm-corporate-directory-sidebar')]//i[contains(@class,'bi-arrow-right')]" @18-10-2026 13:53:16.0474 PM
+[ReportManager] 2026-10-18T10:53:16.500938700Z [TC-054]   observed detail panel opened and closed for the first card = Diego Alvarez @18-10-2026 13:53:16.0502 PM
+[ReportManager] 2026-10-18T10:53:16.529471100Z [TC-054] Step 5: Click Reset. @18-10-2026 13:53:16.0529 PM
+[ReportManager] Click "Reset" @18-10-2026 13:53:16.0719 PM
+[ReportManager] 2026-10-18T10:53:16.719782700Z [TC-054] Step 6: Wait until employee result cards are displayed, then read the results header. @18-10-2026 13:53:16.0719 PM
+[ReportManager] 2026-10-18T10:53:17.824220200Z [TC-054]   observed results header changed after Reset within the timeout = true @18-10-2026 13:53:17.0824 PM
+[ReportManager] Get  dom  property "Type for hints..." @18-10-2026 13:53:18.0076 PM
+[ReportManager] Get  text "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:53:18.0259 PM
+[ReportManager] Get  text "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:53:18.0382 PM
+[ReportManager] 2026-10-18T10:53:18.382664100Z [TC-054]   observed state after Reset = header="(110) Records Found", employeeName="", jobTitle="-- Select --", location="-- Select --" @18-10-2026 13:53:18.0382 PM
+[ReportManager] 2026-10-18T10:53:18.382664100Z [TC-054]   observed N = 110 @18-10-2026 13:53:18.0382 PM
+[ReportManager] Assert that "" is equal to "". @18-10-2026 13:53:18.0396 PM
+[ReportManager] Expected "", and actual "" @18-10-2026 13:53:18.0415 PM
+[ReportManager] Expected "", and actual "" @18-10-2026 13:53:18.0422 PM
+[ReportManager] Assertion passed @18-10-2026 13:53:18.0423 PM
+[ReportManager] TC-054 expected: Employee Name is empty @18-10-2026 13:53:18.0424 PM
+[ReportManager] Assert that "-- Select --" is equal to "-- Select --". @18-10-2026 13:53:18.0426 PM
+[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:53:18.0426 PM
+[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:53:18.0426 PM
+[ReportManager] Assertion passed @18-10-2026 13:53:18.0426 PM
+[ReportManager] TC-054 expected: Job Title displays "-- Select --" @18-10-2026 13:53:18.0426 PM
+[ReportManager] Assert that "-- Select --" is equal to "-- Select --". @18-10-2026 13:53:18.0428 PM
+[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:53:18.0428 PM
+[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:53:18.0428 PM
+[ReportManager] Assertion passed @18-10-2026 13:53:18.0428 PM
+[ReportManager] TC-054 expected: Location displays "-- Select --" @18-10-2026 13:53:18.0428 PM
+[ReportManager] Assert that "(110) Records Found" matches this regular expression "^\(\d+\) Records Found$". @18-10-2026 13:53:18.0429 PM
+[ReportManager] Expected "^\(\d+\) Records Found$", and actual "(110) Records Found" @18-10-2026 13:53:18.0429 PM
+[ReportManager] Expected "^\(\d+\) Records Found$", and actual "(110) Records Found" @18-10-2026 13:53:18.0430 PM
+[ReportManager] Assertion passed @18-10-2026 13:53:18.0430 PM
+[ReportManager] TC-054 expected: results header reads "(N) Records Found" @18-10-2026 13:53:18.0430 PM
+[ReportManager] Assert that "110" is greater than "6". @18-10-2026 13:53:18.0431 PM
+[ReportManager] Expected "6", and actual "110" @18-10-2026 13:53:18.0432 PM
+[ReportManager] Expected "6", and actual "110" @18-10-2026 13:53:18.0432 PM
+[ReportManager] Assertion passed @18-10-2026 13:53:18.0432 PM
+[ReportManager] TC-054 expected: N greater than k (k = 6, header "(110) Records Found") @18-10-2026 13:53:18.0433 PM

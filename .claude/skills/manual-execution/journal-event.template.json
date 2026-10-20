@@ -1,0 +1,731 @@
+{
+  "_about": "TEMPLATE, not a runtime event. Stage-specific constants of the manual-execution skill for each event type. Values that are null or '<runtime…>' MUST be filled from the actual execution (system clock, real paths, real hashes, the MCP calls actually made, real observed results and evidence). Never fabricated. Secrets never appear, and are redacted as [REDACTED: <kind>]. Conforms to platform/schemas/journal-event.schema.json (v1.4.0) once filled. revision_request and approval_decision also require the common runtime fields shown in stage_execution (event_id, step_number, attempt, workflow_run_id, task_id, timestamp, decisions, revision). workflow_run_id is READ from journal/workflow-run.json (active_run_id), never created by the skill. Array examples show one item's shape; runtime arrays contain exactly the real items (possibly none).",
+  "stage_execution": {
+    "schema_version": "1.4.0",
+    "event_id": "<runtime: EVT-NNNN, next sequence in execution-log.json>",
+    "event_type": "stage_execution",
+    "step_number": null,
+    "attempt": null,
+    "workflow_run_id": "<runtime: journal/workflow-run.json → active_run_id; never created by the skill>",
+    "task_id": "<runtime>",
+    "timestamp": "<runtime: system clock, UTC>",
+    "stage_id": "manual-execution",
+    "stage_name": "Manual Execution",
+    "skill_name": "manual-execution",
+    "skill_version": "1.1.0",
+    "prompt_id": "manual-execution",
+    "prompt_version": "1.1.0",
+    "prompt_variables": {
+      "task_name": "<runtime>",
+      "task_path": "<runtime>",
+      "workflow_run_id": "<runtime>",
+      "ui_url": "<runtime>",
+      "api_url": "<runtime or 'not in scope'>"
+    },
+    "trigger": {
+      "reason": "<runtime: e.g. 'Manual execution requested after TEST_REVIEW_APPROVED' or 'Revision after request EVT-NNNN'>",
+      "initiated_by": "<runtime: user|workflow>",
+      "user_message": "<runtime: verbatim, secrets redacted>",
+      "redactions": "<runtime or null>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/test-design/TestCases.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Execution contract (approved)"
+      },
+      {
+        "path": "<runtime: journal:EVT-NNNN (accepted TEST_DESIGN_APPROVED)>",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "Post-approval hash matched; designed from current approved ProjectContext + ExplorationReport"
+      },
+      {
+        "path": "<runtime>/test-review/TestReview.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Approved review of exactly the current TestCases.md (reviewed SHA-256 matched), ADR-001"
+      },
+      {
+        "path": "<runtime: journal:EVT-NNNN (accepted TEST_REVIEW_APPROVED)>",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "Post-approval hash matched current TestReview.md; no later test-review run"
+      },
+      {
+        "path": "<runtime>/context/ProjectContext.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": null
+      },
+      {
+        "path": "<runtime: journal:EVT-NNNN (accepted PROJECT_CONTEXT_APPROVED)>",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": null
+      },
+      {
+        "path": "<runtime>/exploration/ExplorationReport.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": null
+      },
+      {
+        "path": "<runtime: journal:EVT-NNNN (accepted EXPLORATION_APPROVED)>",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": null
+      },
+      {
+        "path": "<runtime>/prd/PRD.md",
+        "role": "task_prd",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Traceability references only"
+      },
+      {
+        "path": "<runtime>/context/TaskContext.md",
+        "role": "task_metadata",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": null
+      },
+      {
+        "path": "<runtime: application URL>",
+        "role": "project_url",
+        "status": "<runtime: accessed|inaccessible>",
+        "sha256": null,
+        "referenced_by": "TaskContext.md § Project Entry Points",
+        "notes": "<runtime: via Playwright MCP>"
+      },
+      {
+        "path": ".claude/prompts/manual-execution.md",
+        "role": "prompt",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": null
+      }
+    ],
+    "source_references": [
+      {
+        "path": "<runtime>/test-design/TestCases.md",
+        "sections": [
+          "<runtime: §4 TC-###…, §10 DATA-###…>"
+        ]
+      }
+    ],
+    "tools_used": [
+      {
+        "tool": "<runtime: e.g. Write / Bash sha256sum / Bash mv>",
+        "purpose": "<runtime>",
+        "targets": [
+          "<runtime>"
+        ]
+      }
+    ],
+    "mcp_used": {
+      "used": true,
+      "servers": [
+        {
+          "server": "playwright",
+          "version": "<runtime or null>",
+          "tools": [
+            "<runtime: exact MCP tool names actually invoked>"
+          ],
+          "purpose": "Browser access for manual execution (not automation)"
+        }
+      ],
+      "intentionally_not_used": []
+    },
+    "actions": [
+      "<runtime: e.g. Prerequisites 1–14 verified (ME-V01)>",
+      "<runtime: Environment recorded>",
+      "<runtime: Cases selected>",
+      "<runtime: Browser session started/closed>",
+      "<runtime: Evidence moved, redacted, hashed>",
+      "<runtime: ExecutionReport.md written>",
+      "<runtime: BugReports.md written | not created (no supported defect)>"
+    ],
+    "decisions": [
+      {
+        "decision": "<runtime: e.g. TC-004 and TC-009 grouped under BUG-001 / cause UNKNOWN for TC-006 / incidental deviation DEV-001 performed>",
+        "rationale": "<runtime>"
+      }
+    ],
+    "revision": "<runtime: null on attempt 1; otherwise {artifact_path, version_before, version_after, reason, changed_sections, revision_request_event_id, prompt_version_changed, previous_prompt_version, re_executed, result_changes, items_added, items_modified, items_removed}>",
+    "output_artifacts": [
+      {
+        "path": "<runtime>/execution/ExecutionReport.md",
+        "operation": "<runtime: created (placeholder replaced) | updated>",
+        "artifact_status": "draft",
+        "artifact_version": "<runtime: 1.0.0 on attempt 1; minor bump per revision>",
+        "sha256": "<runtime>",
+        "summary": "<runtime: PASS/FAIL/BLOCKED/not executed counts>"
+      },
+      {
+        "path": "<runtime>/bugs/BugReports.md",
+        "operation": "<runtime: created | updated | unchanged>",
+        "artifact_status": "<runtime: draft | null (placeholder)>",
+        "artifact_version": "<runtime or null>",
+        "sha256": "<runtime or null>",
+        "summary": "<runtime: bug count, or 'placeholder retained — no supported application defect'>"
+      },
+      {
+        "path": "<runtime>/execution/evidence/EVD-###-<slug>.<ext>",
+        "operation": "created",
+        "artifact_status": null,
+        "artifact_version": null,
+        "sha256": "<runtime>",
+        "summary": null
+      }
+    ],
+    "environment": {
+      "environment": "<runtime or null>",
+      "application_url": "<runtime>",
+      "configuration": "<runtime or null>",
+      "test_data_source": "<runtime: source names only>",
+      "execution_started_at": "<runtime>",
+      "execution_ended_at": "<runtime>",
+      "unavailable_fields": [
+        {
+          "field": "<runtime>",
+          "reason": "<runtime>"
+        }
+      ]
+    },
+    "build": {
+      "available": "<runtime: true|false>",
+      "identifier": "<runtime or null>",
+      "source": "<runtime: how determined>",
+      "unavailable_reason": "<runtime or null>"
+    },
+    "browser": {
+      "available": "<runtime: true|false>",
+      "name": "<runtime or null>",
+      "version": "<runtime or null>",
+      "source": "<runtime: tool-reported>",
+      "unavailable_reason": "<runtime or null>"
+    },
+    "test_case_ids": [
+      "<runtime: TC-### selected>"
+    ],
+    "executed_test_case_ids": [
+      "<runtime: TC-### executed>"
+    ],
+    "execution_actions": [
+      {
+        "id": "<runtime: EXEC-###>",
+        "test_case_id": "<runtime: TC-###>",
+        "step": "<runtime: step number>",
+        "action": "<runtime: as written in the case>",
+        "tool": "<runtime: Playwright MCP <tool>>",
+        "target": "<runtime: element / URL>",
+        "data_ref": "<runtime: DATA-### or value category; never a secret>",
+        "result": "<runtime: observed>",
+        "mcp_seq": "<runtime>",
+        "evidence_ids": [
+          "<runtime: EVD-###>"
+        ],
+        "deviation_id": "<runtime: DEV-### or null>",
+        "timestamp": "<runtime>"
+      }
+    ],
+    "mcp_actions": [
+      {
+        "seq": 1,
+        "server": "playwright",
+        "tool": "<runtime: exact tool name>",
+        "action": "<runtime: e.g. navigate / enter data / click / submit / capture screenshot / inspect console>",
+        "target": "<runtime: URL / element; never a secret value>",
+        "area": null,
+        "test_case_id": "<runtime: TC-### or null>",
+        "step": "<runtime or null>",
+        "data_changing": "<runtime: true|false>",
+        "human_confirmed": null,
+        "result": "<runtime: success|error|blocked|no_effect>",
+        "timestamp": "<runtime>",
+        "observations": [],
+        "evidence_ids": [
+          "<runtime>"
+        ],
+        "notes": null
+      }
+    ],
+    "test_results": [
+      {
+        "test_case_id": "<runtime: TC-###>",
+        "expected_result": "<runtime: VERBATIM from approved TestCases.md>",
+        "actual_result": "<runtime: observed only>",
+        "status": "<runtime: PASS|FAIL|BLOCKED>",
+        "reason": "<runtime: required for FAIL/BLOCKED>",
+        "failed_step": "<runtime or null>",
+        "evidence_ids": [
+          "<runtime>"
+        ],
+        "failure_cause": "<runtime: cause category or null>",
+        "bug_ids": [
+          "<runtime>"
+        ],
+        "test_case_issue_ids": [],
+        "deviation_ids": [],
+        "with_deviation": "<runtime: true|false>",
+        "executed_at": "<runtime>"
+      }
+    ],
+    "statuses": {
+      "PASS": "<runtime>",
+      "FAIL": "<runtime>",
+      "BLOCKED": "<runtime>",
+      "NOT_EXECUTED": "<runtime>"
+    },
+    "failure_analysis": [
+      {
+        "test_case_id": "<runtime>",
+        "failed_step": "<runtime>",
+        "cause_category": "<runtime: APPLICATION_DEFECT|TEST_CASE_DEFECT|TEST_DATA_PROBLEM|ENVIRONMENT_PROBLEM|DEPENDENCY_PROBLEM|UNKNOWN>",
+        "reasoning": "<runtime>",
+        "evidence_ids": [
+          "<runtime>"
+        ],
+        "confidence": "<runtime: High|Medium|Low>",
+        "limitations": "<runtime or null>",
+        "bug_id": "<runtime: BUG-### or null>",
+        "related_exploration": [
+          "<runtime: FND-### / OBS-###>"
+        ]
+      }
+    ],
+    "blocked_cases": [
+      {
+        "test_case_id": "<runtime>",
+        "blocker_type": "<runtime: environment|test_data|authentication|dependency|application_unreachable|test_case_issue|deviation_required|other>",
+        "blocker": "<runtime>",
+        "impact": "<runtime>",
+        "unblock_condition": "<runtime>",
+        "evidence_ids": []
+      }
+    ],
+    "test_case_issues": [
+      {
+        "id": "<runtime: TCI-###>",
+        "test_case_id": "<runtime: TC-### or null>",
+        "issue_type": "<runtime: invalid_case|ambiguous_step|missing_data|incorrect_assumption|deviation|unexecutable|missing_test_case>",
+        "description": "<runtime>",
+        "step": "<runtime or null>",
+        "consequence": "<runtime>",
+        "recommended_action": "<runtime: e.g. revise TestCases via Test Design>"
+      }
+    ],
+    "deviations": [
+      {
+        "id": "<runtime: DEV-###>",
+        "test_case_id": "<runtime>",
+        "step": "<runtime>",
+        "original_step": "<runtime>",
+        "deviation": "<runtime>",
+        "reason": "<runtime>",
+        "consequence": "<runtime>",
+        "kind": "<runtime: incidental|substantive>",
+        "performed": "<runtime: true only for incidental>"
+      }
+    ],
+    "bugs": [
+      {
+        "id": "<runtime: BUG-###>",
+        "title": "<runtime>",
+        "severity": "<runtime>",
+        "severity_model": "<runtime: project model name, or 'platform default'>",
+        "severity_rationale": "<runtime>",
+        "priority": "<runtime: High|Medium|Low|Not established>",
+        "priority_basis": "<runtime>",
+        "affected_test_cases": [
+          "<runtime: TC-###>"
+        ],
+        "evidence_ids": [
+          "<runtime>"
+        ],
+        "sources": [
+          "<runtime: PC BR-### / FND-###>"
+        ],
+        "root_cause_assessment": "<runtime or 'Not established — observed symptom only.'>",
+        "possibly_related": [],
+        "status": "Open",
+        "report_ref": "<runtime: bugs/BugReports.md BUG-###>"
+      }
+    ],
+    "defect_grouping": [
+      {
+        "bug_id": "<runtime: BUG-###>",
+        "test_case_ids": [
+          "<runtime: TC-###>"
+        ],
+        "rationale": "<runtime: why one distinct defect>",
+        "possibly_related": []
+      }
+    ],
+    "coverage": {
+      "approved_total": "<runtime>",
+      "selected": "<runtime>",
+      "executed": "<runtime>",
+      "passed": "<runtime>",
+      "failed": "<runtime>",
+      "blocked": "<runtime>",
+      "not_executed": [
+        {
+          "test_case_id": "<runtime>",
+          "reason": "<runtime>"
+        }
+      ],
+      "test_case_issues": "<runtime>",
+      "bugs": "<runtime>",
+      "source_coverage": [
+        {
+          "source_id": "<runtime: PC BR-###>",
+          "test_cases": [
+            "<runtime>"
+          ],
+          "executed": "<runtime>",
+          "passed": "<runtime>",
+          "failed": "<runtime>",
+          "blocked": "<runtime>",
+          "bugs": []
+        }
+      ]
+    },
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "<runtime>",
+      "checks": [
+        {
+          "check_id": "ME-V01",
+          "description": "Prerequisites 1–14 verified before the first MCP call",
+          "result": "<runtime>",
+          "notes": null
+        }
+      ]
+    },
+    "status": "awaiting_approval",
+    "stop_reason": "HARD STOP: ExecutionReport.md (and BugReports.md if defects) produced; human review required. Only MANUAL_EXECUTION_APPROVED unlocks automation-generation.",
+    "approval_required": true,
+    "approval_key": "MANUAL_EXECUTION_APPROVED",
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "automation-generation",
+      "unlocked": false,
+      "condition": "Exact standalone key MANUAL_EXECUTION_APPROVED sent by the human."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [
+      {
+        "id": "<runtime: EVD-### (task-wide sequence)>",
+        "type": "<runtime: screenshot|accessibility_snapshot|console|network|ui_text|url|api_response|browser_state|application_output|other>",
+        "capture_status": "<runtime: captured|not_captured>",
+        "source_action": "<runtime: mcp_actions seq>",
+        "related_observations": [],
+        "related_test_cases": [
+          "<runtime: TC-###>"
+        ],
+        "related_step": "<runtime>",
+        "related_bugs": [
+          "<runtime: BUG-###>"
+        ],
+        "path": "<runtime: execution/evidence/EVD-###-<slug>.<ext> or null>",
+        "original_path": "<runtime: .playwright-mcp/... or null>",
+        "sha256": "<runtime or null>",
+        "captured_at": "<runtime or null>",
+        "redactions": "<runtime: e.g. 'auth token in network log' or null>",
+        "notes": "<runtime: reason when not_captured>"
+      }
+    ],
+    "notes": null
+  },
+  "stage_execution_blocked": {
+    "schema_version": "1.4.0",
+    "event_type": "stage_execution",
+    "stage_id": "manual-execution",
+    "stage_name": "Manual Execution",
+    "skill_name": "manual-execution",
+    "skill_version": "1.1.0",
+    "prompt_id": "manual-execution",
+    "prompt_version": "1.1.0",
+    "trigger": {
+      "reason": "<runtime>",
+      "initiated_by": "<runtime: user|workflow>",
+      "user_message": "<runtime: secrets redacted>",
+      "redactions": null
+    },
+    "input_references": [
+      {
+        "path": "<runtime: the prerequisite file/approval checked>",
+        "role": "<runtime>",
+        "status": "<runtime: missing|read>",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "<runtime: why it failed>"
+      }
+    ],
+    "source_references": [],
+    "tools_used": [
+      {
+        "tool": "<runtime: e.g. Read>",
+        "purpose": "Prerequisite verification",
+        "targets": [
+          "<runtime>"
+        ]
+      }
+    ],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "<runtime: e.g. 'Blocked by ME-E23: Test Review not approved with TEST_REVIEW_APPROVED'>"
+        }
+      ]
+    },
+    "actions": [
+      "<runtime: Prerequisite check failed at #N>"
+    ],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [],
+    "environment": null,
+    "build": null,
+    "browser": null,
+    "test_case_ids": [],
+    "executed_test_case_ids": [],
+    "execution_actions": [],
+    "mcp_actions": [],
+    "test_results": [],
+    "statuses": null,
+    "failure_analysis": [],
+    "blocked_cases": [],
+    "test_case_issues": [],
+    "deviations": [],
+    "bugs": [],
+    "defect_grouping": [],
+    "coverage": null,
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "fail",
+      "checks": [
+        {
+          "check_id": "ME-V01",
+          "description": "Prerequisites 1–14 verified before the first MCP call",
+          "result": "fail",
+          "notes": "<runtime>"
+        }
+      ]
+    },
+    "status": "blocked",
+    "stop_reason": "<runtime: 'Blocked: <ME-E##> — <prerequisite>. Nothing executed, no MCP used, no reports created.'>",
+    "approval_required": true,
+    "approval_key": "MANUAL_EXECUTION_APPROVED",
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "automation-generation",
+      "unlocked": false,
+      "condition": "Prerequisite must be satisfied, execution completed, and MANUAL_EXECUTION_APPROVED given."
+    },
+    "errors": [
+      {
+        "code": "<runtime: ME-E##>",
+        "message": "<runtime>",
+        "resolution": null
+      }
+    ],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  },
+  "revision_request": {
+    "schema_version": "1.4.0",
+    "event_type": "revision_request",
+    "stage_id": "manual-execution",
+    "stage_name": "Manual Execution",
+    "skill_name": "manual-execution",
+    "skill_version": "1.1.0",
+    "prompt_id": null,
+    "prompt_version": null,
+    "trigger": {
+      "reason": "Human requested corrections to the execution results",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim request, secrets redacted>",
+      "redactions": null
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/execution/ExecutionReport.md",
+        "role": "previous_version_of_output",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": null
+      },
+      {
+        "path": "<runtime>/bugs/BugReports.md",
+        "role": "previous_version_of_output",
+        "status": "<runtime: read|not_applicable>",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": null
+      }
+    ],
+    "source_references": [],
+    "tools_used": [],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Recording the correction request only; any re-execution happens in the next stage_execution attempt."
+        }
+      ]
+    },
+    "actions": [
+      "Recorded correction request; the next stage_execution attempt re-runs only what is required and updates the same reports in place (minor version bump, IDs preserved)."
+    ],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": false,
+      "overall": "not_applicable",
+      "checks": []
+    },
+    "status": "revision_requested",
+    "stop_reason": null,
+    "approval_required": true,
+    "approval_key": "MANUAL_EXECUTION_APPROVED",
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "automation-generation",
+      "unlocked": false,
+      "condition": "Revision must be produced, presented, and approved with MANUAL_EXECUTION_APPROVED."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  },
+  "approval_decision": {
+    "schema_version": "1.4.0",
+    "event_type": "approval_decision",
+    "stage_id": "manual-execution",
+    "stage_name": "Manual Execution",
+    "skill_name": "manual-execution",
+    "skill_version": "1.1.0",
+    "prompt_id": null,
+    "prompt_version": null,
+    "trigger": {
+      "reason": "Human replied at the Manual Execution gate",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim reply>",
+      "redactions": null
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/execution/ExecutionReport.md",
+        "role": "previous_version_of_output",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": null
+      }
+    ],
+    "source_references": [],
+    "tools_used": [],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Gate decision only."
+        }
+      ]
+    },
+    "actions": [],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [
+      {
+        "path": "<runtime>/execution/ExecutionReport.md",
+        "operation": "<runtime: updated (Status → Approved) | unchanged>",
+        "artifact_status": "<runtime: approved|draft>",
+        "artifact_version": "<runtime: unchanged by approval>",
+        "sha256": "<runtime: POST-update hash; used downstream to detect stale approval>",
+        "summary": null
+      },
+      {
+        "path": "<runtime>/bugs/BugReports.md",
+        "operation": "<runtime: updated (Status → Approved) | unchanged>",
+        "artifact_status": "<runtime: approved|draft|null (placeholder)>",
+        "artifact_version": "<runtime or null>",
+        "sha256": "<runtime: POST-update hash or null>",
+        "summary": null
+      }
+    ],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "<runtime>",
+      "checks": [
+        {
+          "check_id": "ME-G01",
+          "description": "Reply is exactly the standalone key MANUAL_EXECUTION_APPROVED",
+          "result": "<runtime>",
+          "notes": null
+        }
+      ]
+    },
+    "status": "<runtime: approved | approval_not_accepted>",
+    "stop_reason": "<runtime: null if accepted; otherwise 'Reply was not the exact standalone approval key; stage remains stopped.'>",
+    "approval_required": true,
+    "approval_key": "MANUAL_EXECUTION_APPROVED",
+    "approval_outcome": "<runtime: accepted | not_accepted>",
+    "next_stage": {
+      "stage_id": "automation-generation",
+      "unlocked": "<runtime: true only if accepted>",
+      "condition": "Exact standalone key MANUAL_EXECUTION_APPROVED sent by the human. Automation Generation starts only when orchestration starts it."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  }
+}

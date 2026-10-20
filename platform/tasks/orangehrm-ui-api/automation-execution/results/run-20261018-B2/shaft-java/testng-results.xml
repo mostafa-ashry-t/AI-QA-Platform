@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+    <line>
+      <![CDATA[
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                                    Powered by [1mSHAFT v.10.1.20260123[22m                                                    
+                                   Visit SHAFT's user guide [4mhttps://shafthq.github.io/[24m to learn more                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Checking for engine updates... @18-10-2026 13:50:49.0090 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Initializing Allure Reporting Environment... @18-10-2026 13:50:49.0126 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Initializing Summary Reporting Environment... @18-10-2026 13:50:49.0278 PM]]>
+    </line>
+    <line>
+      <![CDATA[
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                             Starting execution of suite setup configuration method                                             
+                                          'com.shaft.listeners.internal.ConfigurationHelper.suiteSetup'                                          
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Initializing Properties... @18-10-2026 13:50:49.0900 PM]]>
+    </line>
+    <line>
+      <![CDATA[
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                             Starting execution of open browser configuration method                                             
+                                      'qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest.openBrowser'                                      
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Setting "targetBrowserName" property with "chrome". @18-10-2026 13:50:50.0103 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Setting "headlessExecution" property with "true". @18-10-2026 13:50:50.0105 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Setting "browserWindowWidth" property with "1920". @18-10-2026 13:50:50.0106 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Setting "browserWindowHeight" property with "1080". @18-10-2026 13:50:50.0108 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Setting "defaultElementIdentificationTimeout" property with "30.0". @18-10-2026 13:50:50.0114 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Setting "retryMaximumNumberOfAttempts" property with "0". @18-10-2026 13:50:50.0124 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Setting "autoMaximizeBrowserWindow" property with "false". @18-10-2026 13:50:50.0127 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Setting "allure.automaticallyOpen" property with "false". @18-10-2026 13:50:50.0129 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Post processing some properties to support platforms-specific restrictions. @18-10-2026 13:50:50.0161 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Setting "targetOperatingSystem" property with "windows". @18-10-2026 13:50:50.0175 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Setting "screenshotParams_scalingFactor" property with "1.0". @18-10-2026 13:50:50.0527 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Capabilities {browserName: chrome, goog:chromeOptions: {args: [--headless, --window-position=0,0, --window-size=1920,1080], extensions: [], prefs: {download.default_directory: C:\Users\QC User\Desktop\Fi..., download.prompt_for_download: false}}, pageLoadStrategy: none, timeouts: {pageLoad: 60000, script: 30000}, webSocketUrl: true} @18-10-2026 13:50:50.0568 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Attempting to run locally on: "Windows | Chrome", Headless Execution. @18-10-2026 13:50:50.0569 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Identifying OS/Driver combination. Please note that if a new browser/driver executable will be downloaded it may take some time depending on your connection... @18-10-2026 13:50:50.0569 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Successfully Opened: "Windows | Chrome", Headless Execution. @18-10-2026 13:51:03.0997 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Successfully created attachment 'SHAFT Engine Logs - Current Method log: openBrowser' @18-10-2026 13:51:04.0036 PM]]>
+    </line>
+    <line>
+      <![CDATA[
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                        Starting Execution: '1 out of 1' test cases in the current suite                                        
+                              Test Method: 'qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest.tc054EndToEnd'                              
+                     Test Description: 'TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset'                     
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:04.161046200Z [TC-054] Precondition: No authenticated session in the browser (fresh browser context, or logged out). @18-10-2026 13:51:04.0162 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:04.216370200Z [TC-054]   observed cookies in the fresh browser = 0 @18-10-2026 13:51:04.0216 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:04.216370200Z [TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001). @18-10-2026 13:51:04.0216 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Target URL: "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory", and after redirection: "/auth/login" @18-10-2026 13:51:04.0292 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Initial URL: "about:blank" @18-10-2026 13:51:04.0371 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Navigate to url "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory". @18-10-2026 13:51:07.0838 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:07.854444200Z [TC-054]   observed URL after opening the Directory URL = https://opensource-demo.orangehrmlive.com/web/index.php/auth/login @18-10-2026 13:51:07.0854 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Type  securely "Username" @18-10-2026 13:51:08.0482 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Type  securely "Password" @18-10-2026 13:51:08.0696 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Click "Login" @18-10-2026 13:51:08.0842 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:10.342492200Z [TC-054]   observed URL after login = https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory @18-10-2026 13:51:10.0342 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:10.488063900Z [TC-054]   observed unfiltered results header (for the DATA-012 condition) = (111) Records Found @18-10-2026 13:51:10.0488 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:12.162680400Z [TC-054]   observed DATA-012 pair (from the card of Diego Alvarez) = jobTitle="Probation Trainee PLW1462", location="New York Sales Office" @18-10-2026 13:51:12.0162 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:12.162680400Z [TC-054] Step 2: Select the Job Title and the Location of the DATA-012 pair; click Search. @18-10-2026 13:51:12.0162 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Click "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:51:12.0343 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Click "Probation Trainee PLW1462" @18-10-2026 13:51:12.0601 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Click "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:51:12.0817 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Click "New York Sales Office" @18-10-2026 13:51:13.0069 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Click "Search" @18-10-2026 13:51:13.0287 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:13.287249500Z [TC-054] Step 3: Wait until result cards are displayed; read the results header and note the filtered record count k ("(k) Records Found", or "(1) Record Found" when k is 1). @18-10-2026 13:51:13.0288 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:15.100047900Z [TC-054]   observed filtered results header = (6) Records Found @18-10-2026 13:51:15.0100 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:15.100047900Z [TC-054]   observed k = 6 @18-10-2026 13:51:15.0100 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:15.100047900Z [TC-054] Step 4: Click the first result card; then click the panel's arrow icon. @18-10-2026 13:51:15.0100 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Click "By.xpath: (//div[contains(@class,'orangehrm-container')]//div[contains(concat(' ',normalize-space(@class),' '),' orangehrm-directory-card ')])[1]" @18-10-2026 13:51:15.0343 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Click "By.xpath: //div[contains(@class,'orangehrm-corporate-directory-sidebar')]//i[contains(@class,'bi-arrow-right')]" @18-10-2026 13:51:15.0577 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:15.604675900Z [TC-054]   observed detail panel opened and closed for the first card = Diego Alvarez @18-10-2026 13:51:15.0604 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:15.633590700Z [TC-054] Step 5: Click Reset. @18-10-2026 13:51:15.0633 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Click "Reset" @18-10-2026 13:51:15.0804 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:15.804376800Z [TC-054] Step 6: Wait until employee result cards are displayed, then read the results header. @18-10-2026 13:51:15.0804 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:16.934675700Z [TC-054]   observed results header changed after Reset within the timeout = true @18-10-2026 13:51:16.0934 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Get  dom  property "Type for hints..." @18-10-2026 13:51:17.0162 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Get  text "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:51:17.0288 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Get  text "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:51:17.0436 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:17.436979900Z [TC-054]   observed state after Reset = header="(111) Records Found", employeeName="", jobTitle="-- Select --", location="-- Select --" @18-10-2026 13:51:17.0436 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:17.436979900Z [TC-054]   observed N = 111 @18-10-2026 13:51:17.0436 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Assert that "" is equal to "". @18-10-2026 13:51:17.0452 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Expected "", and actual "" @18-10-2026 13:51:17.0473 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Expected "", and actual "" @18-10-2026 13:51:17.0482 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Assertion passed @18-10-2026 13:51:17.0484 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] TC-054 expected: Employee Name is empty @18-10-2026 13:51:17.0484 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Assert that "-- Select --" is equal to "-- Select --". @18-10-2026 13:51:17.0485 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:51:17.0486 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:51:17.0486 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Assertion passed @18-10-2026 13:51:17.0486 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] TC-054 expected: Job Title displays "-- Select --" @18-10-2026 13:51:17.0486 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Assert that "-- Select --" is equal to "-- Select --". @18-10-2026 13:51:17.0487 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:51:17.0488 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:51:17.0488 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Assertion passed @18-10-2026 13:51:17.0488 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] TC-054 expected: Location displays "-- Select --" @18-10-2026 13:51:17.0488 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Assert that "(111) Records Found" matches this regular expression "^\(\d+\) Records Found$". @18-10-2026 13:51:17.0490 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Expected "^\(\d+\) Records Found$", and actual "(111) Records Found" @18-10-2026 13:51:17.0490 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Expected "^\(\d+\) Records Found$", and actual "(111) Records Found" @18-10-2026 13:51:17.0491 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Assertion passed @18-10-2026 13:51:17.0491 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] TC-054 expected: results header reads "(N) Records Found" @18-10-2026 13:51:17.0491 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Assert that "111" is greater than "6". @18-10-2026 13:51:17.0492 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Expected "6", and actual "111" @18-10-2026 13:51:17.0493 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Expected "6", and actual "111" @18-10-2026 13:51:17.0493 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Assertion passed @18-10-2026 13:51:17.0493 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] TC-054 expected: N greater than k (k = 6, header "(111) Records Found") @18-10-2026 13:51:17.0493 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Successfully created attachment 'SHAFT Engine Logs - Current Method log: tc054EndToEnd' @18-10-2026 13:51:17.0500 PM]]>
+    </line>
+    <line>
+      <![CDATA[
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                   Finished Execution of Test Method: 'qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest.tc054EndToEnd'                   
+                     Test Description: 'TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset'                     
+                                                              Test Status: 'Passed'                                                              
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]>
+    </line>
+    <line>
+      <![CDATA[
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                            Starting execution of close browser configuration method                                            
+                                     'qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest.closeBrowser'                                     
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:17.653764200Z [TC-054] Screenshot written: C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation-execution\results\run-20261018-B2\shaft-java\TC-054\final.png @18-10-2026 13:51:17.0653 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] 2026-10-18T10:51:17.653764200Z [TC-054] Result: PASSED @18-10-2026 13:51:17.0654 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Successfully Closed Driver. @18-10-2026 13:51:18.0179 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Successfully created attachment 'SHAFT Engine Logs - Current Method log: closeBrowser' @18-10-2026 13:51:18.0180 PM]]>
+    </line>
+    <line>
+      <![CDATA[
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                           Starting execution of engine tear down configuration method                                           
+                                        'com.shaft.listeners.internal.ConfigurationHelper.engineTearDown'                                        
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Successfully created attachment 'HTML - Checkpoints Report' @18-10-2026 13:51:18.0188 PM]]>
+    </line>
+    <line>
+      <![CDATA[[ReportManager] Successfully created attachment 'SHAFT Engine Logs - Current Method log: engineTearDown' @18-10-2026 13:51:18.0190 PM]]>
+    </line>
+  </reporter-output>
+  <suite started-at="2026-10-18T13:50:49 EEST" name="OrangeHRM Directory - SHAFT" finished-at="2026-10-18T13:51:18 EEST" duration-ms="28423">
+    <groups>
+    </groups>
+    <test started-at="2026-10-18T13:50:49 EEST" name="TC-054" finished-at="2026-10-18T13:51:18 EEST" duration-ms="28423">
+      <class name="com.shaft.listeners.internal.ConfigurationHelper">
+        <test-method is-config="true" signature="suiteSetup(org.testng.ITestContext)[pri:0, instance:com.shaft.listeners.internal.ConfigurationHelper@5c53c235]" started-at="2026-10-18T13:50:49 EEST" name="suiteSetup" description="Engine Setup" finished-at="2026-10-18T13:50:49 EEST" duration-ms="198" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[org.testng.TestRunner@aade5a2]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+            <line>
+              <![CDATA[[ReportManager] Initializing Properties... @18-10-2026 13:50:49.0900 PM]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- suiteSetup -->
+        <test-method is-config="true" signature="engineTearDown()[pri:0, instance:com.shaft.listeners.internal.ConfigurationHelper@5c53c235]" started-at="2026-10-18T13:51:18 EEST" name="engineTearDown" description="Engine Tear down" finished-at="2026-10-18T13:51:18 EEST" duration-ms="4" status="PASS">
+          <reporter-output>
+            <line>
+              <![CDATA[[ReportManager] Successfully created attachment 'HTML - Checkpoints Report' @18-10-2026 13:51:18.0188 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Successfully created attachment 'SHAFT Engine Logs - Current Method log: engineTearDown' @18-10-2026 13:51:18.0190 PM]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- engineTearDown -->
+      </class> <!-- com.shaft.listeners.internal.ConfigurationHelper -->
+      <class name="qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest">
+        <test-method is-config="true" signature="openBrowser()[pri:0, instance:qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest@541d4d9f]" started-at="2026-10-18T13:50:50 EEST" name="openBrowser" finished-at="2026-10-18T13:51:04 EEST" duration-ms="13958" status="PASS">
+          <reporter-output>
+            <line>
+              <![CDATA[[ReportManager] Setting "targetBrowserName" property with "chrome". @18-10-2026 13:50:50.0103 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Setting "headlessExecution" property with "true". @18-10-2026 13:50:50.0105 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Setting "browserWindowWidth" property with "1920". @18-10-2026 13:50:50.0106 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Setting "browserWindowHeight" property with "1080". @18-10-2026 13:50:50.0108 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Setting "defaultElementIdentificationTimeout" property with "30.0". @18-10-2026 13:50:50.0114 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Setting "retryMaximumNumberOfAttempts" property with "0". @18-10-2026 13:50:50.0124 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Setting "autoMaximizeBrowserWindow" property with "false". @18-10-2026 13:50:50.0127 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Setting "allure.automaticallyOpen" property with "false". @18-10-2026 13:50:50.0129 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Post processing some properties to support platforms-specific restrictions. @18-10-2026 13:50:50.0161 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Setting "targetOperatingSystem" property with "windows". @18-10-2026 13:50:50.0175 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Setting "screenshotParams_scalingFactor" property with "1.0". @18-10-2026 13:50:50.0527 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Capabilities {browserName: chrome, goog:chromeOptions: {args: [--headless, --window-position=0,0, --window-size=1920,1080], extensions: [], prefs: {download.default_directory: C:\Users\QC User\Desktop\Fi..., download.prompt_for_download: false}}, pageLoadStrategy: none, timeouts: {pageLoad: 60000, script: 30000}, webSocketUrl: true} @18-10-2026 13:50:50.0568 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Attempting to run locally on: "Windows | Chrome", Headless Execution. @18-10-2026 13:50:50.0569 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Identifying OS/Driver combination. Please note that if a new browser/driver executable will be downloaded it may take some time depending on your connection... @18-10-2026 13:50:50.0569 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Successfully Opened: "Windows | Chrome", Headless Execution. @18-10-2026 13:51:03.0997 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Successfully created attachment 'SHAFT Engine Logs - Current Method log: openBrowser' @18-10-2026 13:51:04.0036 PM]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- openBrowser -->
+        <test-method signature="tc054EndToEnd()[pri:0, instance:qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest@541d4d9f]" started-at="2026-10-18T13:51:04 EEST" name="tc054EndToEnd" description="TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset" finished-at="2026-10-18T13:51:17 EEST" duration-ms="13353" status="PASS">
+          <reporter-output>
+            <line>
+              <![CDATA[
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                        Starting Execution: '1 out of 1' test cases in the current suite                                        
+                              Test Method: 'qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest.tc054EndToEnd'                              
+                     Test Description: 'TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset'                     
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:04.161046200Z [TC-054] Precondition: No authenticated session in the browser (fresh browser context, or logged out). @18-10-2026 13:51:04.0162 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:04.216370200Z [TC-054]   observed cookies in the fresh browser = 0 @18-10-2026 13:51:04.0216 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:04.216370200Z [TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001). @18-10-2026 13:51:04.0216 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Target URL: "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory", and after redirection: "/auth/login" @18-10-2026 13:51:04.0292 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Initial URL: "about:blank" @18-10-2026 13:51:04.0371 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Navigate to url "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory". @18-10-2026 13:51:07.0838 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:07.854444200Z [TC-054]   observed URL after opening the Directory URL = https://opensource-demo.orangehrmlive.com/web/index.php/auth/login @18-10-2026 13:51:07.0854 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Type  securely "Username" @18-10-2026 13:51:08.0482 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Type  securely "Password" @18-10-2026 13:51:08.0696 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Click "Login" @18-10-2026 13:51:08.0842 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:10.342492200Z [TC-054]   observed URL after login = https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory @18-10-2026 13:51:10.0342 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:10.488063900Z [TC-054]   observed unfiltered results header (for the DATA-012 condition) = (111) Records Found @18-10-2026 13:51:10.0488 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:12.162680400Z [TC-054]   observed DATA-012 pair (from the card of Diego Alvarez) = jobTitle="Probation Trainee PLW1462", location="New York Sales Office" @18-10-2026 13:51:12.0162 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:12.162680400Z [TC-054] Step 2: Select the Job Title and the Location of the DATA-012 pair; click Search. @18-10-2026 13:51:12.0162 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Click "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:51:12.0343 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Click "Probation Trainee PLW1462" @18-10-2026 13:51:12.0601 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Click "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:51:12.0817 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Click "New York Sales Office" @18-10-2026 13:51:13.0069 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Click "Search" @18-10-2026 13:51:13.0287 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:13.287249500Z [TC-054] Step 3: Wait until result cards are displayed; read the results header and note the filtered record count k ("(k) Records Found", or "(1) Record Found" when k is 1). @18-10-2026 13:51:13.0288 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:15.100047900Z [TC-054]   observed filtered results header = (6) Records Found @18-10-2026 13:51:15.0100 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:15.100047900Z [TC-054]   observed k = 6 @18-10-2026 13:51:15.0100 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:15.100047900Z [TC-054] Step 4: Click the first result card; then click the panel's arrow icon. @18-10-2026 13:51:15.0100 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Click "By.xpath: (//div[contains(@class,'orangehrm-container')]//div[contains(concat(' ',normalize-space(@class),' '),' orangehrm-directory-card ')])[1]" @18-10-2026 13:51:15.0343 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Click "By.xpath: //div[contains(@class,'orangehrm-corporate-directory-sidebar')]//i[contains(@class,'bi-arrow-right')]" @18-10-2026 13:51:15.0577 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:15.604675900Z [TC-054]   observed detail panel opened and closed for the first card = Diego Alvarez @18-10-2026 13:51:15.0604 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:15.633590700Z [TC-054] Step 5: Click Reset. @18-10-2026 13:51:15.0633 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Click "Reset" @18-10-2026 13:51:15.0804 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:15.804376800Z [TC-054] Step 6: Wait until employee result cards are displayed, then read the results header. @18-10-2026 13:51:15.0804 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:16.934675700Z [TC-054]   observed results header changed after Reset within the timeout = true @18-10-2026 13:51:16.0934 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Get  dom  property "Type for hints..." @18-10-2026 13:51:17.0162 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Get  text "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:51:17.0288 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Get  text "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 13:51:17.0436 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:17.436979900Z [TC-054]   observed state after Reset = header="(111) Records Found", employeeName="", jobTitle="-- Select --", location="-- Select --" @18-10-2026 13:51:17.0436 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:17.436979900Z [TC-054]   observed N = 111 @18-10-2026 13:51:17.0436 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Assert that "" is equal to "". @18-10-2026 13:51:17.0452 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Expected "", and actual "" @18-10-2026 13:51:17.0473 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Expected "", and actual "" @18-10-2026 13:51:17.0482 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Assertion passed @18-10-2026 13:51:17.0484 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] TC-054 expected: Employee Name is empty @18-10-2026 13:51:17.0484 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Assert that "-- Select --" is equal to "-- Select --". @18-10-2026 13:51:17.0485 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:51:17.0486 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:51:17.0486 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Assertion passed @18-10-2026 13:51:17.0486 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] TC-054 expected: Job Title displays "-- Select --" @18-10-2026 13:51:17.0486 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Assert that "-- Select --" is equal to "-- Select --". @18-10-2026 13:51:17.0487 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:51:17.0488 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Expected "-- Select --", and actual "-- Select --" @18-10-2026 13:51:17.0488 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Assertion passed @18-10-2026 13:51:17.0488 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] TC-054 expected: Location displays "-- Select --" @18-10-2026 13:51:17.0488 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Assert that "(111) Records Found" matches this regular expression "^\(\d+\) Records Found$". @18-10-2026 13:51:17.0490 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Expected "^\(\d+\) Records Found$", and actual "(111) Records Found" @18-10-2026 13:51:17.0490 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Expected "^\(\d+\) Records Found$", and actual "(111) Records Found" @18-10-2026 13:51:17.0491 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Assertion passed @18-10-2026 13:51:17.0491 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] TC-054 expected: results header reads "(N) Records Found" @18-10-2026 13:51:17.0491 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Assert that "111" is greater than "6". @18-10-2026 13:51:17.0492 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Expected "6", and actual "111" @18-10-2026 13:51:17.0493 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Expected "6", and actual "111" @18-10-2026 13:51:17.0493 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Assertion passed @18-10-2026 13:51:17.0493 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] TC-054 expected: N greater than k (k = 6, header "(111) Records Found") @18-10-2026 13:51:17.0493 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Successfully created attachment 'SHAFT Engine Logs - Current Method log: tc054EndToEnd' @18-10-2026 13:51:17.0500 PM]]>
+            </line>
+            <line>
+              <![CDATA[
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                   Finished Execution of Test Method: 'qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest.tc054EndToEnd'                   
+                     Test Description: 'TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset'                     
+                                                              Test Status: 'Passed'                                                              
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]>
+            </line>
+            <line>
+              <![CDATA[
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                            Starting execution of close browser configuration method                                            
+                                     'qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest.closeBrowser'                                     
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- tc054EndToEnd -->
+        <test-method is-config="true" signature="closeBrowser(org.testng.ITestResult)[pri:0, instance:qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest@541d4d9f]" started-at="2026-10-18T13:51:17 EEST" name="closeBrowser" finished-at="2026-10-18T13:51:18 EEST" duration-ms="665" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=tc054EndToEnd status=SUCCESS method=TC054DirectoryEndToEndTest.tc054EndToEnd()[pri:0, instance:qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest@541d4d9f] output=
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                        Starting Execution: '1 out of 1' test cases in the current suite                                        
+                              Test Method: 'qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest.tc054EndToEnd'                              
+                     Test Description: 'TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset'                     
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:17.653764200Z [TC-054] Screenshot written: C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation-execution\results\run-20261018-B2\shaft-java\TC-054\final.png @18-10-2026 13:51:17.0653 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] 2026-10-18T10:51:17.653764200Z [TC-054] Result: PASSED @18-10-2026 13:51:17.0654 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Successfully Closed Driver. @18-10-2026 13:51:18.0179 PM]]>
+            </line>
+            <line>
+              <![CDATA[[ReportManager] Successfully created attachment 'SHAFT Engine Logs - Current Method log: closeBrowser' @18-10-2026 13:51:18.0180 PM]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- closeBrowser -->
+      </class> <!-- qa.orangehrm.directory.tests.TC054DirectoryEndToEndTest -->
+    </test> <!-- TC-054 -->
+  </suite> <!-- OrangeHRM Directory - SHAFT -->
+</testng-results>

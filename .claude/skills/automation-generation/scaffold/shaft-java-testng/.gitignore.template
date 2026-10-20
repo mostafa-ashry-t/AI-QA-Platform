@@ -1,0 +1,21 @@
+# TEMPLATE (automation-generation scaffold)
+# Build output
+target/
+# SHAFT runtime output (copied into automation-execution per run)
+allure-results/
+allure-report/
+execution-summary/
+extent-reports/
+test-output/
+performanceReport/
+generate_allure_report.bat
+generate_allure_report.sh
+# SHAFT writes its default property files and listener service files on every run
+src/main/resources/properties/default/
+src/test/resources/META-INF/services/
+# Local secrets: never generated with values, never committed
+.env
+.env.*
+# IDE workspace (shared run configurations live in .run/ and ARE kept)
+.idea/
+*.iml

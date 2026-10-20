@@ -1,0 +1,151 @@
+package {{base_package}}.support;
+
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.Tracing;
+import com.microsoft.playwright.assertions.PlaywrightAssertions;
+import org.testng.ITestResult;
+import org.testng.Reporter;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * TEMPLATE (automation-generation scaffold). Browser lifecycle, step logging and
+ * failure evidence. One fresh browser context per test: no shared state, no
+ * dependency on test order.
+ *
+ * Evidence on failure (written for the automation-execution stage):
+ *   <artifactsDir>/<runId>/<caseId>/failure.png, trace-N.zip, steps.log
+ * Nothing here retries, swallows a failure or records a credential.
+ */
+public abstract class BaseTest {
+
+    protected Playwright playwright;
+    protected Browser browser;
+    protected BrowserContext context;
+    protected Page page;
+
+    private final List<String> stepLog = new ArrayList<>();
+    private final List<Path> traceChunks = new ArrayList<>();
+    private Path workDir;
+    private boolean tracing;
+
+    /** Case ID of the test, e.g. "TC-001"; used in messages and evidence paths. */
+    protected abstract String caseId();
+
+    @BeforeMethod(alwaysRun = true)
+    public void openBrowser() throws IOException {
+        playwright = Playwright.create();
+        BrowserType type;
+        switch (Config.browser()) {
+            case "firefox":
+                type = playwright.firefox();
+                break;
+            case "webkit":
+                type = playwright.webkit();
+                break;
+            default:
+                type = playwright.chromium();
+        }
+        browser = type.launch(new BrowserType.LaunchOptions().setHeadless(Config.headless()));
+        context = browser.newContext(new Browser.NewContextOptions().setViewportSize(1920, 1080));
+        context.setDefaultTimeout(Config.timeoutMs());
+        PlaywrightAssertions.setDefaultAssertionTimeout(Config.timeoutMs());
+        page = context.newPage();
+        workDir = Files.createTempDirectory("qa-" + caseId() + "-");
+        context.tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true).setSources(false));
+        context.tracing().startChunk();
+        tracing = true;
+    }
+
+    /** Labels an approved precondition; text is the approved precondition, verbatim. */
+    protected void precondition(String text) {
+        log("[" + caseId() + "] Precondition: " + text);
+    }
+
+    /** Labels approved step n; text is the approved step, verbatim. */
+    protected void step(int n, String text) {
+        log("[" + caseId() + "] Step " + n + ": " + text);
+    }
+
+    /** Records a value read from the page during a step (never a secret). */
+    protected void observed(String what, Object value) {
+        log("[" + caseId() + "]   observed " + what + " = " + value);
+    }
+
+    /**
+     * Runs an action that types secrets with tracing paused, so the trace never
+     * contains the typed values. The steps before and after are still traced.
+     */
+    protected void withoutTracing(Runnable secretAction) {
+        if (tracing) {
+            Path chunk = workDir.resolve("trace-" + (traceChunks.size() + 1) + ".zip");
+            context.tracing().stopChunk(new Tracing.StopChunkOptions().setPath(chunk));
+            traceChunks.add(chunk);
+        }
+        try {
+            secretAction.run();
+        } finally {
+            if (tracing) {
+                context.tracing().startChunk();
+            }
+        }
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void closeBrowser(ITestResult result) throws IOException {
+        boolean failed = result.getStatus() == ITestResult.FAILURE;
+        try {
+            if (tracing) {
+                Path chunk = workDir.resolve("trace-" + (traceChunks.size() + 1) + ".zip");
+                context.tracing().stopChunk(new Tracing.StopChunkOptions().setPath(chunk));
+                traceChunks.add(chunk);
+                context.tracing().stop();
+                tracing = false;
+            }
+            if (failed) {
+                Path out = Paths.get(Config.artifactsDir(), Config.runId(), caseId());
+                Files.createDirectories(out);
+                if (page != null && !page.isClosed()) {
+                    page.screenshot(new Page.ScreenshotOptions().setPath(out.resolve("failure.png")).setFullPage(true));
+                }
+                for (Path chunk : traceChunks) {
+                    if (Files.exists(chunk)) {
+                        Files.copy(chunk, out.resolve(chunk.getFileName()));
+                    }
+                }
+                Files.write(out.resolve("steps.log"), stepLog, StandardCharsets.UTF_8);
+                log("[" + caseId() + "] Failure evidence written to " + out);
+            }
+        } finally {
+            if (context != null) context.close();
+            if (browser != null) browser.close();
+            if (playwright != null) playwright.close();
+            for (Path chunk : traceChunks) Files.deleteIfExists(chunk);
+            if (workDir != null) Files.deleteIfExists(workDir);
+        }
+    }
+
+    private void log(String line) {
+        stepLog.add(line);
+        Reporter.log(line, true);
+    }
+
+    /** Test-data problem, distinguishable from an assertion failure. */
+    public static final class TestDataUnavailableException extends IllegalStateException {
+        public TestDataUnavailableException(String dataId, String detail) {
+            super("[TEST DATA] test data not available: " + dataId + " (" + detail + ")");
+        }
+    }
+}

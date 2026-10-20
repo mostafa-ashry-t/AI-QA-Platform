@@ -1,0 +1,246 @@
+{
+  "_about": "TEMPLATE, not a runtime event. Stage-specific constants of the project-context skill for each event type. Values that are null or '<runtime>' MUST be filled from the actual execution (system clock, real file paths, real hashes, the real analysis). Never fabricated. Conforms to platform/schemas/journal-event.schema.json (v1.2.0) once filled. revision_request and approval_decision also require the common runtime fields shown in stage_execution (event_id, step_number, attempt, workflow_run_id, task_id, timestamp, decisions, revision, prompt_variables where applicable). workflow_run_id is READ from journal/workflow-run.json (active_run_id), never created by the skill.",
+  "stage_execution": {
+    "schema_version": "1.2.0",
+    "event_id": "<runtime: EVT-NNNN, next sequence in execution-log.json>",
+    "event_type": "stage_execution",
+    "step_number": null,
+    "attempt": null,
+    "workflow_run_id": "<runtime: journal/workflow-run.json → active_run_id; never created by the skill>",
+    "task_id": "<runtime>",
+    "timestamp": "<runtime: system clock, UTC>",
+    "stage_id": "project-context",
+    "stage_name": "Project Context",
+    "skill_name": "project-context",
+    "skill_version": "1.1.1",
+    "prompt_id": "project-context",
+    "prompt_version": "1.1.0",
+    "prompt_variables": {
+      "task_name": "<runtime>",
+      "task_path": "<runtime>",
+      "prd_path": "<runtime>"
+    },
+    "trigger": {
+      "reason": "<runtime: e.g. 'Initial run requested' or 'Revision after change request EVT-NNNN'>",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/prd/PRD.md",
+        "role": "task_prd",
+        "status": "<runtime>",
+        "sha256": null,
+        "referenced_by": null
+      },
+      {
+        "path": "<runtime: journal:EVT-NNNN (accepted PRD_APPROVED event)>",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null
+      },
+      {
+        "path": "<runtime>/context/TaskContext.md",
+        "role": "task_metadata",
+        "status": "<runtime>",
+        "sha256": null,
+        "referenced_by": null
+      },
+      {
+        "path": ".claude/prompts/project-context.md",
+        "role": "prompt",
+        "status": "<runtime>",
+        "sha256": null,
+        "referenced_by": null
+      }
+    ],
+    "source_references": [],
+    "tools_used": [],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Project Context works from documented intent (PRD) only. Observing the live application belongs to the Exploration stage."
+        }
+      ]
+    },
+    "actions": [],
+    "decisions": [],
+    "revision": "<runtime: null on attempt 1; revision object on later attempts>",
+    "output_artifacts": [
+      {
+        "path": "<runtime>/context/ProjectContext.md",
+        "operation": "<runtime: created|updated>",
+        "artifact_status": "draft",
+        "sha256": null,
+        "summary": null
+      }
+    ],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "<runtime>",
+      "checks": []
+    },
+    "status": "awaiting_approval",
+    "stop_reason": "HARD STOP: ProjectContext.md produced; human review required before any further stage.",
+    "approval_required": true,
+    "approval_key": "PROJECT_CONTEXT_APPROVED",
+    "next_stage": {
+      "stage_id": "exploration",
+      "unlocked": false,
+      "condition": "Literal key PROJECT_CONTEXT_APPROVED sent by the human."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null,
+    "approval_outcome": null
+  },
+  "revision_request": {
+    "schema_version": "1.2.0",
+    "event_type": "revision_request",
+    "stage_id": "project-context",
+    "stage_name": "Project Context",
+    "skill_name": "project-context",
+    "skill_version": "1.1.1",
+    "prompt_id": null,
+    "prompt_version": null,
+    "trigger": {
+      "reason": "Human requested changes to ProjectContext.md",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim change request>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/context/ProjectContext.md",
+        "role": "previous_version_of_output",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null
+      }
+    ],
+    "source_references": [],
+    "tools_used": [],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Not permitted in Project Context."
+        }
+      ]
+    },
+    "actions": [
+      "Recorded change request; a new stage_execution attempt will update ProjectContext.md in place."
+    ],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": false,
+      "overall": "not_applicable",
+      "checks": []
+    },
+    "status": "revision_requested",
+    "stop_reason": null,
+    "approval_required": true,
+    "approval_key": "PROJECT_CONTEXT_APPROVED",
+    "next_stage": {
+      "stage_id": "exploration",
+      "unlocked": false,
+      "condition": "Revision must be produced, presented, and approved with PROJECT_CONTEXT_APPROVED."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null,
+    "approval_outcome": null
+  },
+  "approval_decision": {
+    "schema_version": "1.2.0",
+    "event_type": "approval_decision",
+    "stage_id": "project-context",
+    "stage_name": "Project Context",
+    "skill_name": "project-context",
+    "skill_version": "1.1.1",
+    "prompt_id": null,
+    "prompt_version": null,
+    "trigger": {
+      "reason": "Human replied at the Project Context gate",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim reply>"
+    },
+    "input_references": [
+      {
+        "path": "<runtime>/context/ProjectContext.md",
+        "role": "previous_version_of_output",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null
+      }
+    ],
+    "source_references": [],
+    "tools_used": [],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "Not permitted in Project Context."
+        }
+      ]
+    },
+    "actions": [],
+    "decisions": [],
+    "revision": null,
+    "output_artifacts": [
+      {
+        "path": "<runtime>/context/ProjectContext.md",
+        "operation": "<runtime: updated (status → Approved) | unchanged>",
+        "artifact_status": "<runtime: approved|draft>",
+        "sha256": null,
+        "summary": null
+      }
+    ],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "<runtime>",
+      "checks": [
+        {
+          "check_id": "PC-G01",
+          "description": "Reply is exactly the literal key PROJECT_CONTEXT_APPROVED",
+          "result": "<runtime>",
+          "notes": null
+        }
+      ]
+    },
+    "status": "<runtime: approved | approval_not_accepted>",
+    "approval_outcome": "<runtime: accepted | not_accepted>",
+    "stop_reason": "<runtime: null if accepted; otherwise 'Reply was not the literal approval key; stage remains stopped.'>",
+    "approval_required": true,
+    "approval_key": "PROJECT_CONTEXT_APPROVED",
+    "next_stage": {
+      "stage_id": "exploration",
+      "unlocked": "<runtime: true only if accepted>",
+      "condition": "Literal key PROJECT_CONTEXT_APPROVED sent by the human."
+    },
+    "errors": [],
+    "fixes": [],
+    "evidence": [],
+    "notes": null
+  }
+}

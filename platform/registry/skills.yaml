@@ -1,0 +1,460 @@
+# Skill Registry
+# -------------------------------------------------------------------
+# Catalog of platform skills. Skills are modular and bound to workflow
+# stages in platform/workflows/default-qa-workflow.yaml.
+#
+# status:  planned | in-progress | implemented | deprecated
+# For planned skills, skill_path / prompt_path are planned locations only.
+# -------------------------------------------------------------------
+
+registry:
+  version: 0.11.0
+  journal_event_schema: platform/schemas/journal-event.schema.json   # v1.7.0 (accepts 1.2.0 – 1.6.0 events)
+  prompt_record_schema: platform/schemas/prompt-record.schema.json
+  workflow_run_schema: platform/schemas/workflow-run.schema.json     # run id owned by orchestration
+
+skills:
+
+  - id: prd-generation
+    status: implemented
+    implemented: true
+    version: 1.0.1
+    stage: prd-generation
+    description: >
+      Convert the task intake (TaskContext.md, supporting documents, user-supplied
+      information, project URLs) into a structured, traceable 20-section PRD.
+      Documentation-only; no UI/API exploration.
+    skill_path: .claude/skills/prd-generation/SKILL.md
+    output_template: .claude/skills/prd-generation/PRD.template.md
+    prompt_path: .claude/prompts/prd-generation.md
+    prompt_id: prd-generation
+    prompt_version: 1.0.0
+    inputs:
+      required:
+        - platform/tasks/<task-name>/context/TaskContext.md      # identity + verbatim intake
+        - platform/tasks/<task-name>/journal/workflow-run.json   # active_run_id, read only
+        - at least one requirement input (intake, user message, supporting doc, or URL)
+      optional:
+        - supporting documents listed in the intake (local only)
+        - project UI URL / API URL (one non-browser reachability request max)
+    outputs:
+      artifact: platform/tasks/<task-name>/prd/PRD.md
+      journal:
+        - platform/tasks/<task-name>/journal/execution-log.json
+        - platform/tasks/<task-name>/journal/prompts.json
+    versioning: semver; minor bump per revision; approval does not change version
+    mcp: none
+    mcp_forbidden: [playwright]
+    hard_stop: true
+    approval_key: PRD_APPROVED
+    journal:
+      event_template: .claude/skills/prd-generation/journal-event.template.json
+      event_types: [stage_execution, revision_request, approval_decision]
+    upstream_stage: null            # task creation (orchestration)
+    downstream_stage: project-context
+
+  - id: project-context
+    status: implemented
+    implemented: true
+    version: 1.1.1
+    stage: project-context
+    description: >
+      Read the task's own PRD (plus referenced knowledge-base/supporting material)
+      and produce ProjectContext.md: scope decomposition, scope & boundaries, roles,
+      business rules, expected behaviors, dependencies, assumptions, risks, gaps,
+      open questions, traceability and QA scope preparation. Documentation-only.
+    skill_path: .claude/skills/project-context/SKILL.md
+    output_template: .claude/skills/project-context/ProjectContext.template.md
+    prompt_path: .claude/prompts/project-context.md
+    prompt_id: project-context
+    prompt_version: 1.1.0
+    inputs:
+      required:
+        - platform/tasks/<task-name>/prd/PRD.md                  # approved with PRD_APPROVED, not stale
+        - platform/tasks/<task-name>/journal/workflow-run.json   # active_run_id, read only
+      optional:
+        - platform/tasks/<task-name>/context/TaskContext.md   # identity section only
+        - platform/knowledge-base/**                          # only if referenced by the PRD
+        - supporting documents referenced by the PRD          # local only
+    outputs:
+      artifact: platform/tasks/<task-name>/context/ProjectContext.md
+      journal:
+        - platform/tasks/<task-name>/journal/execution-log.json
+        - platform/tasks/<task-name>/journal/prompts.json
+    mcp: none
+    mcp_forbidden: [playwright]
+    hard_stop: true
+    approval_key: PROJECT_CONTEXT_APPROVED
+    journal:
+      event_template: .claude/skills/project-context/journal-event.template.json
+      event_types: [stage_execution, revision_request, approval_decision]
+    upstream_stage: prd-generation
+    requires_approval_key: PRD_APPROVED
+    downstream_stage: exploration
+
+  - id: exploration
+    status: implemented
+    implemented: true
+    version: 1.0.0
+    stage: exploration
+    description: >
+      Explore the live application via Playwright MCP against the approved
+      ProjectContext; compare expected vs actual; classify every observation as
+      MATCH / FINDING / GAP / QUESTION / POTENTIAL BUG; capture evidence for every
+      non-MATCH; record candidate locators; produce ExplorationReport.md.
+    skill_path: .claude/skills/exploration/SKILL.md
+    output_template: .claude/skills/exploration/ExplorationReport.template.md
+    prompt_path: .claude/prompts/exploration.md
+    prompt_id: exploration
+    prompt_version: 1.0.0
+    inputs:
+      required:
+        - platform/tasks/<task-name>/context/ProjectContext.md   # approved with PROJECT_CONTEXT_APPROVED, current
+        - platform/tasks/<task-name>/prd/PRD.md                  # exists; approval current; reference only
+        - platform/tasks/<task-name>/context/TaskContext.md      # identity + entry points
+        - platform/tasks/<task-name>/journal/workflow-run.json   # active_run_id, read only
+        - live application (UI URL; API URL if API in scope)
+      optional:
+        - credentials supplied by task inputs or the human (never recorded)
+    outputs:
+      artifact: platform/tasks/<task-name>/exploration/ExplorationReport.md
+      evidence: platform/tasks/<task-name>/exploration/evidence/
+      journal:
+        - platform/tasks/<task-name>/journal/execution-log.json
+        - platform/tasks/<task-name>/journal/prompts.json
+    versioning: semver; minor bump per revision; approval does not change version
+    classifications: [MATCH, FINDING, GAP, QUESTION, POTENTIAL BUG]
+    mcp: playwright
+    mcp_dependency:
+      server: playwright
+      config: .mcp.json
+      role: browser access and exploration tool (NOT the automation framework)
+      required: true
+    hard_stop: true
+    approval_key: EXPLORATION_APPROVED
+    journal:
+      event_template: .claude/skills/exploration/journal-event.template.json
+      event_types: [stage_execution, revision_request, approval_decision]
+      stage_blocks: [mcp_actions, observations, classifications, evidence, candidate_locators, coverage]
+    upstream_stage: project-context
+    requires_approval_key: PROJECT_CONTEXT_APPROVED
+    downstream_stage: test-design
+
+  - id: test-design
+    status: implemented
+    implemented: true
+    version: 1.0.1
+    stage: test-design
+    description: >
+      Design traceable, executable test cases from the approved ProjectContext and
+      approved ExplorationReport with systematic techniques (EP, BVA, decision
+      tables, state transition, pairwise, supplementary error guessing). Produces
+      TestCases.md with traceability matrix, technique rationale, exploratory
+      cases, open questions, coverage gaps, test data requirements, coverage
+      summary, and per-case Valid in Scope / Needs Automation flags.
+    skill_path: .claude/skills/test-design/SKILL.md
+    output_template: .claude/skills/test-design/TestCases.template.md
+    prompt_path: .claude/prompts/test-design.md
+    prompt_id: test-design
+    prompt_version: 1.0.0
+    inputs:
+      required:
+        - platform/tasks/<task-name>/context/ProjectContext.md        # approved with PROJECT_CONTEXT_APPROVED, current
+        - platform/tasks/<task-name>/exploration/ExplorationReport.md # approved with EXPLORATION_APPROVED, current, baseline = current ProjectContext
+        - platform/tasks/<task-name>/context/TaskContext.md           # identity only
+        - platform/tasks/<task-name>/prd/PRD.md                       # exists; approval current; traceability only
+        - platform/tasks/<task-name>/journal/workflow-run.json        # active_run_id, read only
+      optional:
+        - environment / test-data / role constraints from inputs or the human
+    outputs:
+      artifact: platform/tasks/<task-name>/test-design/TestCases.md   # replaces template placeholder on first run
+      journal:
+        - platform/tasks/<task-name>/journal/execution-log.json
+        - platform/tasks/<task-name>/journal/prompts.json
+    versioning: semver; minor bump per revision; approval does not change version; test case IDs stable
+    techniques: [Equivalence Partitioning, Boundary Value Analysis, Decision Table, State Transition, Pairwise, Error Guessing]
+    coverage_types: [Positive, Negative, Boundary, Validation, Business Rule, Dependency, Error Handling, Exploratory, End-to-End]
+    per_case_flags: [Valid in Scope, Needs Automation]
+    mcp: none
+    mcp_dependency:
+      required: false
+      forbidden: [playwright]
+      reason: Test Design operates on approved artifacts and does not require live browser exploration.
+    hard_stop: true
+    approval_key: TEST_DESIGN_APPROVED
+    journal:
+      event_template: .claude/skills/test-design/journal-event.template.json
+      event_types: [stage_execution, revision_request, approval_decision]
+      stage_blocks: [techniques_used, generated_test_case_ids, test_cases, traceability, coverage, exploratory_cases, open_questions, coverage_gaps, test_data_requirements]
+    upstream_stage: exploration
+    requires_approval_key: EXPLORATION_APPROVED
+    downstream_stage: test-review
+
+  - id: test-review
+    status: implemented
+    implemented: true
+    mandatory: true                 # ADR-001: gates manual-execution AND automation-generation
+    version: 1.0.0
+    stage: test-review
+    description: >
+      Mandatory review of the exact approved TestCases.md version (bound by SHA-256)
+      against the approved ProjectContext and ExplorationReport: missing coverage,
+      duplicates, unclear steps, invalid expected results, missing preconditions,
+      unsupported assumptions, traceability errors, flag inconsistencies. Findings
+      are Advisory (non-blocking) or Change Required (blocks approval), each with a
+      proposed change and reason. Never modifies test cases.
+    skill_path: .claude/skills/test-review/SKILL.md
+    output_template: .claude/skills/test-review/TestReview.template.md
+    prompt_path: .claude/prompts/test-review.md
+    prompt_id: test-review
+    prompt_version: 1.0.0
+    inputs:
+      required:
+        - platform/tasks/<task-name>/test-design/TestCases.md          # approved with TEST_DESIGN_APPROVED, current; the reviewed artifact (read only)
+        - platform/tasks/<task-name>/context/ProjectContext.md         # approved, current
+        - platform/tasks/<task-name>/exploration/ExplorationReport.md  # approved, current, baseline = current ProjectContext
+        - platform/tasks/<task-name>/context/TaskContext.md            # identity only
+        - platform/tasks/<task-name>/prd/PRD.md                        # approval current; traceability only
+        - platform/tasks/<task-name>/journal/workflow-run.json         # active_run_id, read only
+    outputs:
+      artifact: platform/tasks/<task-name>/test-review/TestReview.md   # replaces template placeholder on first run
+      journal:
+        - platform/tasks/<task-name>/journal/execution-log.json
+        - platform/tasks/<task-name>/journal/prompts.json
+    versioning: semver; minor bump per re-review or revision; approval does not change version; TR IDs stable
+    finding_classes: [Advisory, Change Required]   # Change Required blocks TEST_REVIEW_APPROVED while open
+    finding_categories: [missing_coverage, duplicate, unclear_step, invalid_expected_result, missing_precondition, unsupported_assumption, traceability_error, flag_inconsistency]
+    modifies_test_cases: false
+    mcp: none
+    mcp_dependency:
+      required: false
+      forbidden: [playwright]
+      reason: Test Review operates on approved artifacts only and does not require live browser access.
+    hard_stop: true
+    approval_key: TEST_REVIEW_APPROVED
+    journal:
+      event_template: .claude/skills/test-review/journal-event.template.json
+      event_types: [stage_execution, revision_request, approval_decision]
+      stage_blocks: [review_binding, reviewed_test_case_ids, review_findings, review_outcome, coverage]
+    upstream_stage: test-design
+    requires_approval_key: TEST_DESIGN_APPROVED
+    downstream_stages: [manual-execution, automation-generation]
+
+  - id: manual-execution
+    status: implemented
+    implemented: true
+    version: 1.1.0
+    stage: manual-execution
+    description: >
+      Execute ONLY approved test cases (Valid in Scope = TRUE, expected result
+      established) against the live application via Playwright MCP, exactly as
+      written; verbatim expected vs observed actual -> PASS / FAIL / BLOCKED;
+      failure cause analysis; one evidenced bug per distinct application defect
+      with independent severity and priority. No automation, no silent fixes.
+    skill_path: .claude/skills/manual-execution/SKILL.md
+    output_template: .claude/skills/manual-execution/ExecutionReport.template.md
+    bug_report_template: .claude/skills/manual-execution/BugReports.template.md
+    prompt_path: .claude/prompts/manual-execution.md
+    prompt_id: manual-execution
+    prompt_version: 1.1.0
+    inputs:
+      required:
+        - platform/tasks/<task-name>/test-design/TestCases.md          # approved with TEST_DESIGN_APPROVED, current; the execution contract
+        - platform/tasks/<task-name>/test-review/TestReview.md         # approved with TEST_REVIEW_APPROVED, current, bound to the current TestCases.md hash (ADR-001)
+        - platform/tasks/<task-name>/context/ProjectContext.md         # approved, current
+        - platform/tasks/<task-name>/exploration/ExplorationReport.md  # approved, current
+        - platform/tasks/<task-name>/context/TaskContext.md            # identity + entry points
+        - platform/tasks/<task-name>/prd/PRD.md                        # approval current; traceability only
+        - platform/tasks/<task-name>/journal/workflow-run.json         # active_run_id, read only
+        - live application (URL/environment determinable)
+        - test data requirements and sources (TestCases §10)
+      optional:
+        - environment/build information and credentials supplied by the human (never recorded)
+    outputs:
+      artifact: platform/tasks/<task-name>/execution/ExecutionReport.md
+      evidence: platform/tasks/<task-name>/execution/evidence/
+      conditional_artifact: platform/tasks/<task-name>/bugs/BugReports.md   # only when supported APPLICATION_DEFECTs exist
+      journal:
+        - platform/tasks/<task-name>/journal/execution-log.json
+        - platform/tasks/<task-name>/journal/prompts.json
+    versioning: semver; minor bump per revision; approval does not change version; TC/BUG/TCI/DEV/EXEC/EVD IDs stable
+    statuses: [PASS, FAIL, BLOCKED]
+    failure_causes: [APPLICATION_DEFECT, TEST_CASE_DEFECT, TEST_DATA_PROBLEM, ENVIRONMENT_PROBLEM, DEPENDENCY_PROBLEM, UNKNOWN]
+    mcp: playwright
+    mcp_dependency:
+      server: playwright
+      config: .mcp.json
+      role: browser access for execution and evidence (NOT the automation framework)
+      required: true
+    hard_stop: true
+    approval_key: MANUAL_EXECUTION_APPROVED
+    journal:
+      event_template: .claude/skills/manual-execution/journal-event.template.json
+      event_types: [stage_execution, revision_request, approval_decision]
+      stage_blocks: [environment, build, browser, test_case_ids, executed_test_case_ids, execution_actions, mcp_actions, test_results, statuses, failure_analysis, blocked_cases, test_case_issues, deviations, evidence, bugs, defect_grouping, coverage]
+    upstream_stage: test-review
+    requires_approval_key: TEST_REVIEW_APPROVED   # ADR-001 (plus the full upstream chain, incl. TEST_DESIGN_APPROVED)
+    downstream_stage: automation-generation
+
+  - id: automation-generation
+    status: implemented
+    implemented: true
+    version: 1.1.0
+    stage: automation-generation
+    description: >
+      Generate UI automation ONLY for approved cases with Needs Automation = TRUE,
+      in the framework the task's approved ProjectContext names (platform default
+      otherwise). One test per case; every approved step labeled verbatim; the
+      approved expected result asserted exactly; DATA-### resolved at run time;
+      credentials from environment variables only; failure evidence configured.
+      Static validation only (compile, discovery, scans); never runs the suite,
+      never heals, never edits test cases.
+    skill_path: .claude/skills/automation-generation/SKILL.md
+    output_template: .claude/skills/automation-generation/AutomationGeneration.template.md
+    scaffolds:
+      playwright-ts: .claude/skills/automation-generation/scaffold/playwright-ts/
+      shaft-java-testng: .claude/skills/automation-generation/scaffold/shaft-java-testng/
+      playwright-java-testng: .claude/skills/automation-generation/scaffold/playwright-java-testng/
+    supported_bindings: [playwright-ts, shaft-java-testng, playwright-java-testng]
+    multiple_bindings: true   # several independent projects per task (e.g. framework comparison); one journal event per binding
+    prompt_path: .claude/prompts/automation-generation.md
+    prompt_id: automation-generation
+    prompt_version: 1.1.0
+    inputs:
+      required:
+        - platform/tasks/<task-name>/test-design/TestCases.md          # approved, current; Needs Automation = TRUE selection
+        - platform/tasks/<task-name>/test-design/TestCases.csv         # flag cross-check
+        - platform/tasks/<task-name>/test-review/TestReview.md         # TEST_REVIEW_APPROVED, current, same approval as the approved manual execution (ADR-001)
+        - platform/tasks/<task-name>/execution/ExecutionReport.md      # MANUAL_EXECUTION_APPROVED, current; latest manual result per case
+        - platform/tasks/<task-name>/context/ProjectContext.md         # approved; framework decision
+        - platform/tasks/<task-name>/exploration/ExplorationReport.md  # approved; candidate locators LOC-###
+        - platform/tasks/<task-name>/context/TaskContext.md            # identity + UI entry point
+        - platform/tasks/<task-name>/journal/workflow-run.json         # active_run_id, read only
+      optional:
+        - platform/tasks/<task-name>/bugs/BugReports.md                # bugs touching a selected case (never asserted as correct)
+        - human decisions (credential env var names, IDE, binding)     # journaled
+    outputs:
+      artifact: platform/tasks/<task-name>/automation/AutomationGeneration.md
+      project: platform/tasks/<task-name>/automation/<project-dir>/   # one per binding
+      runtime_results_location: platform/tasks/<task-name>/automation-execution/results/   # written at run time by the generated code; owned by automation-execution
+      journal:
+        - platform/tasks/<task-name>/journal/execution-log.json
+        - platform/tasks/<task-name>/journal/prompts.json
+    versioning: semver for the report; project files updated in place; TC / LOC / DATA IDs reused exactly
+    warning_codes: [AG-W01, AG-W02, AG-W03, AG-W04]
+    mcp: playwright
+    mcp_dependency:
+      server: playwright
+      config: .mcp.json
+      role: optional read-only locator confirmation (NOT the automation framework; never codegen)
+      required: false
+    hard_stop: false
+    approval_key: null   # the workflow defines no gate for this stage
+    journal:
+      event_template: .claude/skills/automation-generation/journal-event.template.json
+      event_types: [stage_execution, revision_request]
+      stage_blocks: [automation_binding, automated_cases, locator_decisions, generated_files, static_validation]
+    upstream_stage: manual-execution
+    requires_approval_keys: [TEST_REVIEW_APPROVED, MANUAL_EXECUTION_APPROVED]   # ADR-001: same review approval used by manual-execution
+    downstream_stage: automation-execution
+
+  - id: automation-execution
+    status: implemented
+    implemented: true
+    version: 1.0.0
+    stage: automation-execution
+    description: >
+      Run each generated automation project independently per binding (playwright-ts
+      via npx; shaft-java-testng and playwright-java-testng via Maven), credentials from
+      environment variables only, retries 0. Capture outcomes, durations, screenshots,
+      logs, traces and native reports per run; classify non-passing runs (passed /
+      failed / not_run / harness_failed + failure class); write execution-metrics.json
+      and one HTML report per binding. Never edits test code; never heals.
+      (orangehrm-ui-api RUN-001 runs EVT-0046 / EVT-0047 predate this skill.)
+    skill_path: .claude/skills/automation-execution/SKILL.md
+    output_template: .claude/skills/automation-execution/automation-report.structure.md
+    metrics_schema: platform/schemas/execution-metrics.schema.json
+    prompt_path: .claude/prompts/automation-execution.md
+    prompt_id: automation-execution
+    prompt_version: 1.0.0
+    supported_bindings: [playwright-ts, shaft-java-testng, playwright-java-testng]
+    inputs:
+      required:
+        - platform/tasks/<task-name>/automation/<project-dir>/            # per binding, read only
+        - platform/tasks/<task-name>/automation/AutomationGeneration.md
+        - platform/tasks/<task-name>/test-design/TestCases.md           # approved, current; verbatim expected results
+        - platform/tasks/<task-name>/journal/workflow-run.json          # active_run_id, read only
+      runtime: [credential environment variables named in AutomationGeneration.md]   # names only, never stored
+    outputs:
+      run_evidence: platform/tasks/<task-name>/automation-execution/results/<run-id>/<project-dir>/
+      metrics: platform/tasks/<task-name>/automation-execution/execution-metrics.json
+      report_per_binding: platform/tasks/<task-name>/automation-execution/<project-dir>/automation-report.html
+      journal:
+        - platform/tasks/<task-name>/journal/execution-log.json
+        - platform/tasks/<task-name>/journal/prompts.json
+    run_outcomes: [passed, failed, not_run, harness_failed]
+    failure_classes: [application, test_script, configuration, environment, framework_defect, test_data, unknown]
+    modifies_test_code: false
+    mcp: none
+    hard_stop: false
+    approval_key: null
+    journal:
+      event_template: .claude/skills/automation-execution/journal-event.template.json
+      event_types: [stage_execution]
+      stage_blocks: [automation_runs, test_results, environment, browser, evidence]
+    upstream_stage: automation-generation
+    downstream_stages: [self-healing, reporting]
+
+  - id: self-healing
+    status: implemented
+    implemented: true
+    version: 1.0.0
+    stage: self-healing
+    conditional: true
+    description: >
+      Investigate non-passing automation runs from preserved evidence, classify the
+      cause (environment, configuration, framework defect, test data, test script,
+      application), apply only minimal justified fixes to locators, waits, setup,
+      configuration and plumbing of the affected binding, and request one verification
+      rerun. Never changes assertions, expected results, steps or approved artifacts;
+      never heals application defects. Every attempt documented (healing-log.md + journal).
+      (orangehrm-ui-api RUN-001 attempts in EVT-0048 predate this skill.)
+    skill_path: .claude/skills/self-healing/SKILL.md
+    output_template: .claude/skills/self-healing/healing-log.template.md
+    prompt_path: .claude/prompts/self-healing.md
+    prompt_id: self-healing
+    prompt_version: 1.0.0
+    inputs:
+      required:
+        - platform/tasks/<task-name>/automation-execution/results/<run-id>/<project-dir>/   # failed run evidence, read only
+        - platform/tasks/<task-name>/automation/<project-dir>/
+        - platform/tasks/<task-name>/automation/AutomationGeneration.md
+        - platform/tasks/<task-name>/test-design/TestCases.md          # contract, read only
+        - platform/tasks/<task-name>/journal/execution-log.json        # automation_runs of the failed run
+    outputs:
+      artifact: platform/tasks/<task-name>/self-healing/healing-log.md   # appended; earlier attempts never rewritten
+      changed_code: platform/tasks/<task-name>/automation/<project-dir>/ # minimal, hashed before/after
+      journal:
+        - platform/tasks/<task-name>/journal/execution-log.json
+        - platform/tasks/<task-name>/journal/prompts.json
+    classifications: [environment, configuration, framework_defect, test_data, test_script, application]
+    max_attempts_per_failure: 3
+    assertion_changes_allowed: false
+    mcp: playwright        # optional, read-only locator/state confirmation
+    hard_stop: false
+    approval_key: null
+    journal:
+      event_template: .claude/skills/self-healing/journal-event.template.json
+      event_types: [stage_execution]
+      stage_blocks: [healing_attempts, fixes]
+    upstream_stage: automation-execution
+    loops_back_to: automation-execution
+
+  - id: reporting
+    status: planned
+    implemented: false
+    stage: reporting
+    description: Final reports, milestone summary, workflow diagram and HTML journal.
+    skill_path: .claude/skills/reporting/SKILL.md
+    prompt_path: .claude/prompts/reporting.md
+    prompt_version: null

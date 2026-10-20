@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="OrangeHRM Directory - SHAFT" verbose="1">
+    <listeners>
+        <listener class-name="com.shaft.listeners.TestNGListener"/>
+    </listeners>
+    <test name="TC-054">
+        <classes>
+            <class name="OrangeHRMPages.Directory.Directory_TC"/>
+        </classes>
+    </test>
+</suite>

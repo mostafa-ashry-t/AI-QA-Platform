@@ -1,0 +1,7 @@
+{
+  "schema": "platform/schemas/workflow-run.schema.json",
+  "owner": "workflow orchestration layer (skills read only)",
+  "task_id": null,
+  "active_run_id": null,
+  "runs": []
+}

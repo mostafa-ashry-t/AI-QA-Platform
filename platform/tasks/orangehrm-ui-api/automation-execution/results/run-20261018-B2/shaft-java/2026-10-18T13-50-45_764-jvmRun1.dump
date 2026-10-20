@@ -1,0 +1,28 @@
+# Created at 2026-10-18T13:51:19.074
+java.lang.RuntimeException: File Action "RenameFile" failed. Root cause: "java.io.FileNotFoundException: Source 'C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation\shaft-java\allure-report\index.html' does not exist"
+	at com.shaft.tools.io.internal.FailureReporter.fail(FailureReporter.java:34)
+	at com.shaft.cli.FileActions.failAction(FileActions.java:694)
+	at com.shaft.cli.FileActions.failAction(FileActions.java:689)
+	at com.shaft.cli.FileActions.renameFile(FileActions.java:70)
+	at com.shaft.tools.io.internal.AllureManager.renameAllureReport(AllureManager.java:60)
+	at com.shaft.tools.io.internal.AllureManager.copyAndOpenAllure(AllureManager.java:52)
+	at com.shaft.tools.io.internal.AllureManager.openAllureReportAfterExecution(AllureManager.java:45)
+	at com.shaft.listeners.TestNGListener.onExecutionFinish(TestNGListener.java:292)
+	at org.testng.TestNG.runExecutionListeners(TestNG.java:1138)
+	at org.testng.TestNG.run(TestNG.java:1088)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:308)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:71)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:113)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+Caused by: java.io.FileNotFoundException: Source 'C:\Users\QC User\Desktop\FinalAI\AI-QA-Platform\platform\tasks\orangehrm-ui-api\automation\shaft-java\allure-report\index.html' does not exist
+	at org.apache.commons.io.FileUtils.checkFileExists(FileUtils.java:317)
+	at org.apache.commons.io.FileUtils.copyFile(FileUtils.java:855)
+	at org.apache.commons.io.FileUtils.copyFile(FileUtils.java:888)
+	at org.apache.commons.io.FileUtils.copyFile(FileUtils.java:790)
+	at com.shaft.cli.FileActions.renameFile(FileActions.java:63)
+	... 13 more
+
+

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "platform/schemas/prompt-record.schema.json",
+  "title": "AI QA Execution Journal — Prompt Record",
+  "description": "One entry in platform/tasks/<task-name>/journal/prompts.json → prompts[]. Stored once per (prompt_id, prompt_version) per task, so the HTML journal can show the exact prompt text for every event without repeating it in each event.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["prompt_id", "prompt_version", "skill_name", "source_path", "sha256", "captured_at", "first_used_by_event_id", "content"],
+  "properties": {
+    "prompt_id": { "type": "string" },
+    "prompt_version": { "type": "string" },
+    "skill_name": { "type": "string" },
+    "source_path": { "type": "string", "description": "e.g. .claude/prompts/project-context.md" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$", "description": "Hash of the prompt file at capture time." },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "first_used_by_event_id": { "type": "string", "pattern": "^EVT-[0-9]{4,}$" },
+    "content": { "type": "string", "description": "Verbatim prompt file content (template form, before variable substitution). Variables used per run are stored in the event's prompt_variables." }
+  }
+}

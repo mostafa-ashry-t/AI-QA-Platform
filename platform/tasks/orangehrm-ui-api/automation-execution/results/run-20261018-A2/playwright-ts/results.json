@@ -1,0 +1,269 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\node_modules\\@playwright\\test\\cli.js",
+      "test"
+    ],
+    "configFile": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\playwright.config.ts",
+    "rootDir": "C:/Users/QC User/Desktop/FinalAI/AI-QA-Platform/platform/tasks/orangehrm-ui-api/automation/playwright-ts/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/QC User/Desktop/FinalAI/AI-QA-Platform/platform/tasks/orangehrm-ui-api/automation-execution/results/run-20261018-A2/playwright-ts/test-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/QC User/Desktop/FinalAI/AI-QA-Platform/platform/tasks/orangehrm-ui-api/automation/playwright-ts/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A2\\playwright-ts\\test-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "chromium",
+        "testDir": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\tests",
+        "snapshotDir": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\tests",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 240000,
+        "use": {
+          "baseURL": "https://opensource-demo.orangehrmlive.com",
+          "headless": true,
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "actionTimeout": 30000,
+          "navigationTimeout": 30000,
+          "screenshot": "off",
+          "trace": "off",
+          "video": "off",
+          "browserName": "chromium"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chromium"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A2\\playwright-ts\\html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A2\\playwright-ts\\results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A2\\playwright-ts\\junit.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "TC-054.spec.ts",
+      "file": "TC-054.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset",
+          "ok": false,
+          "tags": [
+            "TC-054",
+            "e2e"
+          ],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [
+                {
+                  "type": "case",
+                  "description": "TC-054",
+                  "location": {
+                    "file": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\tests\\TC-054.spec.ts",
+                    "line": 14,
+                    "column": 5
+                  }
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 37016,
+                  "error": {
+                    "message": "Error: results header shows a record count\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first()\nExpected pattern: \u001b[32m/^\\(\\d+\\) Records? Found$/\u001b[39m\nReceived string:  \u001b[31m\" (111) Records Found\"\u001b[39m\nTimeout: 30000ms\n\nCall log:\n\u001b[2m  - results header shows a record count locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first() with timeout 30000ms\u001b[22m\n\u001b[2m  - waiting for locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first()\u001b[22m\n\u001b[2m    62 × locator resolved to <span data-v-7b563373=\"\" data-v-5a621acd=\"\" class=\"oxd-text oxd-text--span\"> (111) Records Found</span>\u001b[22m\n\u001b[2m       - unexpected value \" (111) Records Found\"\u001b[22m\n",
+                    "stack": "Error: results header shows a record count\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first()\nExpected pattern: \u001b[32m/^\\(\\d+\\) Records? Found$/\u001b[39m\nReceived string:  \u001b[31m\" (111) Records Found\"\u001b[39m\nTimeout: 30000ms\n\nCall log:\n\u001b[2m  - results header shows a record count locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first() with timeout 30000ms\u001b[22m\n\u001b[2m  - waiting for locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first()\u001b[22m\n\u001b[2m    62 × locator resolved to <span data-v-7b563373=\"\" data-v-5a621acd=\"\" class=\"oxd-text oxd-text--span\"> (111) Records Found</span>\u001b[22m\n\u001b[2m       - unexpected value \" (111) Records Found\"\u001b[22m\n\n    at DirectoryPage.waitForResults (C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\src\\pages\\DirectoryPage.ts:72:85)\n    at C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\tests\\TC-054.spec.ts:36:24",
+                    "location": {
+                      "file": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\src\\pages\\DirectoryPage.ts",
+                      "column": 85,
+                      "line": 72
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39m..\\src\\pages\\DirectoryPage.ts:72\n\n\u001b[0m \u001b[90m 70 |\u001b[39m   \u001b[36masync\u001b[39m waitForResults()\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m{ header\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m count\u001b[33m:\u001b[39m number }\u001b[33m>\u001b[39m {\n \u001b[90m 71 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mcards\u001b[33m.\u001b[39mfirst()\u001b[33m.\u001b[39mwaitFor({ state\u001b[33m:\u001b[39m \u001b[32m'visible'\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 72 |\u001b[39m     \u001b[36mawait\u001b[39m expect(\u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mresultsHeader\u001b[33m.\u001b[39mfirst()\u001b[33m,\u001b[39m \u001b[32m'results header shows a record count'\u001b[39m)\u001b[33m.\u001b[39mtoHaveText(\u001b[35m/^\\(\\d+\\) Records? Found$/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 73 |\u001b[39m     \u001b[36mconst\u001b[39m header \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mheaderText()\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m     \u001b[36mreturn\u001b[39m { header\u001b[33m,\u001b[39m count\u001b[33m:\u001b[39m parseCount(header) \u001b[36mas\u001b[39m number }\u001b[33m;\u001b[39m\n \u001b[90m 75 |\u001b[39m   }\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\src\\pages\\DirectoryPage.ts",
+                        "column": 85,
+                        "line": 72
+                      },
+                      "message": "Error: results header shows a record count\n\n\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first()\nExpected pattern: \u001b[32m/^\\(\\d+\\) Records? Found$/\u001b[39m\nReceived string:  \u001b[31m\" (111) Records Found\"\u001b[39m\nTimeout: 30000ms\n\nCall log:\n\u001b[2m  - results header shows a record count locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first() with timeout 30000ms\u001b[22m\n\u001b[2m  - waiting for locator('span.oxd-text--span').filter({ hasText: /Records? Found$/ }).first()\u001b[22m\n\u001b[2m    62 × locator resolved to <span data-v-7b563373=\"\" data-v-5a621acd=\"\" class=\"oxd-text oxd-text--span\"> (111) Records Found</span>\u001b[22m\n\u001b[2m       - unexpected value \" (111) Records Found\"\u001b[22m\n\n\n   at ..\\src\\pages\\DirectoryPage.ts:72\n\n  70 |   async waitForResults(): Promise<{ header: string; count: number }> {\n  71 |     await this.cards.first().waitFor({ state: 'visible' });\n> 72 |     await expect(this.resultsHeader.first(), 'results header shows a record count').toHaveText(/^\\(\\d+\\) Records? Found$/);\n     |                                                                                     ^\n  73 |     const header = await this.headerText();\n  74 |     return { header, count: parseCount(header) as number };\n  75 |   }\n    at DirectoryPage.waitForResults (C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\src\\pages\\DirectoryPage.ts:72:85)\n    at C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\tests\\TC-054.spec.ts:36:24"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "text": "2026-10-18T10:48:25.877Z [TC-054] Precondition: No authenticated session in the browser (fresh browser context, or logged out).\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:48:25.880Z [TC-054]   observed cookies in the fresh browser context = 0\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:48:25.880Z [TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001).\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:48:30.877Z [TC-054]   observed URL after opening the Directory URL = \"https://opensource-demo.orangehrmlive.com/web/index.php/auth/login\"\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:48:32.084Z [TC-054]   observed URL after login = \"https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory\"\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:48:32.097Z [TC-054] Tracing started (login step intentionally not traced: secrets).\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:02.621Z [TC-054] Screenshot written: C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A2\\playwright-ts\\TC-054\\failure.png\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:02.697Z [TC-054] Trace written: C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A2\\playwright-ts\\TC-054\\trace.zip\n"
+                    },
+                    {
+                      "text": "2026-10-18T10:49:02.697Z [TC-054] Result: FAILED (status failed)\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "[TC-054] Step 1: Open the Directory URL and log in with the demo account (DATA-001).",
+                      "duration": 6204
+                    }
+                  ],
+                  "startTime": "2026-10-18T10:48:23.755Z",
+                  "annotations": [
+                    {
+                      "type": "case",
+                      "description": "TC-054",
+                      "location": {
+                        "file": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\tests\\TC-054.spec.ts",
+                        "line": 14,
+                        "column": 5
+                      }
+                    }
+                  ],
+                  "attachments": [
+                    {
+                      "name": "failure.png",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A2\\playwright-ts\\test-output\\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\\attachments\\failure-png-f7aa308ba908cc4ada264419bddbc355e45f42f7.png"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A2\\playwright-ts\\test-output\\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\\attachments\\trace-8a587781e31f54215d89181b5e681490867a7f3b.zip"
+                    },
+                    {
+                      "name": "steps.log",
+                      "contentType": "text/plain",
+                      "path": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A2\\playwright-ts\\test-output\\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\\attachments\\steps-log-b6c215f4e49ceca934c301322a4e6499d58c0de9.log"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation-execution\\results\\run-20261018-A2\\playwright-ts\\test-output\\TC-054-TC-054-End-to-end-r-345f3-mployee-details-close-Reset-chromium\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\QC User\\Desktop\\FinalAI\\AI-QA-Platform\\platform\\tasks\\orangehrm-ui-api\\automation\\playwright-ts\\src\\pages\\DirectoryPage.ts",
+                    "column": 85,
+                    "line": 72
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "373e626296c0c794b633-0d3aae5e707b9e2fabb7",
+          "file": "TC-054.spec.ts",
+          "line": 14,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-18T10:48:23.231Z",
+    "duration": 39697.208999999995,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

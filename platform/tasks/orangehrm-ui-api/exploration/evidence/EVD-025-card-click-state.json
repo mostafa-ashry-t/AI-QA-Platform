@@ -1,0 +1,16 @@
+{
+  "url": "https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory",
+  "cards": 2,
+  "expanded": [
+    {
+      "cls": "orangehrm-corporate-directory-sidebar",
+      "text": "Sara Tencrady | Payroll Administrator | Human Resources | Texas R&D | Work Email | [REDACTED: email]"
+    },
+    {
+      "cls": "orangehrm-directory-card-rounded-body",
+      "text": ""
+    }
+  ],
+  "sidebarText": "Sara Tencrady\n\nPayroll Administrator\n\nHuman Resources\n\nTexas R&D\n\nWork Email\n\[REDACTED: email]",
+  "links": []
+}

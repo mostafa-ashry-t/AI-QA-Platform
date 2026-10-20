@@ -1,0 +1,31 @@
+
+[0;7m------------------------------------------------------------------------------------------------------------------------------------------------
+                                        Starting Execution: '1 out of 1' test cases in the current suite                                        
+         Test Method: 'OrangeHRMPages.Directory.Directory_TC.TC054_verifyThatResetRestoresDefaultsAfterCombinedFilterAndEmployeeDetails'         
+                     Test Description: 'TC-054 End-to-end: redirect login, combined filter, employee details, close, Reset'                     
+------------------------------------------------------------------------------------------------------------------------------------------------
+[0m
+[ReportManager] 2026-10-18T12:44:27.441770Z [TC-054]   observed unfiltered results header (for the DATA-012 condition) = (161) Records Found @18-10-2026 15:44:27.0441 PM
+[ReportManager] 2026-10-18T12:44:28.937023500Z [TC-054]   observed DATA-012 pair (from the card of Peter Mac Anderson) = jobTitle="Chief Financial Officer", location="New York Sales Office" @18-10-2026 15:44:28.0937 PM
+[ReportManager] 2026-10-18T12:44:28.937023500Z [TC-054] Step 2: Select the Job Title and the Location of the DATA-012 pair; click Search. @18-10-2026 15:44:28.0937 PM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 15:44:29.0135 PM
+[ReportManager] Click "Chief Financial Officer" @18-10-2026 15:44:29.0422 PM
+[ReportManager] Click "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 15:44:29.0629 PM
+[ReportManager] Click "New York Sales Office" @18-10-2026 15:44:29.0888 PM
+[ReportManager] Click "Search" @18-10-2026 15:44:30.0143 PM
+[ReportManager] 2026-10-18T12:44:30.143311300Z [TC-054] Step 3: Wait until result cards are displayed; read the results header and note the filtered record count k ("(k) Records Found", or "(1) Record Found" when k is 1). @18-10-2026 15:44:30.0143 PM
+[ReportManager] 2026-10-18T12:44:30.934893100Z [TC-054]   observed filtered results header = (1) Record Found @18-10-2026 15:44:30.0934 PM
+[ReportManager] 2026-10-18T12:44:30.934893100Z [TC-054]   observed k = 1 @18-10-2026 15:44:30.0934 PM
+[ReportManager] 2026-10-18T12:44:30.934893100Z [TC-054] Step 4: Click the first result card; then click the panel's arrow icon. @18-10-2026 15:44:30.0934 PM
+[ReportManager] Click "By.xpath: (//div[contains(@class,'orangehrm-container')]//div[contains(concat(' ',normalize-space(@class),' '),' orangehrm-directory-card ')])[1]" @18-10-2026 15:44:31.0303 PM
+[ReportManager] Click "By.xpath: //div[contains(@class,'orangehrm-corporate-directory-sidebar')]//i[contains(@class,'bi-arrow-right')]" @18-10-2026 15:44:31.0989 PM
+[ReportManager] 2026-10-18T12:44:32.063146500Z [TC-054]   observed detail panel opened and closed for the first card = Peter Mac Anderson @18-10-2026 15:44:32.0063 PM
+[ReportManager] 2026-10-18T12:44:32.063146500Z [TC-054] Step 5: Click Reset. @18-10-2026 15:44:32.0063 PM
+[ReportManager] Click "Reset" @18-10-2026 15:44:32.0947 PM
+[ReportManager] 2026-10-18T12:44:32.947710500Z [TC-054] Step 6: Wait until employee result cards are displayed, then read the results header. @18-10-2026 15:44:32.0947 PM
+[ReportManager] 2026-10-18T12:44:33.716784400Z [TC-054]   observed results header changed after Reset within the timeout = true @18-10-2026 15:44:33.0717 PM
+[ReportManager] Get  dom  property "Type for hints..." @18-10-2026 15:44:34.0255 PM
+[ReportManager] Get  text "By.xpath: //label[normalize-space()='Job Title']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 15:44:34.0396 PM
+[ReportManager] Get  text "By.xpath: //label[normalize-space()='Location']/ancestor::div[.//div[contains(@class,'oxd-select-text-input')]][1]//div[contains(@class,'oxd-select-text-input')]" @18-10-2026 15:44:34.0530 PM
+[ReportManager] 2026-10-18T12:44:34.571824500Z [TC-054]   observed state after Reset = header="(161) Records Found", employeeName="", jobTitle="-- Select --", location="-- Select --" @18-10-2026 15:44:34.0571 PM
+[ReportManager] 2026-10-18T12:44:34.571824500Z [TC-054]   observed N = 161 @18-10-2026 15:44:34.0571 PM

@@ -1,0 +1,21 @@
+<!--
+  TEMPLATE (automation-generation scaffold): shared IntelliJ IDEA run configuration
+  (TestNG, works in the Community edition). Environment variable NAMES only, with
+  EMPTY values: fill them locally in Run > Edit Configurations. Never commit values.
+-->
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="{{run_name}}" type="TestNG">
+    <module name="{{artifact_id}}" />
+    <option name="TEST_OBJECT" value="SUITE" />
+    <option name="SUITE_NAME" value="$PROJECT_DIR$/testng.xml" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="VM_PARAMETERS" value="-ea" />
+    <envs>
+      <env name="{{username_env_var}}" value="" />
+      <env name="{{password_env_var}}" value="" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

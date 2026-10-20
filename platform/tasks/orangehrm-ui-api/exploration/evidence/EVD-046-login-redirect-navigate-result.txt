@@ -1,0 +1,5 @@
+Source: mcp__playwright__browser_navigate tool result (EVT-0012 mcp_actions seq 2), verbatim except the snapshot link. Requested URL: https://opensource-demo.orangehrmlive.com/web/index.php/directory/viewDirectory (no session).
+
+### Page
+- Page URL: https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+- Page Title: OrangeHRM

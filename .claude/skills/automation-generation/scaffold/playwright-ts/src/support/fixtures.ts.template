@@ -1,0 +1,99 @@
+// TEMPLATE (automation-generation scaffold, binding playwright-ts)
+import * as fs from 'fs';
+import * as path from 'path';
+import { test as base, BrowserContext, Page, TestInfo } from '@playwright/test';
+import { settings } from './config';
+
+/** Test-data problem, distinguishable from an assertion failure. */
+export class TestDataUnavailableError extends Error {
+  constructor(dataId: string, detail: string) {
+    super(`[TEST DATA] test data not available: ${dataId} (${detail})`);
+    this.name = 'TestDataUnavailableError';
+  }
+}
+
+/**
+ * Per-test QA helper: step labels (verbatim approved text), observed values,
+ * tracing that starts only after the secret-typing step, and evidence:
+ *   <runDir>/<caseId>/steps.log, final.png (always), failure.png + trace.zip (on failure)
+ */
+export class QaRun {
+  private readonly lines: string[] = [];
+  private tracing = false;
+
+  constructor(
+    readonly caseId: string,
+    private readonly page: Page,
+    private readonly context: BrowserContext,
+    private readonly info: TestInfo,
+  ) {}
+
+  get evidenceDir(): string {
+    return path.join(settings.runDir, this.caseId);
+  }
+
+  log(line: string): void {
+    const stamped = `${new Date().toISOString()} [${this.caseId}] ${line}`;
+    this.lines.push(stamped);
+    console.log(stamped);
+  }
+
+  precondition(text: string): void {
+    this.log(`Precondition: ${text}`);
+  }
+
+  observed(what: string, value: unknown): void {
+    this.log(`  observed ${what} = ${JSON.stringify(value)}`);
+  }
+
+  /** Runs approved step n; the label is the approved step text, verbatim. */
+  async step<T>(n: number, text: string, body: () => Promise<T>): Promise<T> {
+    this.log(`Step ${n}: ${text}`);
+    return base.step(`[${this.caseId}] Step ${n}: ${text}`, body, { box: false });
+  }
+
+  /** Starts tracing; called after the step that types secrets. */
+  async startTracing(): Promise<void> {
+    await this.context.tracing.start({ screenshots: true, snapshots: true, sources: false, title: this.caseId });
+    this.tracing = true;
+    this.log('Tracing started (login step intentionally not traced: secrets).');
+  }
+
+  async finish(): Promise<void> {
+    fs.mkdirSync(this.evidenceDir, { recursive: true });
+    const failed = this.info.status !== this.info.expectedStatus;
+    if (!this.page.isClosed()) {
+      const shot = path.join(this.evidenceDir, failed ? 'failure.png' : 'final.png');
+      await this.page.screenshot({ path: shot, fullPage: true });
+      await this.info.attach(path.basename(shot), { path: shot, contentType: 'image/png' });
+      this.log(`Screenshot written: ${shot}`);
+    }
+    if (this.tracing) {
+      if (failed) {
+        const trace = path.join(this.evidenceDir, 'trace.zip');
+        await this.context.tracing.stop({ path: trace });
+        await this.info.attach('trace', { path: trace, contentType: 'application/zip' });
+        this.log(`Trace written: ${trace}`);
+      } else {
+        await this.context.tracing.stop();
+      }
+    }
+    this.log(`Result: ${failed ? 'FAILED' : 'PASSED'} (status ${this.info.status})`);
+    const logFile = path.join(this.evidenceDir, 'steps.log');
+    fs.writeFileSync(logFile, this.lines.join('\n') + '\n', 'utf-8');
+    await this.info.attach('steps.log', { path: logFile, contentType: 'text/plain' });
+  }
+}
+
+type Fixtures = { qa: QaRun };
+
+export const test = base.extend<Fixtures>({
+  qa: async ({ page, context }, use, testInfo) => {
+    const caseId = (testInfo.annotations.find((a) => a.type === 'case')?.description) ?? 'UNKNOWN';
+    const qa = new QaRun(caseId, page, context, testInfo);
+    await use(qa);
+    await qa.finish();
+  },
+});
+
+export { expect } from '@playwright/test';

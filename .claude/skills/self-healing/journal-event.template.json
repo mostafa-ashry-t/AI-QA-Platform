@@ -1,0 +1,203 @@
+{
+  "_about": "Journal event template for the self-healing skill (schema 1.7.0). One stage_execution per request; one healing_attempts entry per attempt; assertion_changed is always false.",
+  "stage_execution": {
+    "schema_version": "1.7.0",
+    "event_id": "<runtime: EVT-NNNN, next sequence in execution-log.json>",
+    "event_type": "stage_execution",
+    "step_number": null,
+    "attempt": null,
+    "workflow_run_id": "<runtime: journal/workflow-run.json → active_run_id; never created by the skill>",
+    "task_id": "<runtime>",
+    "timestamp": "<runtime: system clock, UTC>",
+    "stage_id": "self-healing",
+    "stage_name": "Self-Healing",
+    "skill_name": "self-healing",
+    "skill_version": "1.0.0",
+    "prompt_id": "self-healing",
+    "prompt_version": "1.0.0",
+    "prompt_variables": {
+      "task_name": "<runtime>",
+      "task_path": "<runtime>",
+      "workflow_run_id": "<runtime>",
+      "failed_run_ids": "<runtime>",
+      "binding_id": "<runtime>"
+    },
+    "trigger": {
+      "reason": "<runtime>",
+      "initiated_by": "user",
+      "user_message": "<runtime: verbatim, secrets redacted>"
+    },
+    "input_references": [
+      {
+        "path": "<task>/automation-execution/results/<run-id>/<project-dir>/",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "Preserved failure evidence (read only)"
+      },
+      {
+        "path": "<task>/automation/<project-dir>/",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "Code diagnosed / changed"
+      },
+      {
+        "path": "<task>/test-design/TestCases.md",
+        "role": "upstream_artifact",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": "Contract (read only)"
+      },
+      {
+        "path": "journal:EVT-NNNN",
+        "role": "upstream_approval",
+        "status": "read",
+        "sha256": null,
+        "referenced_by": null,
+        "notes": "automation-execution event with the failed run"
+      },
+      {
+        "path": ".claude/prompts/self-healing.md",
+        "role": "prompt",
+        "status": "read",
+        "sha256": "<runtime>",
+        "referenced_by": null,
+        "notes": null
+      }
+    ],
+    "source_references": [],
+    "tools_used": [
+      {
+        "tool": "<runtime: e.g. Read / Edit / javap / tsc>",
+        "purpose": "Diagnose and apply the minimal change",
+        "targets": [
+          "<task>/automation/<project-dir>/"
+        ]
+      }
+    ],
+    "mcp_used": {
+      "used": false,
+      "servers": [],
+      "intentionally_not_used": [
+        {
+          "server": "playwright",
+          "reason": "<runtime: e.g. evidence sufficient; no live check needed>"
+        }
+      ]
+    },
+    "actions": [
+      "<runtime>"
+    ],
+    "decisions": [
+      {
+        "decision": "<runtime>",
+        "rationale": "<runtime>"
+      }
+    ],
+    "revision": null,
+    "output_artifacts": [
+      {
+        "path": "<task>/self-healing/healing-log.md",
+        "operation": "updated",
+        "artifact_status": "completed",
+        "artifact_version": null,
+        "sha256": "<runtime>",
+        "summary": "<runtime>"
+      }
+    ],
+    "assumptions": [],
+    "gaps": [],
+    "open_questions": [],
+    "validation": {
+      "performed": true,
+      "overall": "<runtime: pass | fail>",
+      "checks": [
+        {
+          "check_id": "SH-V01",
+          "description": "Every attempt fully documented",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "SH-V02",
+          "description": "assertion_changed = false; assertion lines unchanged",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "SH-V03",
+          "description": "Approved artifacts and failure evidence unchanged",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "SH-V04",
+          "description": "No forbidden pattern; compile/discovery pass",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "SH-V05",
+          "description": "No credential value in log, journal or changed files",
+          "result": "<runtime>",
+          "notes": null
+        },
+        {
+          "check_id": "SH-V06",
+          "description": "Application failures not healed, reported",
+          "result": "<runtime>",
+          "notes": null
+        }
+      ]
+    },
+    "status": "completed",
+    "stop_reason": "STOP: attempt documented; verification rerun belongs to automation-execution.",
+    "approval_required": false,
+    "approval_key": null,
+    "approval_outcome": null,
+    "next_stage": {
+      "stage_id": "automation-execution",
+      "unlocked": true,
+      "condition": "One verification rerun of the affected binding, citing the healing ID"
+    },
+    "errors": [],
+    "fixes": [
+      {
+        "error_code": "H-NNN",
+        "description": "<runtime: classification, root cause, change, verification>"
+      }
+    ],
+    "evidence": [],
+    "notes": null,
+    "healing_attempts": [
+      {
+        "healing_id": "H-NNN",
+        "binding_id": "<runtime>",
+        "failed_run_id": "<runtime>",
+        "symptom": "<runtime: verbatim error, secrets redacted>",
+        "classification": "test_script",
+        "root_cause": "<runtime>",
+        "diagnosis_evidence": [
+          "<runtime: EVD-### or path>"
+        ],
+        "change": "<runtime>",
+        "files_changed": [
+          {
+            "path": "<runtime>",
+            "sha256_before": "<runtime>",
+            "sha256_after": "<runtime>"
+          }
+        ],
+        "assertion_changed": false,
+        "verified_by_run_id": "<runtime or null>",
+        "result": "fixed",
+        "attempt": 1,
+        "notes": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Read-only journal of the AI QA Platform: what is ready, the project history, and the next step.">
+<title>QA Journal — AI QA Platform</title>
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand"><b data-i18n="app_title">AI QA Platform · Journal</b></div>
+    <div class="toolbar">
+      <button class="btn" id="lang-btn" type="button">العربية</button>
+    </div>
+  </div>
+  <div class="wrap"><nav class="tabs" id="tabs" aria-label="Sections"></nav></div>
+</header>
+
+<div class="wrap">
+  <main id="view" aria-live="polite">
+    <noscript>This journal needs JavaScript to show its local data file (data/journal-data.js).</noscript>
+  </main>
+  <footer>
+    <span data-i18n="footer_text"></span>
+    <button class="btn sm" id="about-btn" type="button" data-i18n="about_data">About this page's data</button>
+  </footer>
+</div>
+
+<dialog class="viewer" id="viewer" aria-label="Viewer"></dialog>
+
+<script src="data/journal-data.js"></script>
+<script src="assets/i18n.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

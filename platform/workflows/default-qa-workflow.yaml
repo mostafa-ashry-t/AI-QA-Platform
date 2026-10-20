@@ -1,0 +1,307 @@
+# Default QA Workflow
+# -------------------------------------------------------------------
+# Defines the logical order and dependencies of the QA stages.
+# Implementation status per stage is tracked by `implemented` below and in
+# platform/registry/skills.yaml. Each stage is bound to a skill and can be
+# replaced independently.
+#
+# All paths are relative to the task instance root:
+#   platform/tasks/<task-name>/
+#
+# Gate semantics: a stage with `gate.hard_stop: true` stops after producing its
+# output; stages that list it in `requires_approval_of` may start only after the
+# literal `gate.approval_key` has been received and journaled.
+# -------------------------------------------------------------------
+
+workflow:
+  id: default-qa-workflow
+  version: 0.11.0
+  status: defined          # defined | active | deprecated
+  description: >
+    End-to-end AI-assisted QA workflow: PRD -> project context -> exploration ->
+    test design -> test review (mandatory) -> manual execution -> automation
+    generation -> automation execution -> self-healing (when needed) -> reporting.
+  journal:
+    execution_log: journal/execution-log.json
+    prompts: journal/prompts.json
+    event_schema: platform/schemas/journal-event.schema.json
+    prompt_record_schema: platform/schemas/prompt-record.schema.json
+    rule: Every stage appends at least one entry to the execution journal.
+
+  # The orchestration layer (a human operator until a runner exists) owns the run.
+  # It creates ONE workflow_run_id per workflow execution; every stage of that
+  # execution shares it. Skills only READ it and never create or change it.
+  run:
+    owner: orchestration
+    run_context: journal/workflow-run.json
+    run_context_schema: platform/schemas/workflow-run.schema.json
+    id_format: RUN-001            # sequential per task (recommended)
+    skills_may_create_run_id: false
+
+  # Preconditions performed by orchestration / a human, not by a skill stage.
+  task_creation:
+    performed_by: orchestration
+    steps:
+      - Copy platform/templates/task-template/ to platform/tasks/<task-name>/
+      - Fill context/TaskContext.md (identity + verbatim intake)
+      - Create a run in journal/workflow-run.json and set active_run_id
+
+  # Approval keys: exact, standalone, case-sensitive. Anything else is rejected
+  # and journaled as approval_decision / not_accepted.
+  approval_policy:
+    match: exact_standalone
+    case_sensitive: true
+    ignore_surrounding_whitespace: true
+    key_mixed_with_other_text: reject
+    no_bypass: true                       # a stage never starts without every approval in requires_approval_of, even if its inputs already exist
+    revisions: update_artifact_in_place   # never -v2 / -final copies
+
+stages:
+
+  - id: prd-generation
+    order: 1
+    skill: prd-generation
+    implemented: true
+    depends_on: []
+    requires: [task_creation]
+    purpose: Convert the task intake into a structured, traceable PRD. Documentation-only.
+    inputs:
+      - context/TaskContext.md          # identity + verbatim intake
+      - supporting documents listed in the intake (local)
+      - project UI/API URLs (presence + optional single non-browser reachability check)
+      - journal/workflow-run.json       # active_run_id (read only)
+    outputs: [prd/PRD.md]
+    mcp: none
+    gate:
+      hard_stop: true
+      approval_key: PRD_APPROVED
+      unlocks: [project-context]
+
+  - id: project-context
+    order: 2
+    skill: project-context
+    implemented: true
+    depends_on: [prd-generation]
+    requires_approval_of: [prd-generation]   # PRD_APPROVED, not stale
+    purpose: >
+      Decompose the task's documented intent (PRD) into scope, rules, roles,
+      dependencies, assumptions, risks, gaps and traceability. Documentation-only.
+    inputs:
+      - prd/PRD.md
+      - context/TaskContext.md          # identity section only
+      - platform/knowledge-base/**      # only if referenced by the PRD
+      - journal/workflow-run.json       # active_run_id (read only)
+    outputs: [context/ProjectContext.md]
+    mcp: none
+    gate:
+      hard_stop: true
+      approval_key: PROJECT_CONTEXT_APPROVED
+      unlocks: [exploration]
+
+  - id: exploration
+    order: 3
+    skill: exploration
+    implemented: true
+    depends_on: [project-context]
+    requires_approval_of: [project-context]   # PROJECT_CONTEXT_APPROVED, current (hash-checked)
+    purpose: >
+      Explore the live application against the approved ProjectContext; compare
+      expected vs actual; classify MATCH / FINDING / GAP / QUESTION / POTENTIAL BUG;
+      capture evidence; record candidate locators. No test cases, no automation.
+    inputs:
+      - context/ProjectContext.md       # approved expectation baseline
+      - prd/PRD.md                      # reference only
+      - context/TaskContext.md          # identity + entry points
+      - journal/workflow-run.json       # active_run_id (read only)
+      - live application (UI/API URLs)
+    outputs:
+      - exploration/ExplorationReport.md
+      - exploration/evidence/
+    mcp: playwright                     # browser access for exploration, NOT the automation framework
+    gate:
+      hard_stop: true
+      approval_key: EXPLORATION_APPROVED
+      unlocks: [test-design]
+
+  - id: test-design
+    order: 4
+    skill: test-design
+    implemented: true
+    depends_on: [exploration]
+    requires_approval_of: [exploration]       # EXPLORATION_APPROVED, current (hash-checked)
+    purpose: >
+      Design traceable, executable test cases from the approved ProjectContext and
+      approved ExplorationReport using EP, BVA, decision tables, state transition,
+      pairwise and (supplementary) error guessing. Design only: no browser, no
+      execution, no automation. Expected results are never invented.
+    inputs:
+      - context/ProjectContext.md         # approved, current
+      - exploration/ExplorationReport.md  # approved, current, baseline = current ProjectContext
+      - context/TaskContext.md            # identity only
+      - prd/PRD.md                        # traceability references only
+      - journal/workflow-run.json         # active_run_id (read only)
+    outputs: [test-design/TestCases.md]
+    per_case_flags: [Valid in Scope, Needs Automation]   # drive manual-execution / automation-generation filters
+    mcp: none
+    gate:
+      hard_stop: true
+      approval_key: TEST_DESIGN_APPROVED
+      unlocks: [test-review]
+
+  # MANDATORY (ADR-001, docs/architecture/decisions/ADR-001-mandatory-test-review.md).
+  # Test Review is the single gate in front of BOTH manual-execution and
+  # automation-generation. Neither may start without a current TEST_REVIEW_APPROVED,
+  # even if TestCases.md already exists and is approved.
+  - id: test-review
+    order: 5
+    skill: test-review
+    implemented: true
+    mandatory: true
+    depends_on: [test-design]
+    requires_approval_of: [test-design]       # TEST_DESIGN_APPROVED, current (hash-checked)
+    purpose: >
+      Review the approved TestCases.md against the approved ProjectContext and
+      approved ExplorationReport. Record findings and proposed changes with reasons;
+      never modify the test cases.
+    inputs:
+      - test-design/TestCases.md          # approved, current: the reviewed artifact
+      - context/ProjectContext.md         # approved, current
+      - exploration/ExplorationReport.md  # approved, current
+      - context/TaskContext.md            # identity only
+      - prd/PRD.md                        # approval current; traceability chains only
+      - journal/workflow-run.json         # active_run_id (read only)
+    outputs: [test-review/TestReview.md]
+    mcp: none                             # review operates on approved artifacts only
+    review_contract:
+      validates_against: [context/ProjectContext.md, exploration/ExplorationReport.md]
+      checks:                             # journal review_findings[].category uses the singular form (duplicate, unclear_step, ...)
+        - missing_coverage                # uncovered PC BR / PC EB / relevant OBS
+        - duplicates
+        - unclear_steps
+        - invalid_expected_results        # unsupported by approved sources, or contradicting them
+        - missing_preconditions
+        - unsupported_assumptions
+        - traceability_errors             # invented / missing source IDs, inconsistent matrix or counts
+        - flag_inconsistencies            # Valid in Scope / Needs Automation rule violations
+      finding_classes:
+        change_required: blocks_approval  # while open; withdrawn or downgraded only by a human decision
+        advisory: non_blocking
+      modifies_test_cases: false          # proposed changes are recorded with reasons, never applied
+      change_resolution: >
+        Requested changes are resolved through a test-design revision
+        (TestCases.md updated in place, TEST_DESIGN_APPROVED again), followed by a
+        new test-review attempt against the new TestCases.md hash.
+      approval_requires: no open Change Required finding, and a current binding
+      binds_to:
+        artifact: test-design/TestCases.md
+        by: sha256                        # reviewed hash recorded in TestReview.md and in the journal (review_binding)
+        also_bound: [context/ProjectContext.md, exploration/ExplorationReport.md]
+      stale_when:
+        - TestReview.md hash differs from its post-approval hash
+        - a later test-review stage_execution exists
+        - current TestCases.md hash differs from the reviewed hash
+        - a later test-design stage_execution exists, or TEST_DESIGN_APPROVED is no longer current
+        - current approved ProjectContext.md or ExplorationReport.md hash differs from the bound hash
+    gate:
+      hard_stop: true
+      approval_key: TEST_REVIEW_APPROVED  # ADR-001, follows the <STAGE>_APPROVED convention
+      unlocks: [manual-execution, automation-generation]
+
+  - id: manual-execution
+    order: 6
+    skill: manual-execution
+    implemented: true
+    depends_on: [test-review]
+    requires_approval_of: [test-review]       # TEST_REVIEW_APPROVED, current, bound to the current TestCases.md hash (ADR-001)
+    purpose: >
+      Execute ONLY approved test cases via Playwright MCP, exactly as written;
+      expected (verbatim) vs actual (observed) -> PASS / FAIL / BLOCKED; failure
+      cause analysis; one bug per distinct application defect. No automation.
+    filter: "Valid in Scope == TRUE"          # plus: Active, expected result established (Exploratory cases not executed)
+    inputs:
+      - test-design/TestCases.md          # approved execution contract (reviewed hash)
+      - test-review/TestReview.md         # approved review of exactly this TestCases.md
+      - context/ProjectContext.md         # approved
+      - exploration/ExplorationReport.md  # approved
+      - context/TaskContext.md            # identity + entry points
+      - prd/PRD.md                        # traceability references only
+      - journal/workflow-run.json         # active_run_id (read only)
+      - live application + approved test data
+    outputs:
+      - execution/ExecutionReport.md
+      - execution/evidence/
+      - bugs/BugReports.md                # ONLY when supported application defects exist
+    mcp: playwright                       # browser access for execution, NOT the automation framework
+    gate:
+      hard_stop: true
+      approval_key: MANUAL_EXECUTION_APPROVED
+      unlocks: [automation-generation]
+
+  - id: automation-generation
+    order: 7
+    skill: automation-generation
+    implemented: true
+    depends_on: [test-review, manual-execution]
+    requires_approval_of: [test-review, manual-execution]  # TEST_REVIEW_APPROVED + MANUAL_EXECUTION_APPROVED
+    same_review_as: manual-execution      # the TEST_REVIEW_APPROVED event used by the approved manual execution must still be current (ADR-001)
+    purpose: >
+      Generate UI automation for approved cases with Needs Automation = TRUE, in the
+      task's framework (approved ProjectContext; platform default otherwise). Exact
+      steps and expected results; run-time test data; credentials from environment
+      variables; static validation only. No run against the application, no healing.
+    filter: "Needs Automation == TRUE"    # plus: Active, Valid in Scope, established expected result, latest approved manual result PASS (or FAIL by APPLICATION_DEFECT)
+    inputs: [test-design/TestCases.md, test-design/TestCases.csv, test-review/TestReview.md, execution/ExecutionReport.md, bugs/BugReports.md, context/ProjectContext.md, exploration/ExplorationReport.md, context/TaskContext.md, journal/workflow-run.json]
+    outputs: [automation/AutomationGeneration.md, automation/<project-dir>/]   # one project per binding; several independent bindings allowed
+    mcp: playwright                       # optional, read-only locator confirmation; NOT the automation framework
+    gate:
+      hard_stop: false                    # no approval key: the stage stops after its output; orchestration starts automation-execution
+      approval_key: null
+
+  - id: automation-execution
+    order: 8
+    skill: automation-execution
+    implemented: true
+    depends_on: [automation-generation]
+    purpose: >
+      Run each generated automation project independently per binding (credentials from
+      environment variables, retries 0); capture outcomes, timings and evidence; classify
+      non-passing runs; one HTML report per binding.
+    inputs: [automation/<project-dir>/, automation/AutomationGeneration.md, test-design/TestCases.md, journal/workflow-run.json]
+    outputs: [automation-execution/results/<run-id>/<project-dir>/, automation-execution/execution-metrics.json, automation-execution/<project-dir>/automation-report.html]
+    mcp: none
+    gate:
+      hard_stop: false                    # no approval key; non-passing runs (not application) go to self-healing
+      approval_key: null
+
+  - id: self-healing
+    order: 9
+    skill: self-healing
+    implemented: true
+    depends_on: [automation-execution]
+    conditional: true
+    trigger: >
+      Non-passing automation runs whose cause is not an application defect (environment,
+      configuration, framework defect, test data, test script). Application defects are
+      reported, never healed.
+    purpose: Controlled healing of broken automation with full documentation.
+    guardrail: >
+      Never change expected behavior or assertions just to make a test pass.
+      Every attempt records reason, change and result.
+    loops_back_to: automation-execution
+    inputs: [automation-execution/results/<run-id>/<project-dir>/, automation/<project-dir>/, automation/AutomationGeneration.md, test-design/TestCases.md]
+    outputs: [self-healing/healing-log.md, automation/<project-dir>/]   # minimal changes, hashed before/after
+    max_attempts_per_failure: 3
+    mcp: playwright                       # optional, read-only
+    gate:
+      hard_stop: false
+      approval_key: null
+
+  - id: reporting
+    order: 10
+    skill: reporting
+    implemented: false
+    depends_on: [manual-execution, automation-execution]
+    optional_depends_on: [self-healing]
+    purpose: Consolidate deliverables, milestone summary and journal HTML.
+    inputs: [all task artifacts, journal/]
+    outputs: [reports/]
